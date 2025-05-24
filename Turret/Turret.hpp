@@ -18,8 +18,10 @@ protected:
     Sprite imgBase;
     std::list<Turret *>::iterator lockedTurretIterator;
     PlayScene *getPlayScene();
+    PlayScene* getPlayScene() const; // for soldierUnit
     // Reference: Design Patterns - Factory Method.
     virtual void CreateBullet() = 0;
+
 
 public:
     bool Enabled = true;

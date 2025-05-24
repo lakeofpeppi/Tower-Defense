@@ -19,11 +19,13 @@ namespace Engine {
 
 class PlayScene final : public Engine::IScene {
 private:
+    /*
     enum TileType {
         TILE_DIRT,
         TILE_FLOOR,
         TILE_OCCUPIED,
     };
+    */
     ALLEGRO_SAMPLE_ID bgmId;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> deathBGMInstance;
 
@@ -31,8 +33,23 @@ protected:
     int lives;
     int money;
     int SpeedMult;
+    Engine::Label* cheatLabel = nullptr;
+    float cheatTimer = 0.0f;
+    bool cheatActive = false;
+
+/*
+    Engine::Label* cheat_label = nullptr; // pointer to the display cheat text
+    float cheatTimer = 0.0f;             // visibility tracker for the text
+    bool cheatActive = false;            // boolean for display
+    */
+
 
 public:
+    enum TileType {
+        TILE_DIRT,
+        TILE_FLOOR,
+        TILE_OCCUPIED,
+    };
     static bool DebugMode;
     static const std::vector<Engine::Point> directions;
     static const int MapWidth, MapHeight;

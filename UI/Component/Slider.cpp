@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <string>
+#include <allegro5/bitmap_draw.h>
 
 #include "Engine/Point.hpp"
 #include "Slider.hpp"
@@ -14,13 +15,30 @@ Slider::Slider(float x, float y, float w, float h)
     Anchor = Engine::Point(0.5, 0.5);
 }
 void Slider::Draw() const {
-    // TODO HACKATHON-5 (3/4): The slider's component should be drawn here.
-}
+    // TODO HACKATHON-5 (3/4): The slider's component should be drawn here. (DONE)
+        End1.Draw();
+        End2.Draw();
+        Bar.Draw();
+
+        float positionX = Bar.Position.x + (value * Bar.Size.x); // slider start + (bar width * slider position)
+        float positionY = Bar.Position.y + (Bar.Size.y / 2.0f);
+
+        auto draw_handle = const_cast<Slider*>(this); // temporary
+        draw_handle->Position = Engine::Point(positionX, positionY); // used
+
+        draw_handle->ImageButton::Draw();
+    }
+
+
+
 void Slider::SetOnValueChangedCallback(std::function<void(float value)> onValueChangedCallback) {
     OnValueChangedCallback = onValueChangedCallback;
 }
 void Slider::SetValue(float value) {
-    // TODO HACKATHON-5 (4/4): Set the value of the slider and call the callback.
+    // TODO HACKATHON-5 (4/4): Set the value of the slider and call the callback. (DONE)
+    float adjusted = std::min(std::max(value, Min), Max); //value
+    this->value = adjusted;
+    if (OnValueChangedCallback) OnValueChangedCallback(this->value);
 }
 void Slider::OnMouseDown(int button, int mx, int my) {
     if ((button & 1) && mouseIn)

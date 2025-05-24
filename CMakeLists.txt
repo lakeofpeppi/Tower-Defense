@@ -9,6 +9,7 @@ include_directories(Resource)
 file(COPY Resource/audios DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY Resource/fonts DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY Resource/images DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY Resource/images/play DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Resource/images)
 file(COPY Resource DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY allegro_monolith-5.2.dll DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
@@ -54,6 +55,7 @@ add_executable(2025_I2P2_TowerDefense
     Engine/Sprite.hpp
     
     # TODO HACKATHON-2 (3/3): Add the new scene source files here
+
     Scene/LoseScene.cpp
     Scene/LoseScene.hpp
     Scene/PlayScene.cpp
@@ -64,6 +66,8 @@ add_executable(2025_I2P2_TowerDefense
     Scene/StartScene.h
     Scene/WinScene.cpp
     Scene/WinScene.hpp
+        Scene/SettingsScene.cpp
+        Scene/SettingsScene.hpp
 
     Turret/LaserTurret.cpp
     Turret/LaserTurret.hpp
@@ -73,6 +77,9 @@ add_executable(2025_I2P2_TowerDefense
     Turret/Turret.hpp
     Turret/TurretButton.cpp
     Turret/TurretButton.hpp
+        Turret/SoldierUnit.cpp
+        Turret/SoldierUnit.hpp
+
 
     UI/Animation/DirtyEffect.cpp
     UI/Animation/DirtyEffect.hpp
@@ -91,6 +98,12 @@ add_executable(2025_I2P2_TowerDefense
     UI/Component/Slider.hpp
     
     main.cpp
+        Enemy/PlaneEnemy.cpp
+        Enemy/PlaneEnemy.hpp
+        Scene/ScoreboardScene.cpp
+        Scene/ScoreboardScene.hpp
+        Turret/SoldierUnit.hpp
+        Turret/SOldierUnit.cpp
 )
 
 IF (WIN32)

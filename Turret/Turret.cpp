@@ -86,3 +86,8 @@ void Turret::Draw() const {
 int Turret::GetPrice() const {
     return price;
 }
+
+PlayScene* Turret::getPlayScene() const {
+    return dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetActiveScene()); // ini buat allows both const and non-const calls to getPlayScene()
+}
+

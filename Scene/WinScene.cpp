@@ -9,8 +9,10 @@
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
 #include "WinScene.hpp"
+#include <iostream>
 
 void WinScene::Initialize() {
+    std::cout << "WinScene::Initialize() called." << std::endl;
     ticks = 0;
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
@@ -29,6 +31,7 @@ void WinScene::Terminate() {
     IScene::Terminate();
     AudioHelper::StopBGM(bgmId);
 }
+/*
 void WinScene::Update(float deltaTime) {
     ticks += deltaTime;
     if (ticks > 4 && ticks < 100 &&
@@ -37,6 +40,31 @@ void WinScene::Update(float deltaTime) {
         bgmId = AudioHelper::PlayBGM("happy.ogg");
     }
 }
+
+void WinScene::Update(float deltaTime) {
+    ticks += deltaTime;
+    if (ticks > 4 && ticks < 100) {
+        IScene* currentScene = Engine::GameEngine::GetInstance().GetScene("play");
+        PlayScene* playScene = dynamic_cast<PlayScene*>(currentScene);
+        if (playScene && playScene->MapId == 2) {
+            ticks = 100;
+            bgmId = AudioHelper::PlayBGM("happy.ogg");
+        }
+    }
+}
+*/
+
+
+void WinScene::Update(float deltaTime) {
+    ticks += deltaTime;
+    if (ticks > 4 && ticks < 100) {
+        // Just play BGM without checking the previous scene
+        ticks = 100;
+        bgmId = AudioHelper::PlayBGM("happy.ogg");
+    }
+}
+
+
 void WinScene::BackOnClick(int stage) {
     // Change to select scene.
     Engine::GameEngine::GetInstance().ChangeScene("stage-select");

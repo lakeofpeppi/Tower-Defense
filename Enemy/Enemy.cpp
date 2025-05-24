@@ -17,6 +17,9 @@
 #include "UI/Animation/DirtyEffect.hpp"
 #include "UI/Animation/ExplosionEffect.hpp"
 
+
+
+//HI IM HERE
 PlayScene *Enemy::getPlayScene() {
     return dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetActiveScene());
 }

@@ -7,7 +7,7 @@
 #include <queue>
 #include <string>
 #include <vector>
-
+#include "Enemy/PlaneEnemy.hpp"
 #include "Enemy/Enemy.hpp"
 #include "Enemy/SoldierEnemy.hpp"
 #include "Enemy/TankEnemy.hpp"
@@ -20,9 +20,12 @@
 #include "Turret/LaserTurret.hpp"
 #include "Turret/MachineGunTurret.hpp"
 #include "Turret/TurretButton.hpp"
+#include "Turret/SoldierUnit.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
 #include "UI/Animation/Plane.hpp"
 #include "UI/Component/Label.hpp"
+#include "Scene/WinScene.hpp"
+
 
 // TODO HACKATHON-4 (1/3): Trace how the game handles keyboard input.
 // TODO HACKATHON-4 (2/3): Find the cheat code sequence in this file.
@@ -38,13 +41,22 @@ const float PlayScene::DangerTime = 7.61;
 const Engine::Point PlayScene::SpawnGridPoint = Engine::Point(-1, 0);
 const Engine::Point PlayScene::EndGridPoint = Engine::Point(MapWidth, MapHeight - 1);
 const std::vector<int> PlayScene::code = {
-    ALLEGRO_KEY_UP, ALLEGRO_KEY_UP, ALLEGRO_KEY_DOWN, ALLEGRO_KEY_DOWN,
+    /*ALLEGRO_KEY_UP, ALLEGRO_KEY_UP, ALLEGRO_KEY_DOWN, ALLEGRO_KEY_DOWN,
     ALLEGRO_KEY_LEFT, ALLEGRO_KEY_RIGHT, ALLEGRO_KEY_LEFT, ALLEGRO_KEY_RIGHT,
-    ALLEGRO_KEY_B, ALLEGRO_KEY_A, ALLEGRO_KEYMOD_SHIFT, ALLEGRO_KEY_ENTER
+    ALLEGRO_KEY_B, ALLEGRO_KEY_A, ALLEGRO_KEY_L_SHIFT, ALLEGRO_KEY_ENTER
+    */
+    84, 84,     // UP, UP
+    85, 85,     // DOWN, DOWN
+    82, 83,     // LEFT, RIGHT
+    82, 83,     // LEFT, RIGHT
+    2, 1,       // B, A
+    215, 67     // Left Shift, Enter
 };
+
 Engine::Point PlayScene::GetClientSize() {
     return Engine::Point(MapWidth * BlockSize, MapHeight * BlockSize);
 }
+
 void PlayScene::Initialize() {
     mapState.clear();
     keyStrokes.clear();
@@ -77,12 +89,14 @@ void PlayScene::Initialize() {
     // Start BGM.
     bgmId = AudioHelper::PlayBGM("play.ogg");
 }
+
 void PlayScene::Terminate() {
     AudioHelper::StopBGM(bgmId);
     AudioHelper::StopSample(deathBGMInstance);
     deathBGMInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
     IScene::Terminate();
 }
+
 void PlayScene::Update(float deltaTime) {
     // If we use deltaTime directly, then we might have Bullet-through-paper problem.
     // Reference: Bullet-Through-Paper
@@ -143,9 +157,13 @@ void PlayScene::Update(float deltaTime) {
                 delete BulletGroup;
                 delete EffectGroup;
                 delete UIGroup;
-                delete imgTarget;*/
+                delete imgTarget;
+                */
                 // Win.
-                Engine::GameEngine::GetInstance().ChangeScene("win-scene");
+                std::cout << "changing scene to win" << std::endl;
+                Engine::GameEngine::GetInstance().ChangeScene("win");
+                //return;
+
             }
             continue;
         }
@@ -160,9 +178,10 @@ void PlayScene::Update(float deltaTime) {
             case 1:
                 EnemyGroup->AddNewObject(enemy = new SoldierEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
                 break;
-            // TODO HACKATHON-3 (2/3): Add your new enemy here.
-            // case 2:
-            //     ...
+            // TODO HACKATHON-3 (2/3): Add your new enemy here. (DONE)
+            case 2:
+                EnemyGroup->AddNewObject(enemy = new PlaneEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
+                break;
             case 3:
                 EnemyGroup->AddNewObject(enemy = new TankEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
                 break;
@@ -178,7 +197,24 @@ void PlayScene::Update(float deltaTime) {
         // To keep responding when paused.
         preview->Update(deltaTime);
     }
+    // Automatically restore life label color if it shows damage red
+    if (UILives) {
+        ALLEGRO_COLOR alertRed = al_map_rgb(255, 40, 40);
+        ALLEGRO_COLOR current = UILives->Color;
+        if (current.r == alertRed.r && current.g == alertRed.g && current.b == alertRed.b) {
+            UILives->Color = al_map_rgb(255, 255, 255); // Reset to default white
+        }
+    }
+    if (cheatActive) {
+        cheatTimer += deltaTime;
+        if (cheatTimer >= 5.0f && cheatLabel) {
+            UIGroup->RemoveObject(cheatLabel->GetObjectIterator());
+            cheatLabel = nullptr;
+            cheatActive = false;
+        }
+    }
 }
+
 void PlayScene::Draw() const {
     IScene::Draw();
     if (DebugMode) {
@@ -195,6 +231,7 @@ void PlayScene::Draw() const {
         }
     }
 }
+
 void PlayScene::OnMouseDown(int button, int mx, int my) {
     if ((button & 1) && !imgTarget->Visible && preview) {
         // Cancel turret construct.
@@ -215,6 +252,7 @@ void PlayScene::OnMouseMove(int mx, int my) {
     imgTarget->Position.x = x * BlockSize;
     imgTarget->Position.y = y * BlockSize;
 }
+
 void PlayScene::OnMouseUp(int button, int mx, int my) {
     IScene::OnMouseUp(button, mx, my);
     if (!imgTarget->Visible)
@@ -254,14 +292,33 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
         }
     }
 }
+
 void PlayScene::OnKeyDown(int keyCode) {
+    std::cout << "Pressed: " << keyCode << std::endl;
     IScene::OnKeyDown(keyCode);
     if (keyCode == ALLEGRO_KEY_TAB) {
         DebugMode = !DebugMode;
-    } else {
+    }
+    else {
         keyStrokes.push_back(keyCode);
         if (keyStrokes.size() > code.size())
             keyStrokes.pop_front();
+
+        bool matched = keyStrokes.size() >= code.size() &&
+            std::equal(code.begin(), code.end(), std::prev(keyStrokes.end(), code.size()));
+
+        if (matched) {
+            AddNewObject(new Plane());
+            EarnMoney(10000);
+            cheatLabel = new Engine::Label("U DISCOVERED THE CHEAT CODE!", "pirulen.ttf", 48,
+                                                640, 300, 255, 0, 0, 255);
+            cheatLabel->Anchor = Engine::Point(0.5, 0.5);
+            UIGroup->AddNewObject(cheatLabel);
+            cheatTimer = 0.0f;         // timer for the text
+            cheatActive = true;        // to track it lah peppi
+            std::cout << "Cheat Code Matched, adding 10k to money and spawning plane\n";
+            keyStrokes.clear();
+        }
     }
     if (keyCode == ALLEGRO_KEY_Q) {
         // Hotkey for MachineGunTurret.
@@ -275,19 +332,29 @@ void PlayScene::OnKeyDown(int keyCode) {
         SpeedMult = keyCode - ALLEGRO_KEY_0;
     }
 }
+
 void PlayScene::Hit() {
     lives--;
+    if (UILives) {
+        UILives->Text = std::string("Life ") + std::to_string(lives);
+        UILives->Color = al_map_rgb(255, 50, 50);
+    }
     if (lives <= 0) {
         Engine::GameEngine::GetInstance().ChangeScene("lose");
     }
 }
+
+
+
 int PlayScene::GetMoney() const {
     return money;
 }
+
 void PlayScene::EarnMoney(int money) {
     this->money += money;
     UIMoney->Text = std::string("$") + std::to_string(this->money);
 }
+
 void PlayScene::ReadMap() {
     std::string filename = std::string("Resource/map") + std::to_string(MapId) + ".txt";
     // Read map file.
@@ -323,6 +390,7 @@ void PlayScene::ReadMap() {
         }
     }
 }
+
 void PlayScene::ReadEnemyWave() {
     std::string filename = std::string("Resource/enemy") + std::to_string(MapId) + ".txt";
     // Read enemy file.
@@ -335,6 +403,7 @@ void PlayScene::ReadEnemyWave() {
     }
     fin.close();
 }
+
 void PlayScene::ConstructUI() {
     // Background
     UIGroup->AddNewObject(new Engine::Image("play/sand.png", 1280, 0, 320, 832));
@@ -350,12 +419,21 @@ void PlayScene::ConstructUI() {
     // Reference: Class Member Function Pointer and std::bind.
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 0));
     UIGroup->AddNewControlObject(btn);
+
     // Button 2
     btn = new TurretButton("play/floor.png", "play/dirt.png",
                            Engine::Sprite("play/tower-base.png", 1370, 136, 0, 0, 0, 0),
                            Engine::Sprite("play/turret-2.png", 1370, 136 - 8, 0, 0, 0, 0), 1370, 136, LaserTurret::Price);
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 1));
     UIGroup->AddNewControlObject(btn);
+
+    // another button for soldierunit
+    btn = new TurretButton("play/floor.png", "play/dirt.png",
+                           Engine::Sprite("play/floor.png", 1446, 136, 0, 0, 0, 0),
+                           Engine::Sprite("play/pink_guy.png", 1446, 128, 0, 0, 0, 0), 1446, 136, SoldierUnit::Price);
+    btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 2));
+    UIGroup->AddNewControlObject(btn);
+
 
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
@@ -372,6 +450,8 @@ void PlayScene::UIBtnClicked(int id) {
         preview = new MachineGunTurret(0, 0);
     else if (id == 1 && money >= LaserTurret::Price)
         preview = new LaserTurret(0, 0);
+    else if (id == 2 && money >= SoldierUnit::Price)
+        preview = new SoldierUnit(0, 0);
     if (!preview)
         return;
     preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
@@ -409,6 +489,7 @@ bool PlayScene::CheckSpaceValid(int x, int y) {
         dynamic_cast<Enemy *>(it)->UpdatePath(mapDistance);
     return true;
 }
+
 std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
     // Reverse BFS to find path.
     std::vector<std::vector<int>> map(MapHeight, std::vector<int>(std::vector<int>(MapWidth, -1)));
@@ -425,6 +506,24 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
         // TODO PROJECT-1 (1/1): Implement a BFS starting from the most right-bottom block in the map.
         //               For each step you should assign the corresponding distance to the most right-bottom block.
         //               mapState[y][x] is TILE_DIRT if it is empty.
+
+        for (const auto& offset : directions) { //bfs for enemy(trying all possible neighbor first then move to next step)
+            //direction is olr listed as up, down, right and left
+            int next_x = p.x + offset.x; //calculating neighbor in x direction
+            int next_y = p.y + offset.y; // the same but for y direction
+            // out of bounds check, kalo diluar limit ya skip
+            if (next_x < 0 || next_x >= MapWidth || next_y < 0 || next_y >= MapHeight)
+                continue;
+            // availability check, kalo gakosong skip, kalo walls skip
+            if (mapState[next_y][next_x] != TILE_DIRT || map[next_y][next_x] != -1)
+                continue;
+
+            // distance formula= first until last diitung
+            //bfs movement(+1 to jalan)
+            map[next_y][next_x] = map[p.y][p.x] + 1;
+            //bis itu push bfs further from available tile after checking them
+            que.push(Engine::Point(next_x, next_y));
+        }
     }
     return map;
 }
