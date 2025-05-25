@@ -40,6 +40,7 @@ Enemy::Enemy(std::string img, float x, float y, float radius, float speed, float
 }
 void Enemy::Hit(float damage) {
     hp -= damage;
+    std::cout << "[DEBUG] Enemy hit! Damage: " << damage << "\n";
     if (hp <= 0) {
         OnExplode();
         // Remove all turret's reference to target.

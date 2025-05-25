@@ -68,15 +68,18 @@ add_executable(2025_I2P2_TowerDefense
     Scene/WinScene.hpp
         Scene/SettingsScene.cpp
         Scene/SettingsScene.hpp
-
+    Turret/FireTurret.cpp
+        Turret/FireTurret.hpp
     Turret/LaserTurret.cpp
     Turret/LaserTurret.hpp
     Turret/MachineGunTurret.cpp
     Turret/MachineGunTurret.hpp
     Turret/Turret.cpp
     Turret/Turret.hpp
+
     Turret/TurretButton.cpp
     Turret/TurretButton.hpp
+
 
 
         UI/Animation/DirtyEffect.cpp
@@ -108,6 +111,10 @@ add_executable(2025_I2P2_TowerDefense
         Scene/ScoreboardScene.hpp
         UI/Component/TextBox.cpp
         UI/Component/TextBox.hpp
+        Turret/FireTurret.cpp
+        Turret/FireTurret.hpp
+        Bullet/BurningBullet.cpp
+        Bullet/BurningBullet.hpp
 )
 
 IF (WIN32)

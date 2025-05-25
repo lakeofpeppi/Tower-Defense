@@ -28,16 +28,19 @@ void ScoreboardScene::LoadScores() {
         std::getline(ss >> std::ws, date);
         scores.emplace_back(name, score, date);
     }
+
+     //sort by score
     std::sort(scores.begin(), scores.end(), [](auto& a, auto& b) {
         return std::get<1>(a) > std::get<1>(b);
     });
+
     std::cerr << "[DEBUG] Loaded " << scores.size() << " scores.\n";
 
 }
 
 void ScoreboardScene::Initialize() {
     LoadScores();
-    AddNavigationButtons(); // <-- Activate it!
+    AddNavigationButtons();
     ShowPage(0); // show first page
 
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
@@ -55,7 +58,7 @@ void ScoreboardScene::Initialize() {
 }
 
 void ScoreboardScene::ShowPage(int pageNum) {
-    // Remove only labels related to scoreboard (not buttons)
+    // remove cuma labels related to scoreboard (not buttons)
     for (auto it = objects.begin(); it != objects.end();) {
         Engine::IObject* obj = it->second;
         auto* label = dynamic_cast<Engine::Label*>(obj);
@@ -131,7 +134,7 @@ void ScoreboardScene::Terminate() {
         bgmInstance.reset();
     }
 
-    // Manually delete only Label objects (to prevent double-deletion from ShowPage)
+    // manually delete only Label objects (to prevent double-deletion from ShowPage)
     for (auto it = objects.begin(); it != objects.end();) {
         Engine::IObject* obj = it->second;
         if (dynamic_cast<Engine::Label*>(obj)) {
@@ -141,7 +144,7 @@ void ScoreboardScene::Terminate() {
             ++it;
         }
     }
-    // Now let IScene handle the rest (buttons, internals)
+    // jadi skrg let IScene handle the rest (buttons, internals)
     IScene::Terminate();
 }
 

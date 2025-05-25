@@ -8,6 +8,7 @@
 #include "Engine/Point.hpp"
 #include "Engine/Sprite.hpp"
 #include "Scene/PlayScene.hpp"
+#include<iostream>
 
 PlayScene *Bullet::getPlayScene() {
     return dynamic_cast<PlayScene *>(Engine::GameEngine::GetInstance().GetActiveScene());
@@ -29,6 +30,7 @@ void Bullet::Update(float deltaTime) {
         if (!enemy->Visible)
             continue;
         if (Engine::Collider::IsCircleOverlap(Position, CollisionRadius, enemy->Position, enemy->CollisionRadius)) {
+            std::cout << "[DEBUG] Bullet HIT enemy at (" << enemy->Position.x << ", " << enemy->Position.y << ") with damage: " << damage << "\n";
             OnExplode(enemy);
             enemy->Hit(damage);
             getPlayScene()->BulletGroup->RemoveObject(objectIterator);
