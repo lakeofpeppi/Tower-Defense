@@ -23,23 +23,24 @@ void WinScene::Initialize() {
 
     AddNewObject(new Engine::Image("win/benjamin-sad.png", halfW, halfH, 0, 0, 0.5, 0.5));
     AddNewObject(new Engine::Label("You Win!", "pirulen.ttf", 48, halfW, halfH / 4, 255, 255, 255, 255, 0.5, 0.5));
-    AddNewObject(new Engine::Label("Enter your name:", "pirulen.ttf", 32, halfW, halfH - 80, 255, 255, 255, 255, 0.5, 0.5));
+
+    /*
     auto* playScene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"));
     if (playScene) {
         finalScore = playScene->GetMoney();
     }
+    */
 
-
-    nameInput = new Engine::TextBox("player", "pirulen.ttf", 28, halfW, halfH - 40, 0, 0, 0, 255, 0.5, 0.5);
+    nameInput = new Engine::TextBox("PLAYER", "pirulen.ttf", 36, halfW, halfH / 4 + 60, 255, 255, 255, 255, 0.5, 0.5);
     AddNewControlObject(nameInput);
 
-    Engine::ImageButton* btn = new Engine::ImageButton("win/dirt.png", "win/floor.png", halfW - 200, halfH + 120, 400, 100);
+    Engine::ImageButton* btn = new Engine::ImageButton("win/dirt.png", "win/floor.png", halfW - 200, halfH + 240, 400, 100);
     btn->SetOnClickCallback(std::bind(&WinScene::BackOnClick, this, 2));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH + 170, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH + 290, 0, 0, 0, 255, 0.5, 0.5));
     bgmId = AudioHelper::PlaySample("win.wav", false, AudioHelper::BGMVolume);
-
 }
+
 void WinScene::Terminate() {
     IScene::Terminate();
     AudioHelper::StopSample(bgmId);
@@ -48,7 +49,7 @@ void WinScene::Terminate() {
 void WinScene::Update(float deltaTime) {
     ticks += deltaTime;
     if (ticks > 4 && ticks < 100) {
-        // Just play BGM without checking the previous scene
+        // play BGM langsung azza without checking the previous scene
         ticks = 100;
     bgmId = AudioHelper::PlaySample("happy.ogg", true, AudioHelper::BGMVolume);
     }

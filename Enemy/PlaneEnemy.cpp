@@ -6,5 +6,5 @@
 
 
 PlaneEnemy::PlaneEnemy(int x, int y)
-    : Enemy("play/enemy-2.png", x, y, 20, 70, 10, 2) {
+    : Enemy("play/enemy-2.png", x, y, 20, 70, 10, 20) {
 }

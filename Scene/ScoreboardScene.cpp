@@ -72,15 +72,15 @@ void ScoreboardScene::ShowPage(int pageNum) {
     int baseY = 120;
     int lineHeight = 50;
 
-    AddNewObject(new Engine::Label("SCOREBOARD", "pirulen.ttf", 36, 800, 60, 255, 182, 193, 255, 0.5, 0));
+    AddNewObject(new Engine::Label("SCOREBOARD", "pirulen.ttf", 36, 800, 60, 255, 20, 147, 255, 0.5, 0));
     if (scores.empty()) {
-        AddNewObject(new Engine::Label("No scores yet!", "pirulen.ttf", 28, 800, baseY, 255, 182, 193, 255, 0.5, 0));
+        AddNewObject(new Engine::Label("No scores yet!", "pirulen.ttf", 28, 800, baseY, 255, 20, 147, 255, 0.5, 0));
     } else {
         for (int i = 0; i < entriesPerPage && (start + i) < scores.size(); ++i) {
             auto& [name, score, date] = scores[start + i];
             std::stringstream ss;
             ss << name << " - " << score << " (" << date << ")";
-            AddNewObject(new Engine::Label(ss.str(), "pirulen.ttf", 28, 800, baseY + i * lineHeight, 255, 20, 147, 255, 0.5, 0));
+            AddNewObject(new Engine::Label(ss.str(), "pirulen.ttf", 28, 800, baseY + i * lineHeight, 139, 0, 98, 255, 0.5, 0));
         }
     }
     if (pageLabel) {
