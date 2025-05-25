@@ -16,8 +16,6 @@
 #include "Engine/Group.hpp"
 #include "Engine/LOG.hpp"
 #include "Engine/Resources.hpp"
-#include "Engine/Collider.hpp"
-#include "UI/Component/ShovelTool.hpp"
 #include "PlayScene.hpp"
 #include "Turret/LaserTurret.hpp"
 #include "Turret/FireTurret.hpp"
@@ -61,9 +59,6 @@ Engine::Point PlayScene::GetClientSize() {
 
 void PlayScene::Initialize() {
     mapState.clear();
-    //turret check buat shovel
-    mapTurret.clear();
-    mapTurret.resize(MapHeight, std::vector<Turret*>(MapWidth, nullptr));
     keyStrokes.clear();
     ticks = 0;
     deathCountDown = -1;
@@ -204,16 +199,6 @@ void PlayScene::Update(float deltaTime) {
         preview->Update(deltaTime);
     }
     // Automatically restore life label color if it shows damage red
-
-    for (auto obj : UIGroup->GetObjects()) {
-        ShovelTool* shovel = dynamic_cast<ShovelTool*>(obj);
-        if (shovel && shovel->IsDragging() && shovelPreview) {
-            Engine::Point mousePos = Engine::GameEngine::GetInstance().GetMousePosition();
-            shovelPreview->Position = mousePos;
-            shovelPreview->Update(deltaTime);
-        }
-    }
-
     if (UILives) {
         ALLEGRO_COLOR alertRed = al_map_rgb(255, 40, 40);
         ALLEGRO_COLOR current = UILives->Color;
@@ -254,15 +239,6 @@ void PlayScene::OnMouseDown(int button, int mx, int my) {
         UIGroup->RemoveObject(preview->GetObjectIterator());
         preview = nullptr;
     }
-    for (auto obj : UIGroup->GetObjects()) {
-        ShovelTool* shovel = dynamic_cast<ShovelTool*>(obj);
-        if (shovel &&
-            mx >= shovel->Position.x - 32 && mx <= shovel->Position.x + 32 &&
-            my >= shovel->Position.y - 32 && my <= shovel->Position.y + 32)
-            {
-            shovel->StartDrag();
-            }
-    }
     IScene::OnMouseDown(button, mx, my);
 }
 void PlayScene::OnMouseMove(int mx, int my) {
@@ -276,46 +252,14 @@ void PlayScene::OnMouseMove(int mx, int my) {
     imgTarget->Visible = true;
     imgTarget->Position.x = x * BlockSize;
     imgTarget->Position.y = y * BlockSize;
-
 }
 
 void PlayScene::OnMouseUp(int button, int mx, int my) {
     IScene::OnMouseUp(button, mx, my);
+    if (!imgTarget->Visible)
+        return;
     const int x = mx / BlockSize;
     const int y = my / BlockSize;
-
-    // 🧹 Handle shovel mode
-    if (Mode == PlayMode::SHOVEL) {
-        for (auto obj : UIGroup->GetObjects()) {
-            ShovelTool* shovel = dynamic_cast<ShovelTool*>(obj);
-            if (shovel && shovel->IsDragging()) {
-
-                std::cout << "[DEBUG] Releasing shovel on grid " << x << "," << y << "\n";
-
-                if (x >= 0 && x < MapWidth && y >= 0 && y < MapHeight && mapTurret[y][x]) {
-                    Turret* t = mapTurret[y][x];
-                    t->GetObjectIterator()->first = false;
-                    TowerGroup->RemoveObject(t->GetObjectIterator());
-                    mapTurret[y][x] = nullptr;
-                    mapState[y][x] = TILE_DIRT;
-                    AudioHelper::PlaySample("shovel.wav");
-                    std::cout << "[DEBUG] Turret removed at " << x << "," << y << "\n";
-                }
-
-                if (shovelPreview) {
-                    UIGroup->RemoveObject(shovelPreview->GetObjectIterator());
-                    shovelPreview = nullptr;
-                }
-
-                shovel->StopDrag();
-                Mode = PlayMode::NONE;  // Reset mode after one use
-                return;
-            }
-        }
-    }
-    if (!imgTarget->Visible || Mode == PlayMode::SHOVEL)
-        return;
-
     if (button & 1) {
         if (mapState[y][x] != TILE_OCCUPIED) {
             if (!preview)
@@ -339,10 +283,6 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
             preview->Preview = false;
             preview->Tint = al_map_rgba(255, 255, 255, 255);
             TowerGroup->AddNewObject(preview);
-            Turret* placedTurret = preview;
-            TowerGroup->AddNewObject(placedTurret);
-            mapTurret[y][x] = placedTurret;
-            //mapTurret[y][x] = preview;
             // To keep responding when paused.
             preview->Update(0);
             // Remove Preview.
@@ -352,31 +292,6 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
             OnMouseMove(mx, my);
         }
     }
-    for (auto obj : UIGroup->GetObjects()) {
-        ShovelTool* shovel = dynamic_cast<ShovelTool*>(obj);
-        if (shovel && shovel->IsDragging()) {
-            const int x = mx / BlockSize;
-            const int y = my / BlockSize;
-
-            // Remove turret if exists
-            if (x >= 0 && x < MapWidth && y >= 0 && y < MapHeight && mapTurret[y][x]) {
-                Turret* t = mapTurret[y][x];
-                t->GetObjectIterator()->first = false;
-                TowerGroup->RemoveObject(t->GetObjectIterator());
-                mapTurret[y][x] = nullptr;
-                mapState[y][x] = TILE_DIRT;
-            }
-
-            if (shovelPreview) {
-                UIGroup->RemoveObject(shovelPreview->GetObjectIterator());
-                shovelPreview = nullptr;
-            }
-
-            shovel->StopDrag();
-            break;
-        }
-    }
-
 }
 
 void PlayScene::OnKeyDown(int keyCode) {
@@ -498,15 +413,15 @@ void PlayScene::ConstructUI() {
     UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("$") + std::to_string(money), "pirulen.ttf", 24, 1294, 48));
     UIGroup->AddNewObject(UILives = new Engine::Label(std::string("Life ") + std::to_string(lives), "pirulen.ttf", 24, 1294, 88));
     TurretButton *btn;
-    // button 1
+    // Button 1
     btn = new TurretButton("play/floor.png", "play/dirt.png",
                            Engine::Sprite("play/tower-base.png", 1294, 136, 0, 0, 0, 0),
                            Engine::Sprite("play/turret-1.png", 1294, 136 - 8, 0, 0, 0, 0), 1294, 136, MachineGunTurret::Price);
-    // reference: Class Member Function Pointer and std::bind.
+    // Reference: Class Member Function Pointer and std::bind.
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 0));
     UIGroup->AddNewControlObject(btn);
 
-    // button 2
+    // Button 2
     btn = new TurretButton("play/floor.png", "play/dirt.png",
                            Engine::Sprite("play/tower-base.png", 1370, 136, 0, 0, 0, 0),
                            Engine::Sprite("play/turret-2.png", 1370, 136 - 8, 0, 0, 0, 0), 1370, 136, LaserTurret::Price);
@@ -525,14 +440,6 @@ void PlayScene::ConstructUI() {
     dangerIndicator = new Engine::Sprite("play/benjamin.png", w - shift, h - shift);
     dangerIndicator->Tint.a = 0;
     UIGroup->AddNewObject(dangerIndicator);
-    UIGroup->AddNewObject(new Engine::Image("play/shovel-base.png", 1294, 224, 64, 64));
-    auto* shovel = new ShovelTool(1294, 224, this);
-    UIGroup->AddNewControlObject(shovel);
-    //auto* shovelIcon = new Engine::Image("play/shovel.png", 1294, 224, 64, 64);
-    //shovelIcon->Anchor = Engine::Point(0.5, 0.5); // align properly if needed
-    //UIGroup->AddNewObject(shovelIcon);
-    UIGroup->AddNewControlObject(btn);
-
 }
 
 void PlayScene::UIBtnClicked(int id) {
