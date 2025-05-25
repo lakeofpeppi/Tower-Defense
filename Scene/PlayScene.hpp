@@ -18,14 +18,6 @@ namespace Engine {
 }   // namespace Engine
 
 class PlayScene final : public Engine::IScene {
-private:
-    /*
-    enum TileType {
-        TILE_DIRT,
-        TILE_FLOOR,
-        TILE_OCCUPIED,
-    };
-    */
     ALLEGRO_SAMPLE_ID bgmId;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> deathBGMInstance;
 
@@ -37,19 +29,27 @@ protected:
     float cheatTimer = 0.0f;
     bool cheatActive = false;
 
-/*
-    Engine::Label* cheat_label = nullptr; // pointer to the display cheat text
-    float cheatTimer = 0.0f;             // visibility tracker for the text
-    bool cheatActive = false;            // boolean for display
-    */
-
-
 public:
+    enum class PlayMode {
+        NONE,
+        BUILD_TURRET,
+        SHOVEL
+    };
+    PlayMode Mode = PlayMode::NONE;
+    Engine::Sprite* shovelPreview = nullptr;
     enum TileType {
         TILE_DIRT,
         TILE_FLOOR,
         TILE_OCCUPIED,
     };
+    /*
+    enum class PlayMode {
+        NONE,
+        BUILD_TURRET,
+        SHOVEL
+    };
+    PlayMode Mode = PlayMode::NONE;
+    */
     static bool DebugMode;
     static const std::vector<Engine::Point> directions;
     static const int MapWidth, MapHeight;
@@ -74,8 +74,11 @@ public:
     Engine::Label *UILives;
     Engine::Image *imgTarget;
     Engine::Sprite *dangerIndicator;
+    //shovel handling
+
     Turret *preview;
     std::vector<std::vector<TileType>> mapState;
+    std::vector<std::vector<Turret*>> mapTurret;
     std::vector<std::vector<int>> mapDistance;
     std::list<std::pair<int, float>> enemyWaveData;
     std::list<int> keyStrokes;

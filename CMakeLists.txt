@@ -97,6 +97,8 @@ add_executable(2025_I2P2_TowerDefense
     UI/Component/Label.hpp
     UI/Component/Slider.cpp
     UI/Component/Slider.hpp
+        UI/Component/ShovelTool.cpp
+        UI/Component/ShovelTool.hpp
         UI/Component/TextBox.cpp
         UI/Component/TextBox.hpp
 
@@ -115,6 +117,7 @@ add_executable(2025_I2P2_TowerDefense
         Turret/FireTurret.hpp
         Bullet/BurningBullet.cpp
         Bullet/BurningBullet.hpp
+
 )
 
 IF (WIN32)
