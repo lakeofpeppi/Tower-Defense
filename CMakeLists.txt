@@ -77,11 +77,9 @@ add_executable(2025_I2P2_TowerDefense
     Turret/Turret.hpp
     Turret/TurretButton.cpp
     Turret/TurretButton.hpp
-        Turret/SoldierUnit.cpp
-        Turret/SoldierUnit.hpp
 
 
-    UI/Animation/DirtyEffect.cpp
+        UI/Animation/DirtyEffect.cpp
     UI/Animation/DirtyEffect.hpp
     UI/Animation/ExplosionEffect.cpp
     UI/Animation/ExplosionEffect.hpp
@@ -96,14 +94,20 @@ add_executable(2025_I2P2_TowerDefense
     UI/Component/Label.hpp
     UI/Component/Slider.cpp
     UI/Component/Slider.hpp
+        UI/Component/TextBox.cpp
+        UI/Component/TextBox.hpp
+
+
+
+
     
     main.cpp
         Enemy/PlaneEnemy.cpp
         Enemy/PlaneEnemy.hpp
         Scene/ScoreboardScene.cpp
         Scene/ScoreboardScene.hpp
-        Turret/SoldierUnit.hpp
-        Turret/SOldierUnit.cpp
+        UI/Component/TextBox.cpp
+        UI/Component/TextBox.hpp
 )
 
 IF (WIN32)

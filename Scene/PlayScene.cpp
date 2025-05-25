@@ -20,7 +20,6 @@
 #include "Turret/LaserTurret.hpp"
 #include "Turret/MachineGunTurret.hpp"
 #include "Turret/TurretButton.hpp"
-#include "Turret/SoldierUnit.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
 #include "UI/Animation/Plane.hpp"
 #include "UI/Component/Label.hpp"
@@ -161,9 +160,10 @@ void PlayScene::Update(float deltaTime) {
                 */
                 // Win.
                 std::cout << "changing scene to win" << std::endl;
+                auto* win = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene("win"));
+                if (win) win->SetFinalScore(money); // ini buat recording for scoreboard
                 Engine::GameEngine::GetInstance().ChangeScene("win");
                 //return;
-
             }
             continue;
         }
@@ -427,13 +427,6 @@ void PlayScene::ConstructUI() {
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 1));
     UIGroup->AddNewControlObject(btn);
 
-    // another button for soldierunit
-    btn = new TurretButton("play/floor.png", "play/dirt.png",
-                           Engine::Sprite("play/floor.png", 1446, 136, 0, 0, 0, 0),
-                           Engine::Sprite("play/pink_guy.png", 1446, 128, 0, 0, 0, 0), 1446, 136, SoldierUnit::Price);
-    btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 2));
-    UIGroup->AddNewControlObject(btn);
-
 
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
@@ -450,8 +443,7 @@ void PlayScene::UIBtnClicked(int id) {
         preview = new MachineGunTurret(0, 0);
     else if (id == 1 && money >= LaserTurret::Price)
         preview = new LaserTurret(0, 0);
-    else if (id == 2 && money >= SoldierUnit::Price)
-        preview = new SoldierUnit(0, 0);
+
     if (!preview)
         return;
     preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
