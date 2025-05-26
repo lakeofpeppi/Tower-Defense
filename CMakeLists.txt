@@ -28,6 +28,8 @@ add_executable(2025_I2P2_TowerDefense
     Enemy/SoldierEnemy.hpp
     Enemy/TankEnemy.cpp
     Enemy/TankEnemy.hpp
+        Enemy/AquaTankEnemy.cpp
+        Enemy/AquaTankEnemy.cpp
 
     Engine/Allegro5Exception.cpp
     Engine/Allegro5Exception.hpp
@@ -125,6 +127,8 @@ add_executable(2025_I2P2_TowerDefense
         UI/Animation/FlashEffect.hpp
         Turret/ShovelTool.cpp
         Turret/ShovelTool.hpp
+        Enemy/AquaTankEnemy.cpp
+        Enemy/AquaTankEnemy.hpp
 
 )
 
