@@ -9,6 +9,7 @@ private:
     float targetRotation;
 
 public:
+    void OnExplode() override;
     TankEnemy(int x, int y);
     void Draw() const override;
     void Update(float deltaTime) override;

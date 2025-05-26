@@ -4,6 +4,9 @@
 
 #include "Engine/Point.hpp"
 #include "TankEnemy.hpp"
+#include "UI/Animation/DirtyEffect.hpp"
+#include "UI/Animation/FlashEffect.hpp"
+#include "Scene/PlayScene.hpp"
 
 TankEnemy::TankEnemy(int x, int y)
     : Enemy("play/enemy-3.png", x, y, 20, 20, 100, 50),
@@ -27,4 +30,15 @@ void TankEnemy::Update(float deltaTime) {
         targetRotation = distRadian(rng);
     }
     head.Rotation = (head.Rotation + deltaTime * targetRotation) / (1 + deltaTime);
+}
+void TankEnemy::OnExplode() {
+    getPlayScene()->EffectGroup->AddNewObject(new FlashEffect());
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> distId(1, 3);
+    std::uniform_int_distribution<std::mt19937::result_type> dist(1, 20);
+    for (int i = 0; i < 10; i++) {
+        // Random add 10 dirty effects.
+        getPlayScene()->GroundEffectGroup->AddNewObject(new DirtyEffect("play/dirty-" + std::to_string(distId(rng)) + ".png", dist(rng), Position.x, Position.y));
+    }
 }
