@@ -14,7 +14,7 @@ protected:
     float timeTicks;
     float duration;
 public:
-    FlashEffect(float duration = 0.2f); // 0.2 seconds default
+    FlashEffect(float duration = 1.0f); // 0.5 seconds default
     void Update(float deltaTime) override;
     void Draw() const override;
 };

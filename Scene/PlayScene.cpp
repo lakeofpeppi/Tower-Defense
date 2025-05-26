@@ -23,7 +23,6 @@
 #include "Turret/RocketTurret.hpp"
 #include "Turret/TurretButton.hpp"
 #include "Turret/ShovelTool.hpp"
-#include "UI/Animation/FlashEffect.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
 #include "UI/Animation/Plane.hpp"
 #include "UI/Component/Label.hpp"
@@ -149,14 +148,6 @@ void PlayScene::Update(float deltaTime) {
         IScene::Update(deltaTime);
         // Check if we should create new enemy.
         ticks += deltaTime;
-        for (auto it = scheduledEffects.begin(); it != scheduledEffects.end();) {
-            if (ticks >= it->first) {
-                it->second(); // Run the scheduled function
-                it = scheduledEffects.erase(it);
-            } else {
-                ++it;
-            }
-        }
         if (enemyWaveData.empty()) {
             if (EnemyGroup->GetObjects().empty()) {
                 // Free resources.
@@ -289,7 +280,8 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
         if (target) {
             TowerGroup->RemoveObject(target->GetObjectIterator());
             mapState[y][x] = TILE_DIRT;
-            EarnMoney(target->GetPrice());
+            EarnMoney(25);
+            std::cout << "[DEBUG] Deleting turret at (" << x << "," << y << "), refund = $" << target->GetPrice() << std::endl;
             Engine::Sprite* sprite;
             GroundEffectGroup->AddNewObject(sprite = new DirtyEffect("play/target-invalid.png", 1,
                 x * BlockSize + BlockSize / 2,
@@ -589,14 +581,4 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
         }
     }
     return map;
-}
-
-void PlayScene::AddMultipleFlashes(int count, float interval) {
-    float start = ticks;
-    for (int i = 0; i < count; i++) {
-        float scheduledTime = start + i * interval;
-        scheduledEffects.emplace_back(scheduledTime, [this]() {
-            EffectGroup->AddNewObject(new FlashEffect());
-        });
-    }
 }

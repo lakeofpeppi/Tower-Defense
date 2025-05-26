@@ -24,5 +24,6 @@ void FlashEffect::Draw() const {
     float alpha = 1.0f - (timeTicks / duration); // fades out
     if (alpha < 0) alpha = 0;
     ALLEGRO_COLOR flashColor = al_map_rgba_f(1.0, 1.0, 1.0, alpha);
-    al_draw_filled_rectangle(0, 0, 1280, 720, flashColor); // Adjust for screen resolution
+    Engine::Point screenSize = Engine::GameEngine::GetInstance().GetScreenSize();
+    al_draw_filled_rectangle(0, 0, screenSize.x, screenSize.y, flashColor);
 }

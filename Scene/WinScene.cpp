@@ -24,12 +24,6 @@ void WinScene::Initialize() {
     AddNewObject(new Engine::Image("win/benjamin-sad.png", halfW, halfH, 0, 0, 0.5, 0.5));
     AddNewObject(new Engine::Label("You Win!", "pirulen.ttf", 48, halfW, halfH / 4, 255, 255, 255, 255, 0.5, 0.5));
 
-    /*
-    auto* playScene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"));
-    if (playScene) {
-        finalScore = playScene->GetMoney();
-    }
-    */
 
     nameInput = new Engine::TextBox("PLAYER", "pirulen.ttf", 36, halfW, halfH / 4 + 60, 255, 255, 255, 255, 0.5, 0.5);
     AddNewControlObject(nameInput);

@@ -33,6 +33,7 @@ void TankEnemy::Update(float deltaTime) {
 }
 void TankEnemy::OnExplode() {
     getPlayScene()->EffectGroup->AddNewObject(new FlashEffect());
+
     std::random_device dev;
     std::mt19937 rng(dev());
     std::uniform_int_distribution<std::mt19937::result_type> distId(1, 3);

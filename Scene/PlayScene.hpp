@@ -100,11 +100,11 @@ public:
     void ConstructUI();
     void UIBtnClicked(int id);
     bool CheckSpaceValid(int x, int y);
-    void AddMultipleFlashes(int count, float interval);
+    //void AddMultipleFlashes(int count, float interval);
 
     std::vector<std::vector<int>> CalculateBFSDistance();
     // void ModifyReadMapTiles();
-    std::vector<std::pair<float, std::function<void()>>> scheduledEffects;
+    //std::vector<std::pair<float, std::function<void()>>> scheduledEffects;
 
 };
 #endif   // PLAYSCENE_HPP
