@@ -28,6 +28,10 @@ protected:
     Engine::Label* cheatLabel = nullptr;
     float cheatTimer = 0.0f;
     bool cheatActive = false;
+    Engine::Label* refundLabel = nullptr;
+    float refundTimer = 0.0f;
+    bool refundActive = false;
+
 
 public:
     enum class PlayMode {

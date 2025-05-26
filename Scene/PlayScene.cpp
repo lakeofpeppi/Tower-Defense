@@ -61,6 +61,8 @@ Engine::Point PlayScene::GetClientSize() {
 }
 
 void PlayScene::Initialize() {
+   // buat initialize stage pas masuk level
+    // ini kayak setup awal: load map, load musuh, set UI,sm start bgms
     mapState.clear();
     keyStrokes.clear();
     ticks = 0;
@@ -93,7 +95,10 @@ void PlayScene::Initialize() {
     bgmId = AudioHelper::PlayBGM("play.ogg");
 }
 
+
 void PlayScene::Terminate() {
+    // dipanggil pas scene selesai, kayak exit stage
+    // ini nge-stop bgm dan clean memory
     AudioHelper::StopBGM(bgmId);
     AudioHelper::StopSample(deathBGMInstance);
     deathBGMInstance = std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE>();
@@ -101,6 +106,8 @@ void PlayScene::Terminate() {
 }
 
 void PlayScene::Update(float deltaTime) {
+    // ini main loop per frame. all game logic jalan disini tiap tick
+    // spawn musuh, update status enemy, win/lose check, preview turret gerak, cheat code timer etc
     // If we use deltaTime directly, then we might have Bullet-through-paper problem.
     // Reference: Bullet-Through-Paper
     if (SpeedMult == 0)
@@ -220,9 +227,19 @@ void PlayScene::Update(float deltaTime) {
             cheatActive = false;
         }
     }
+    if (refundActive) {
+        refundTimer += deltaTime;
+        if (refundTimer >= 2.0f && refundLabel) {
+            UIGroup->RemoveObject(refundLabel->GetObjectIterator());
+            refundLabel = nullptr;
+            refundActive = false; // hide it
+        }
+    }
 }
 
 void PlayScene::Draw() const {
+    // buat gambar ulang seluruh scene (dipanggil tiap frame)
+    // kalo debug mode on, dia juga ngegambar jarak path musuh (BFS)
     IScene::Draw();
     if (DebugMode) {
         // Draw reverse BFS distance on all reachable blocks.
@@ -240,6 +257,7 @@ void PlayScene::Draw() const {
 }
 
 void PlayScene::OnMouseDown(int button, int mx, int my) {
+    // pas mouse diklik (kiri/right), ini yg nanganin cancel turret preview
     if ((button & 1) && !imgTarget->Visible && preview) {
         // Cancel turret construct.
         UIGroup->RemoveObject(preview->GetObjectIterator());
@@ -248,6 +266,7 @@ void PlayScene::OnMouseDown(int button, int mx, int my) {
     IScene::OnMouseDown(button, mx, my);
 }
 void PlayScene::OnMouseMove(int mx, int my) {
+    // update posisi target image biar kek sesuai posisi mouse
     IScene::OnMouseMove(mx, my);
     const int x = mx / BlockSize;
     const int y = my / BlockSize;
@@ -261,6 +280,8 @@ void PlayScene::OnMouseMove(int mx, int my) {
 }
 
 void PlayScene::OnMouseUp(int button, int mx, int my) {
+    // kalo mouse dilepas, handle logic buat naro turret atau shovel delete
+    // ini juga yang nentuin refund kalo pake shovel tool
     IScene::OnMouseUp(button, mx, my);
     if (!imgTarget->Visible) return;
 
@@ -284,15 +305,23 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
         if (target) {
             TowerGroup->RemoveObject(target->GetObjectIterator());
             mapState[y][x] = TILE_DIRT;
-            EarnMoney(25);
+            int refund = 25;
+            EarnMoney(refund);
+            refundLabel = new Engine::Label("+$" + std::to_string(refund), "pirulen.ttf", 24, mx, my, 0, 255, 0);
+            refundLabel->Anchor = Engine::Point(0.5, 0.5);
+            UIGroup->AddNewObject(refundLabel);
+            refundTimer = 0.0f;
+            refundActive = true;
             std::cout << "[DEBUG] Deleting turret at (" << x << "," << y << "), refund = $" << target->GetPrice() << std::endl;
+            keyStrokes.clear();
             Engine::Sprite* sprite;
             GroundEffectGroup->AddNewObject(sprite = new DirtyEffect("play/target-invalid.png", 1,
                 x * BlockSize + BlockSize / 2,
                 y * BlockSize + BlockSize / 2));
             sprite->Rotation = 0;
-
         }
+
+
         UIGroup->RemoveObject(preview->GetObjectIterator());
         preview = nullptr;
         return;
@@ -329,6 +358,8 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
 
 
 void PlayScene::OnKeyDown(int keyCode) {
+    //handle shortcut turret Q/W/E/R
+// juga logic cheat code masuk disini (bisa spawn plane + 10k)
     std::cout << "Pressed: " << keyCode << std::endl;
     IScene::OnKeyDown(keyCode);
     if (keyCode == ALLEGRO_KEY_TAB) {
@@ -375,6 +406,7 @@ void PlayScene::OnKeyDown(int keyCode) {
 }
 
 void PlayScene::Hit() {
+    // ini dipanggil kalo enemy tembus base. ngurangin nyawa dan update UI life
     lives--;
     if (UILives) {
         UILives->Text = std::string("Life ") + std::to_string(lives);
@@ -388,15 +420,19 @@ void PlayScene::Hit() {
 
 
 int PlayScene::GetMoney() const {
+    // getter buat current money. i can call dari luar
     return money;
 }
 
 void PlayScene::EarnMoney(int money) {
+    // update label UI money bisa nambah bisa ngurang
     this->money += money;
     UIMoney->Text = std::string("$") + std::to_string(this->money);
 }
 
 void PlayScene::ReadMap() {
+    // load file map.txt jd mapState
+    // ngegambar tile floor / dirt ke TileMapGroup
     std::string filename = std::string("Resource/map") + std::to_string(MapId) + ".txt";
     // Read map file.
     char c;
@@ -433,6 +469,8 @@ void PlayScene::ReadMap() {
 }
 
 void PlayScene::ReadEnemyWave() {
+    // load file enemyX.txt buat wave musuh
+    // tiap baris disimpan sebagai pair (tipe musuh, interval muncul)
     std::string filename = std::string("Resource/enemy") + std::to_string(MapId) + ".txt";
     // Read enemy file.
     float type, wait, repeat;
@@ -446,6 +484,7 @@ void PlayScene::ReadEnemyWave() {
 }
 
 void PlayScene::ConstructUI() {
+    // setup tombol-tombol turret, text UI (stage, money, lives)
     // Background
     UIGroup->AddNewObject(new Engine::Image("play/sand.png", 1280, 0, 320, 832));
     // Text
@@ -498,6 +537,7 @@ void PlayScene::ConstructUI() {
 }
 
 void PlayScene::UIBtnClicked(int id) {
+    // pas tombol turret diklik, ini yg buat turret preview muncul
     if (preview)
         UIGroup->RemoveObject(preview->GetObjectIterator());
     if (id == 0 && money >= MachineGunTurret::Price)
@@ -522,6 +562,8 @@ void PlayScene::UIBtnClicked(int id) {
 }
 
 bool PlayScene::CheckSpaceValid(int x, int y) {
+    // ngecek bisa naro turret di (x, y) gak plus gak boleh blokir jalan musuh (appliednya mulai level 2)
+    // pake BFS cek pathing enemy
     if (x < 0 || x >= MapWidth || y < 0 || y >= MapHeight)
         return false;
     auto map00 = mapState[y][x];
@@ -550,6 +592,8 @@ bool PlayScene::CheckSpaceValid(int x, int y) {
 }
 
 std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
+    // ini BFS buat nyari jarak dari tile ke goal (ujung kanan bawah)
+    // dipake musuh buat update path tiap kali ada turret ditaro
     // Reverse BFS to find path.
     std::vector<std::vector<int>> map(MapHeight, std::vector<int>(std::vector<int>(MapWidth, -1)));
     std::queue<Engine::Point> que;
