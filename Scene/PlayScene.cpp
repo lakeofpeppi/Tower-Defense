@@ -22,6 +22,8 @@
 #include "Turret/MachineGunTurret.hpp"
 #include "Turret/RocketTurret.hpp"
 #include "Turret/TurretButton.hpp"
+#include "Turret/ShovelTool.hpp"
+#include "UI/Animation/FlashEffect.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
 #include "UI/Animation/Plane.hpp"
 #include "UI/Component/Label.hpp"
@@ -147,6 +149,14 @@ void PlayScene::Update(float deltaTime) {
         IScene::Update(deltaTime);
         // Check if we should create new enemy.
         ticks += deltaTime;
+        for (auto it = scheduledEffects.begin(); it != scheduledEffects.end();) {
+            if (ticks >= it->first) {
+                it->second(); // Run the scheduled function
+                it = scheduledEffects.erase(it);
+            } else {
+                ++it;
+            }
+        }
         if (enemyWaveData.empty()) {
             if (EnemyGroup->GetObjects().empty()) {
                 // Free resources.
@@ -257,43 +267,70 @@ void PlayScene::OnMouseMove(int mx, int my) {
 
 void PlayScene::OnMouseUp(int button, int mx, int my) {
     IScene::OnMouseUp(button, mx, my);
-    if (!imgTarget->Visible)
-        return;
+    if (!imgTarget->Visible) return;
+
     const int x = mx / BlockSize;
     const int y = my / BlockSize;
-    if (button & 1) {
-        if (mapState[y][x] != TILE_OCCUPIED) {
-            if (!preview)
-                return;
-            // Check if valid.
-            if (!CheckSpaceValid(x, y)) {
-                Engine::Sprite *sprite;
-                GroundEffectGroup->AddNewObject(sprite = new DirtyEffect("play/target-invalid.png", 1, x * BlockSize + BlockSize / 2, y * BlockSize + BlockSize / 2));
-                sprite->Rotation = 0;
-                return;
-            }
-            // Purchase.
-            EarnMoney(-preview->GetPrice());
-            // Remove Preview.
-            preview->GetObjectIterator()->first = false;
-            UIGroup->RemoveObject(preview->GetObjectIterator());
-            // Construct real turret.
-            preview->Position.x = x * BlockSize + BlockSize / 2;
-            preview->Position.y = y * BlockSize + BlockSize / 2;
-            preview->Enabled = true;
-            preview->Preview = false;
-            preview->Tint = al_map_rgba(255, 255, 255, 255);
-            TowerGroup->AddNewObject(preview);
-            // To keep responding when paused.
-            preview->Update(0);
-            // Remove Preview.
-            preview = nullptr;
 
-            mapState[y][x] = TILE_OCCUPIED;
-            OnMouseMove(mx, my);
+    if (!(button & 1) || !preview) return;
+    ShovelTool* shovel = dynamic_cast<ShovelTool*>(preview);
+    if (shovel) {
+        Turret* target = nullptr;
+        for (auto& obj : TowerGroup->GetObjects()) {
+            Turret* turret = dynamic_cast<Turret*>(obj);
+            if (!turret || dynamic_cast<ShovelTool*>(turret)) continue;
+            int tx = floor(turret->Position.x / BlockSize);
+            int ty = floor(turret->Position.y / BlockSize);
+            if (tx == x && ty == y) {
+                target = turret;
+                break;
+            }
         }
+        if (target) {
+            TowerGroup->RemoveObject(target->GetObjectIterator());
+            mapState[y][x] = TILE_DIRT;
+            EarnMoney(target->GetPrice());
+            Engine::Sprite* sprite;
+            GroundEffectGroup->AddNewObject(sprite = new DirtyEffect("play/target-invalid.png", 1,
+                x * BlockSize + BlockSize / 2,
+                y * BlockSize + BlockSize / 2));
+            sprite->Rotation = 0;
+
+        }
+        UIGroup->RemoveObject(preview->GetObjectIterator());
+        preview = nullptr;
+        return;
+    }
+    // NORMAL TURRET PLACEMENT LOGIC
+    if (mapState[y][x] != TILE_OCCUPIED) {
+        if (!CheckSpaceValid(x, y)) {
+            Engine::Sprite* sprite;
+            GroundEffectGroup->AddNewObject(
+                new DirtyEffect("play/target-invalid.png", 1,
+                    x * BlockSize + BlockSize / 2,
+                    y * BlockSize + BlockSize / 2)
+            );
+            return;
+        }
+
+        // Purchase and place turret
+        EarnMoney(-preview->GetPrice());
+        preview->GetObjectIterator()->first = false;
+        UIGroup->RemoveObject(preview->GetObjectIterator());
+        preview->Position.x = x * BlockSize + BlockSize / 2;
+        preview->Position.y = y * BlockSize + BlockSize / 2;
+        preview->Enabled = true;
+        preview->Preview = false;
+        preview->Tint = al_map_rgba(255, 255, 255, 255);
+        TowerGroup->AddNewObject(preview);
+        preview->Update(0);
+        preview = nullptr;
+
+        mapState[y][x] = TILE_OCCUPIED;
+        OnMouseMove(mx, my);
     }
 }
+
 
 void PlayScene::OnKeyDown(int keyCode) {
     std::cout << "Pressed: " << keyCode << std::endl;
@@ -449,6 +486,13 @@ void PlayScene::ConstructUI() {
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 3));
     UIGroup->AddNewControlObject(btn);
 
+    //shovel btn
+    btn = new TurretButton("play/floor.png", "play/dirt.png",
+                       Engine::Sprite("play/shovel-base.png", 1294, 212, 0, 0, 0, 0),
+                       Engine::Sprite("play/shovel.png", 1294, 212 - 8, 0, 0, 0, 0), 1294, 212, ShovelTool::Price);
+    btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 4));
+    UIGroup->AddNewControlObject(btn);
+
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int shift = 135 + 25;
@@ -467,9 +511,10 @@ void PlayScene::UIBtnClicked(int id) {
     //fireTurret new yeah
     else if (id == 2 && money >= FireTurret::Price)
         preview = new FireTurret(0, 0);
-
     else if (id == 3 && money >= RocketTurret::Price)
         preview = new RocketTurret(0, 0);
+    else if (id == 4 && money >= ShovelTool::Price)
+        preview = new ShovelTool(0, 0);
     if (!preview)
         return;
     preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
@@ -544,4 +589,14 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
         }
     }
     return map;
+}
+
+void PlayScene::AddMultipleFlashes(int count, float interval) {
+    float start = ticks;
+    for (int i = 0; i < count; i++) {
+        float scheduledTime = start + i * interval;
+        scheduledEffects.emplace_back(scheduledTime, [this]() {
+            EffectGroup->AddNewObject(new FlashEffect());
+        });
+    }
 }
