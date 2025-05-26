@@ -20,6 +20,7 @@
 #include "Turret/LaserTurret.hpp"
 #include "Turret/FireTurret.hpp"
 #include "Turret/MachineGunTurret.hpp"
+#include "Turret/RocketTurret.hpp"
 #include "Turret/TurretButton.hpp"
 #include "UI/Animation/DirtyEffect.hpp"
 #include "UI/Animation/Plane.hpp"
@@ -327,6 +328,12 @@ void PlayScene::OnKeyDown(int keyCode) {
     } else if (keyCode == ALLEGRO_KEY_W) {
         // Hotkey for LaserTurret.
         UIBtnClicked(1);
+    } else if (keyCode == ALLEGRO_KEY_E) {
+        // Hotkey for FireTurret.
+        UIBtnClicked(2);
+    } else if (keyCode == ALLEGRO_KEY_R) {
+        // Hotkey for RocketTurretw.
+        UIBtnClicked(3);
     }
     else if (keyCode >= ALLEGRO_KEY_0 && keyCode <= ALLEGRO_KEY_9) {
         // Hotkey for Speed up.
@@ -427,11 +434,19 @@ void PlayScene::ConstructUI() {
                            Engine::Sprite("play/turret-2.png", 1370, 136 - 8, 0, 0, 0, 0), 1370, 136, LaserTurret::Price);
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 1));
     UIGroup->AddNewControlObject(btn);
+
     // fire turret
     btn = new TurretButton("play/floor.png", "play/dirt.png",
                        Engine::Sprite("play/tower-base.png", 1446, 136, 0, 0, 0, 0),
                        Engine::Sprite("play/turret-fire.png", 1446, 128, 0, 0, 0, 0), 1446, 136, FireTurret::Price);
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 2)); // ID = 2
+    UIGroup->AddNewControlObject(btn);
+
+    //rocket turret
+    btn = new TurretButton("play/floor.png", "play/dirt.png",
+                       Engine::Sprite("play/tower-base.png", 1522, 136, 0, 0, 0, 0),
+                       Engine::Sprite("play/turret-6.png", 1522, 136 - 8, 0, 0, 0, 0), 1522, 136, RocketTurret::Price);
+    btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 3));
     UIGroup->AddNewControlObject(btn);
 
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
@@ -453,6 +468,8 @@ void PlayScene::UIBtnClicked(int id) {
     else if (id == 2 && money >= FireTurret::Price)
         preview = new FireTurret(0, 0);
 
+    else if (id == 3 && money >= RocketTurret::Price)
+        preview = new RocketTurret(0, 0);
     if (!preview)
         return;
     preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();

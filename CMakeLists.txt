@@ -70,7 +70,9 @@ add_executable(2025_I2P2_TowerDefense
         Scene/SettingsScene.hpp
     Turret/FireTurret.cpp
         Turret/FireTurret.hpp
-    Turret/LaserTurret.cpp
+        Turret/RocketTurret.hpp
+        Turret/RocketTurret.cpp
+        Turret/LaserTurret.cpp
     Turret/LaserTurret.hpp
     Turret/MachineGunTurret.cpp
     Turret/MachineGunTurret.hpp
@@ -117,6 +119,12 @@ add_executable(2025_I2P2_TowerDefense
         Turret/FireTurret.hpp
         Bullet/BurningBullet.cpp
         Bullet/BurningBullet.hpp
+        Turret/RocketTurret.cpp
+        Turret/RocketTurret.hpp
+        Bullet/RocketBullet.cpp
+        Bullet/RocketBullet.hpp
+        UI/Animation/FlashEffect.cpp
+        UI/Animation/FlashEffect.hpp
 
 )
 
