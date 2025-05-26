@@ -9,5 +9,6 @@
 class AquaTankEnemy : public Enemy {
 public:
     AquaTankEnemy(int x, int y);
+    void OnExplode() override;
 };
 #endif //AQUATANKENEMY_HPP

@@ -92,8 +92,11 @@ add_executable(2025_I2P2_TowerDefense
     UI/Animation/ExplosionEffect.hpp
     UI/Animation/Plane.cpp
     UI/Animation/Plane.hpp
+        UI/Animation/ShockwaveEffect.cpp
+        UI/Animation/ShockwaveEffect.hpp
 
-    UI/Component/Image.cpp
+
+        UI/Component/Image.cpp
     UI/Component/Image.hpp
     UI/Component/ImageButton.cpp
     UI/Component/ImageButton.hpp
@@ -103,6 +106,7 @@ add_executable(2025_I2P2_TowerDefense
     UI/Component/Slider.hpp
         UI/Component/TextBox.cpp
         UI/Component/TextBox.hpp
+
 
 
 
@@ -129,6 +133,8 @@ add_executable(2025_I2P2_TowerDefense
         Turret/ShovelTool.hpp
         Enemy/AquaTankEnemy.cpp
         Enemy/AquaTankEnemy.hpp
+        UI/Animation/ShockwaveEffect.cpp
+        UI/Animation/ShockwaveEffect.hpp
 
 )
 
