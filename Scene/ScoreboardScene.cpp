@@ -29,10 +29,12 @@ void ScoreboardScene::LoadScores() {
         scores.emplace_back(name, score, date);
     }
 
-    // urutin all the scores descending (score = element 1 in tuple)
+    // urutin all the scores descending (score = element 1 in tuple) (scoreboard list calculation)
     std::sort(scores.begin(), scores.end(), [](auto &a, auto& b) {
         return std::get<1>(a) > std::get<1>(b);
     });
+    // ngambil elemen ke-1 dari tuple then urutin
+
 
     std::cerr << "[DEBUG] Loaded " << scores.size() << " scores.\n";
 }
