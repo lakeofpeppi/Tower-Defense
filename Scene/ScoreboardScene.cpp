@@ -153,7 +153,6 @@ void ScoreboardScene::Terminate() {
     IScene::Terminate();
 }
 
-
 void ScoreboardScene::BackOnClick(int stage) {
     Engine::GameEngine::GetInstance().ChangeScene("stage-select");
 }
