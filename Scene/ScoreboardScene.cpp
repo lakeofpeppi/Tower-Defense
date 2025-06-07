@@ -10,7 +10,7 @@
 #include "UI/Component/ImageButton.hpp"
 #include "StageSelectScene.hpp"
 #include<iostream>
-
+// this is a test
 void ScoreboardScene::LoadScores() {
     scores.clear();
     std::ifstream fin("scoreboard.txt"); // opens the file where scores are saved (yg ini important: make sure this file exists)
