@@ -30,17 +30,18 @@ void StartScene::Initialize() {
     int hpic = 1245;
     AddNewObject(new Engine::Image("play/title screen.png", 0, 0, wpic, hpic));
 
-    AddNewObject(new Engine::Label("The Outlander's Mission", "To The Point.ttf", 120, halfW+300, halfH / 3 + 50,  255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("The Outlander's Mission", "To The Point.ttf", 200, halfW+300, halfH / 3 + 50,  255, 255, 255, 255, 0.5, 0.5));
 
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH / 2 + 200, 400, 100);
+    btn = new Engine::ImageButton("stage-select/underline.png", "stage-select/underline.png", halfW + 100, halfH / 2 + 200, 400, 100);
     btn->SetOnClickCallback(std::bind(&StartScene::PlayOnClick, this, 1));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Start ", "pirulen.ttf", 48, halfW, halfH / 2 + 250, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("start new game", "To The Point.ttf", 100, halfW + 300, halfH / 2 + 250, 0, 0, 0, 255, 0.5, 0.5));
 
-    btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH * 3 / 2 - 50, 400, 100);
+
+    btn = new Engine::ImageButton("stage-select/underline.png", "stage-select/underline.png", halfW + 100, halfH / 2 + 200, 400, 100);
     btn->SetOnClickCallback(std::bind(&StartScene::SettingsOnClick, this, 2));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("Settings", "pirulen.ttf", 48, halfW, halfH * 3 / 2, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("continue game", "pirulen.ttf", 48, halfW, halfH * 3 / 2, 0, 0, 0, 255, 0.5, 0.5));
 }
 void StartScene::Terminate() {
     IScene::Terminate();
