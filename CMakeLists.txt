@@ -135,6 +135,8 @@ add_executable(2025_I2P2_TowerDefense
         Enemy/AquaTankEnemy.hpp
         UI/Animation/ShockwaveEffect.cpp
         UI/Animation/ShockwaveEffect.hpp
+        Character/PlayerCharacter.hpp
+        Character/PlayerCharacter.cpp
 
 )
 
