@@ -27,6 +27,6 @@ int main(int argc, char **argv) {
 	game.AddNewScene("scoreboard-scene", new ScoreboardScene());
 
     // TODO HACKATHON-1 (1/1): Change the start scene (DONE)
-	game.Start("start", 60, 1600, 832);
+	game.Start("start", 60, 1792, 1216);
 	return 0;
 }
