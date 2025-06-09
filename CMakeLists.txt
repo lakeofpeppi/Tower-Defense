@@ -70,6 +70,8 @@ add_executable(2025_I2P2_TowerDefense
     Scene/WinScene.hpp
         Scene/SettingsScene.cpp
         Scene/SettingsScene.hpp
+        Scene/IntroScene.cpp
+        Scene/IntroScene.hpp
     Turret/FireTurret.cpp
         Turret/FireTurret.hpp
         Turret/RocketTurret.hpp
@@ -137,6 +139,8 @@ add_executable(2025_I2P2_TowerDefense
         UI/Animation/ShockwaveEffect.hpp
         Character/PlayerCharacter.hpp
         Character/PlayerCharacter.cpp
+        Scene/IntroScene.cpp
+        Scene/IntroScene.hpp
 
 )
 

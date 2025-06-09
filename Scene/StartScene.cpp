@@ -30,23 +30,31 @@ void StartScene::Initialize() {
     int hpic = 1245;
     AddNewObject(new Engine::Image("play/title screen.png", 0, 0, wpic, hpic));
 
-    AddNewObject(new Engine::Label("The Outlander's Mission", "To The Point.ttf", 200, halfW+300, halfH / 3 + 50,  255, 255, 255, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("The Outlander's Mission", "To The Point.ttf", 200, halfW+250, halfH / 3 +150,  255, 255, 255, 255, 0.5, 0.5));
 
     btn = new Engine::ImageButton("stage-select/underline.png", "stage-select/underline.png", halfW + 100, halfH / 2 + 200, 400, 100);
     btn->SetOnClickCallback(std::bind(&StartScene::PlayOnClick, this, 1));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("start new game", "To The Point.ttf", 100, halfW + 300, halfH / 2 + 250, 0, 0, 0, 255, 0.5, 0.5));
 
-
-    btn = new Engine::ImageButton("stage-select/underline.png", "stage-select/underline.png", halfW + 100, halfH / 2 + 200, 400, 100);
-    btn->SetOnClickCallback(std::bind(&StartScene::SettingsOnClick, this, 2));
+    btn = new Engine::ImageButton("stage-select/underline.png", "stage-select/underline.png", halfW + 100, halfH * 3 / 2 - 250, 400, 100);
+    btn->SetOnClickCallback(std::bind(&StartScene::StageOnClick, this, 2));
     AddNewControlObject(btn);
-    AddNewObject(new Engine::Label("continue game", "pirulen.ttf", 48, halfW, halfH * 3 / 2, 0, 0, 0, 255, 0.5, 0.5));
+    AddNewObject(new Engine::Label("continue game", "To The Point.ttf", 100, halfW + 300, halfH * 3 / 2 - 200, 0, 0, 0, 255, 0.5, 0.5));
+
+    btn = new Engine::ImageButton("stage-select/underline.png", "stage-select/underline.png", halfW + 550, halfH * 3 / 2 - 850, 300, 100);
+    btn->SetOnClickCallback(std::bind(&StartScene::SettingsOnClick, this, 3));
+    AddNewControlObject(btn);
+    AddNewObject(new Engine::Label("settings", "To The Point.ttf", 100, halfW + 700, halfH * 3 / 2 - 800, 250, 250, 250, 255, 0.5, 0.5));
+
 }
 void StartScene::Terminate() {
     IScene::Terminate();
 }
 void StartScene::PlayOnClick(int stage) {
+    Engine::GameEngine::GetInstance().ChangeScene("intro");
+}
+void StartScene::StageOnClick(int stage) {
     Engine::GameEngine::GetInstance().ChangeScene("stage-select");
 }
 void StartScene::SettingsOnClick(int stage) {
