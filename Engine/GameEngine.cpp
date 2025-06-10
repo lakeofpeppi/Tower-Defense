@@ -18,6 +18,9 @@
 #include "Point.hpp"
 #include "Resources.hpp"
 
+std::string Engine::GameEngine::currentActivePlayerName = "PLAYER";
+std::string Engine::GameEngine::currentActiveScene = "";
+
 namespace Engine {
     void GameEngine::initAllegro5() {
         if (!al_init()) throw Allegro5Exception("failed to initialize allegro");
@@ -265,4 +268,251 @@ namespace Engine {
         static GameEngine instance;
         return instance;
     }
+    /*SaveFileData GameEngine::LoadSaveFile(){
+
+        SaveFileData svData;
+        std::ifstream inFile(saveFilePath);
+        std::string line;
+
+        if (inFile.is_open()) {
+            while (std::getline(inFile, line)) {
+                if (line.find("PlayerName: ") == 0) {
+                    svData.playerName = line.substr(std::string("PlayerName: ").length());
+                } else if (line.find("SFXVolume: ") == 0) {
+                    svData.sfxVolume = std::stof(line.substr(std::string("SFXVolume: ").length()));
+                } else if (line.find("BGMVolume: ") == 0) {
+                    svData.bgmVolume = std::stof(line.substr(std::string("BGMVolume: ").length()));
+                }
+            }
+            inFile.close();
+        } else {
+            std::cerr << "Unable to open file for reading.\n";
+
+            return {"Player", 1.0f, 1.0f};
+        }
+
+        return svData;
+    }
+    void GameEngine::WriteSaveFile(SaveFileData svData){
+        SaveFileData old = LoadSaveFile();
+        ofstream outFile(saveFilePath);
+        if (outFile.is_open()){
+            outFile << "PlayerName: " << (svData.playerName.empty() ? old.playerName : svData.playerName) << endl;
+            outFile << "BGMVolume: " << svData.bgmVolume << endl;
+            outFile << "SFXVolume: " << svData.sfxVolume << endl;
+        } else {
+            cerr << "Unable to open file for writing " << saveFilePath << "\n";
+        }
+    }
+    vector<scoreBoardData> GameEngine::LoadScoreBoard() {
+		vector<scoreBoardData> result;
+		ifstream file(leaderBoardFilePath);
+		if (!file.is_open()){
+			cerr << "Failed to open file " << leaderBoardFilePath << endl;
+			return result;
+		}
+		string line;
+		while (getline(file, line)){
+			istringstream iss(line);
+			scoreBoardData entry;
+			char slash, colon;
+			iss >> entry.saveTime.day >> slash >> entry.saveTime.month >> entry.saveTime.hour >> colon >> entry.saveTime.minute >> colon >> entry.saveTime.second;
+			iss >> entry.playerName >> entry.highestScore;
+
+			if (iss.fail()) {
+				std::cerr << "Error parsing line: " << line << std::endl;
+				continue;
+			}
+
+			// result.resize(result.size() + 1);
+			cout << " LOAD : Found " << entry.playerName << endl;
+			result.push_back(entry);
+		}
+
+		file.close();
+
+		return result;
+	}
+
+	void GameEngine::WriteScoreBoard(vector<scoreBoardData> oldSbData,scoreBoardData entry) {
+		std::ofstream file(leaderBoardFilePath, std::ios::out); // Open file in output mode
+		if (!file.is_open()) {
+			return;
+		}
+
+		// std::vector<scoreBoardData> oldSbData = Engine::GameEngine::GetInstance().LoadScoreBoard();
+		bool contains = false;
+		for (auto& data : oldSbData) {
+			cout << "Iterating through " << data.playerName << endl;
+			if (data.playerName == entry.playerName) {
+				contains = true;
+				data = entry; // Update existing entry with new data
+				break;
+			}
+		}
+
+		if (!contains) {
+			std::cout << "No One named " << entry.playerName << " Creating one... \n";
+			oldSbData.push_back(entry); // Add new entry
+		}
+
+		// Write all entries back to the file
+		for (const auto& data : oldSbData) {
+			cout << "WRITING : " << data.playerName<< endl;
+			file << data.saveTime.day << "/" << data.saveTime.month << " "
+				<< (data.saveTime.hour < 10 ? "0" : "") << data.saveTime.hour << ":"
+				<< (data.saveTime.minute < 10 ? "0" : "") << data.saveTime.minute << ":"
+				<< (data.saveTime.second < 10 ? "0" : "") << data.saveTime.second << " "
+				<< data.playerName << " " << data.highestScore << std::endl;
+		}
+
+		std::cout << "Scoreboard Save Success\n";
+		file.close();
+	}
+    DateTime GameEngine::GetCurrentDateTime(){
+        auto now = std::chrono::system_clock::now();
+
+        // Convert time point to time_t (used for representing calendar time)
+        std::time_t now_time_t = std::chrono::system_clock::to_time_t(now);
+
+        // Convert time_t to tm structure for local time representation
+        std::tm* now_tm = std::localtime(&now_time_t);
+
+        // Create a DateTime structure and populate it with the current date and time
+        DateTime currentDateTime;
+        currentDateTime.year = now_tm->tm_year + 1900; // tm_year is years since 1900
+        currentDateTime.month = now_tm->tm_mon + 1;    // tm_mon is months since January [0, 11]
+        currentDateTime.day = now_tm->tm_mday;
+        currentDateTime.hour = now_tm->tm_hour;
+        currentDateTime.minute = now_tm->tm_min;
+        currentDateTime.second = now_tm->tm_sec;
+
+        return currentDateTime;
+    }
+
+    Point GameEngine::GridToXYPosition(int gridY, int gridX, int blockSize) const {
+        // int screenW = Engine::GameEngine::GetInstance().GetScreenWidth();
+        // int screenH = Engine::GameEngine::GetInstance().GetScreenHeight();
+
+        return Point(gridY * blockSize, gridX * blockSize);
+    }
+    std::vector<PlayerEntry> GameEngine::LoadProfileBasedSaving() {
+        std::vector<PlayerEntry> result;
+        std::ifstream file(profileListFilePath);
+        if (!file.is_open()) {
+            std::cerr << "Failed to open file " << profileListFilePath << std::endl;
+            return result;
+        }
+
+        std::string line;
+        while (std::getline(file, line)) {
+            std::istringstream iss(line);
+            PlayerEntry entry;
+            std::string token;
+
+            // Parsing each field based on the '|' delimiter
+            std::getline(iss, entry.name, '|');
+            std::getline(iss, token, '|');
+            entry.avatarID = std::stoi(token);
+            std::getline(iss, entry.difficulty, '|');  // Correctly parse difficulty as string
+            std::getline(iss, token, '|');
+            entry.money = std::stoi(token);
+            std::getline(iss, token, '|');
+            entry.x = std::stof(token);
+            std::getline(iss, token, '|');
+            entry.y = std::stof(token);
+            std::getline(iss, token, '|');
+            entry.speed = std::stof(token);
+            std::getline(iss, token, '|');
+            entry.currentHP = std::stof(token);
+            std::getline(iss, token, '|');
+            entry.maxHP = std::stof(token);
+            std::getline(iss, token, '|');
+            entry.atkDMG = std::stof(token);
+            std::getline(iss, token, '|');
+            entry.healthPotion = std::stoi(token);
+            std::getline(iss, token, '|');
+            entry.missile = std::stoi(token);
+            std::getline(iss, token, '|');
+            entry.shield = std::stoi(token);
+            std::getline(iss, token, '|');
+            entry.currentEXP = std::stoi(token);
+            std::getline(iss, token, '|');
+            entry.maxEXP = std::stoi(token);
+            std::getline(iss, token, '|');
+            entry.playerLevel = std::stoi(token);
+            std::getline(iss, entry.lastScene); // Correctly parse the last field as string
+
+            if (iss.fail()) {
+                std::cerr << "Error parsing line: " << line << std::endl;
+                continue;
+            }
+
+            std::cout << "LOAD : Found " << entry.name << std::endl;
+            result.push_back(entry);
+        }
+
+        file.close();
+
+        return result;
+    }
+    void GameEngine::WriteProfileBasedSaving(std::vector<PlayerEntry> oldEntryData, PlayerEntry currPlayerEntry) {
+        std::ofstream file(profileListFilePath, std::ios::out); // Open file in output mode
+        if (!file.is_open()) {
+            return;
+        }
+
+        bool contains = false;
+        for (auto& data : oldEntryData) {
+            std::cout << "Iterating through " << data.name << std::endl;
+            if (data.name == currPlayerEntry.name) {
+                contains = true;
+                data = currPlayerEntry; // Update existing entry with new data
+                break;
+            }
+        }
+
+        if (!contains) {
+            std::cout << "No One named " << currPlayerEntry.name << " Creating one... \n";
+            oldEntryData.push_back(currPlayerEntry); // Add new entry
+        }
+
+        // FORMAT : <NAME>|<AVATARID>|<DIFF>|<MONEY>|<POSX>|<POSY>|<SPEED>|<CURRHP>|<MAXHP>|<ATKDMG>|<HEALTHPOTION>|<MISSILE>|<CURREXP>|<MAXEXP>|<CURRLVL>|<LASTSCENENAME>
+        for (const auto& data : oldEntryData) {
+            std::cout << "WRITING : " << data.name << std::endl;
+            file << data.name << "|"
+                << data.avatarID << "|"
+                << data.difficulty << "|"
+                << data.money << "|"
+                << data.x << "|"
+                << data.y << "|"
+                << data.speed << "|"
+                << data.currentHP << "|"
+                << data.maxHP << "|"
+                << data.atkDMG << "|"
+                << data.healthPotion << "|"
+                << data.missile << "|"
+                << data.shield << "|"
+                << data.currentEXP << "|"
+                << data.maxEXP << "|"
+                << data.playerLevel << "|"
+                << data.lastScene << std::endl;
+        }
+
+        std::cout << "Profile for " << currPlayerEntry.name << " Save Success\n";
+        file.close();
+    }
+    */
+
+    /*
+    void GameEngine::SetCurrentActivePlayer(std::string name, PlayerEntry playerEntry){
+        currentActivePlayerName = name;
+        currentActivePlayerEntry = playerEntry;
+    }
+
+    PlayerEntry GameEngine::GetCurrentActivePlayer(){
+        return currentActivePlayerEntry;
+    }
+    */
 }
+

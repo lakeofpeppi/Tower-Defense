@@ -42,9 +42,10 @@ public:
     PlayMode Mode = PlayMode::NONE;
     Engine::Sprite* shovelPreview = nullptr;
     enum TileType {
-        TILE_DIRT,
+        TILE_GRASS,
         TILE_FLOOR,
         TILE_OCCUPIED,
+        TILE_TREE,
     };
     /*
     enum class PlayMode {

@@ -3,9 +3,29 @@
 #include <allegro5/allegro.h>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 #include "Point.hpp"
+struct PlayerEntry // * For Profile Based Saving
+{
+    std::string name = "PLAYER";
+    int money = 0;
+    std::string difficulty = "Normal";
+    int avatarID = 0;
 
+    float x = -1, y = -1; // * -1 Means Hasnt be initialized. Will use the level's initial start position
+    float speed = 2.0;
+    float currentHP = 100, maxHP = 100;
+    float atkDMG = 5;
+    int currentEXP = 0, maxEXP = 50;
+    int playerLevel = 1;
+
+    std::string lastScene = "gamescene_hall";
+    int healthPotion = 0;
+    int missile = 0;
+    int shield = 0;
+
+};
 /// <summary>
 /// All general classes are under this namespace for clarity.
 /// </summary>
@@ -75,7 +95,11 @@ namespace Engine {
         /// </summary>
         /// <param name="name">The name of the scene you want to change to.</param>
         void changeScene(const std::string &name);
-
+    /*
+        const std::string saveFilePath = "Resource/save.txt";
+        const std::string leaderBoardFilePath = "Resource/scoreboard.txt";
+        const std::string profileListFilePath = "Resource/profile_lists.txt";
+        */
     public:
         // Note: We'll ignore C++11's move constructor, move assignment operator in this project for simplicity.
         /// <summary>
@@ -145,6 +169,7 @@ namespace Engine {
         /// </summary>
         /// <returns>Get mouse position.</returns>
         Point GetMousePosition() const;
+        Point GridToXYPosition(int gridY, int gridX, int blockSize) const;
         /// <summary>
         /// Get key state.
         /// </summary>
@@ -155,6 +180,31 @@ namespace Engine {
         /// </summary>
         /// <returns>The Singleton instance of GameEngine.</returns>
         static GameEngine &GetInstance();
+        /*
+        SaveFileData LoadSaveFile();
+        void WriteSaveFile(SaveFileData);
+
+        std::vector<scoreBoardData> LoadScoreBoard();
+        void WriteScoreBoard(std::vector<scoreBoardData> oldSbData,scoreBoardData entry);
+        DateTime GetCurrentDateTime();
+
+        static std::string currentActivePlayerName;
+        static std::string currentActiveScene;
+        PlayerEntry currentActivePlayerEntry;
+
+        // * Profile Based Saving
+        std::vector<PlayerEntry> LoadProfileBasedSaving();
+        void WriteProfileBasedSaving(std::vector<PlayerEntry> oldEntryData, PlayerEntry currPlayerEntry);
+        void SetCurrentActivePlayer(std::string name, PlayerEntry playerEntry);
+
+        */
+        static std::string currentActivePlayerName;
+        static std::string currentActiveScene;
+        void SetCurrentActivePlayer(std::string name, PlayerEntry playerEntry);
+        PlayerEntry GetCurrentActivePlayer();
+        PlayerEntry currentActivePlayerEntry;
+
+
     };
 }
 #endif   // GAMEENGINE_HPP
