@@ -134,3 +134,18 @@
 // };
 //
 // #endif
+
+#pragma once
+#include "Engine/Sprite.hpp"
+
+class PlayScene;
+
+class RinCharacter : public Engine::Sprite {
+public:
+    RinCharacter(float x, float y);
+    void Update(float deltaTime) override;
+    void SetPlayScene(PlayScene* playScene);
+private:
+    PlayScene* playScene;
+    float speed; // pixels per second
+};

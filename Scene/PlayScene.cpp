@@ -28,7 +28,7 @@
 #include "UI/Animation/Plane.hpp"
 #include "UI/Component/Label.hpp"
 #include "Scene/WinScene.hpp"
-
+#include "Character/RinCharacter.hpp"
 
 // TODO HACKATHON-4 (1/3): Trace how the game handles keyboard input.
 // TODO HACKATHON-4 (2/3): Find the cheat code sequence in this file.
@@ -80,6 +80,9 @@ void PlayScene::Initialize() {
     AddNewObject(EffectGroup = new Group());
     // Should support buttons.
     AddNewControlObject(UIGroup = new Group());
+    auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
+    rin->SetPlayScene(this);
+    EffectGroup->AddNewObject(rin);
     ReadMap();
     ReadEnemyWave();
     mapDistance = CalculateBFSDistance();
@@ -170,10 +173,12 @@ void PlayScene::Update(float deltaTime) {
                 delete imgTarget;
                 */
                 // Win.
-                std::cout << "changing scene to win" << std::endl;
-                auto* win = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene("win"));
-                if (win) win->SetFinalScore(money); // ini buat recording for scoreboard
-                Engine::GameEngine::GetInstance().ChangeScene("win");
+
+
+                //std::cout << "changing scene to win" << std::endl;
+                //auto* win = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene("win"));
+                //if (win) win->SetFinalScore(money); // ini buat recording for scoreboard
+                //Engine::GameEngine::GetInstance().ChangeScene("win");
                 //return;
             }
             continue;
@@ -362,6 +367,10 @@ void PlayScene::OnKeyDown(int keyCode) {
 // juga logic cheat code masuk disini (bisa spawn plane + 10k)
     std::cout << "Pressed: " << keyCode << std::endl;
     IScene::OnKeyDown(keyCode);
+    if (keyCode == ALLEGRO_KEY_W || keyCode == 84 || keyCode == ALLEGRO_KEY_UP) keyUpDown = true;
+    if (keyCode == ALLEGRO_KEY_S || keyCode == 85 || keyCode == ALLEGRO_KEY_DOWN) keyDownDown = true;
+    if (keyCode == ALLEGRO_KEY_A || keyCode == 82 || keyCode == ALLEGRO_KEY_LEFT) keyLeftDown = true;
+    if (keyCode == ALLEGRO_KEY_D || keyCode == 83 || keyCode == ALLEGRO_KEY_RIGHT) keyRightDown = true;
     if (keyCode == ALLEGRO_KEY_TAB) {
         DebugMode = !DebugMode;
     }
@@ -403,6 +412,15 @@ void PlayScene::OnKeyDown(int keyCode) {
         // Hotkey for Speed up.
         SpeedMult = keyCode - ALLEGRO_KEY_0;
     }
+}
+
+void PlayScene::OnKeyUp(int keyCode) {
+    IScene::OnKeyUp(keyCode);
+
+    if (keyCode == ALLEGRO_KEY_W || keyCode == 84 || keyCode == ALLEGRO_KEY_UP) keyUpDown = false;
+    if (keyCode == ALLEGRO_KEY_S || keyCode == 85 || keyCode == ALLEGRO_KEY_DOWN) keyDownDown = false;
+    if (keyCode == ALLEGRO_KEY_A || keyCode == 82 || keyCode == ALLEGRO_KEY_LEFT) keyLeftDown = false;
+    if (keyCode == ALLEGRO_KEY_D || keyCode == 83 || keyCode == ALLEGRO_KEY_RIGHT) keyRightDown = false;
 }
 
 void PlayScene::Hit() {

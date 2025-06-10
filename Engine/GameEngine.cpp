@@ -101,11 +101,13 @@ namespace Engine {
                     // Event for keyboard key down.
                     LOG(VERBOSE) << "Key with keycode " << event.keyboard.keycode << " down";
                     activeScene->OnKeyDown(event.keyboard.keycode);
+                    key_state[event.keyboard.keycode] = true;
                     break;
                 case ALLEGRO_EVENT_KEY_UP:
                     // Event for keyboard key up.
                     LOG(VERBOSE) << "Key with keycode " << event.keyboard.keycode << " up";
                     activeScene->OnKeyUp(event.keyboard.keycode);
+                    key_state[event.keyboard.keycode] = false;
                     break;
                 case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
                     // Event for mouse key down.
@@ -267,6 +269,10 @@ namespace Engine {
         // The classic way to lazy initialize a Singleton.
         static GameEngine instance;
         return instance;
+    }
+    bool GameEngine::IsKeyDown(int keycode) {
+        if (keycode < 0 || keycode >= ALLEGRO_KEY_MAX) return false;
+        return key_state[keycode];
     }
     /*SaveFileData GameEngine::LoadSaveFile(){
 

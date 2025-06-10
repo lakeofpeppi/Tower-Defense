@@ -9,6 +9,9 @@
 #include "Engine/IScene.hpp"
 #include "Engine/Point.hpp"
 
+
+
+
 class Turret;
 namespace Engine {
     class Group;
@@ -17,9 +20,13 @@ namespace Engine {
     class Sprite;
 }   // namespace Engine
 
+
+
+
 class PlayScene final : public Engine::IScene {
     ALLEGRO_SAMPLE_ID bgmId;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> deathBGMInstance;
+
 // test to push
 
 protected:
@@ -32,6 +39,8 @@ protected:
     Engine::Label* refundLabel = nullptr;
     float refundTimer = 0.0f;
     bool refundActive = false;
+
+
 
 
 public:
@@ -48,6 +57,12 @@ public:
         TILE_OCCUPIED,
         TILE_TREE,
     };
+
+    bool keyUpDown    = false;
+    bool keyDownDown  = false;
+    bool keyLeftDown  = false;
+    bool keyRightDown = false;
+
     /*
     enum class PlayMode {
         NONE,
@@ -98,6 +113,7 @@ public:
     void OnMouseMove(int mx, int my) override;
     void OnMouseUp(int button, int mx, int my) override;
     void OnKeyDown(int keyCode) override;
+    void OnKeyUp(int keyCode) override;
     void Hit();
     int GetMoney() const;
     void EarnMoney(int money);

@@ -59,7 +59,7 @@ namespace Engine {
         const char *icon{};
         // The scene to change to at next update.
         std::string nextScene{};
-
+        bool key_state[ALLEGRO_KEY_MAX] = { false };
         /// <summary>
         /// Initialize allegro5 library. Creates game window & event queue,
         /// install peripherals and initialize add-ons.
@@ -101,6 +101,7 @@ namespace Engine {
         const std::string profileListFilePath = "Resource/profile_lists.txt";
         */
     public:
+        bool IsKeyDown(int keycode);
         // Note: We'll ignore C++11's move constructor, move assignment operator in this project for simplicity.
         /// <summary>
         /// Copy constructor is deleted, no copying allowed.
