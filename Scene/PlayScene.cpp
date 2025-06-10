@@ -462,6 +462,10 @@ void PlayScene::ReadMap() {
         switch (c) {
             case '0': mapData.push_back(0); break;
             case '1': mapData.push_back(1); break;
+            case '2': mapData.push_back(2); break;
+            case '3': mapData.push_back(3); break;
+            case '4': mapData.push_back(4); break;
+            case '5': mapData.push_back(5); break;
             case '\n':
             case '\r':
                 if (static_cast<int>(mapData.size()) / MapWidth != 0)
@@ -495,7 +499,17 @@ void PlayScene::ReadMap() {
                     break;
                 case 2: mapState[i][j] = TILE_FENCE;
                     TileMapGroup->AddNewObject(new Engine::Image("play/fence.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize));
-                //case 2: mapState[i][j] = TILE_GRASS;
+                    break;
+                case 3: mapState[i][j] = TILE_FENCE_RIGHT;
+                    TileMapGroup->AddNewObject(new Engine::Image("play/fence_right.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize));
+                    break;
+                case 4: mapState[i][j] = TILE_FENCE_DOWN;
+                    TileMapGroup->AddNewObject(new Engine::Image("play/fence_down.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize));
+                    break;
+                case 5: mapState[i][j] = TILE_FENCE_LEFT;
+                    TileMapGroup->AddNewObject(new Engine::Image("play/fence_left.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize));
+                    break;
+                    //case 2: mapState[i][j] = TILE_GRASS;
                     //TileMapGroup->AddNewObject(new Engine::Image("play/grass.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize) );
                     //break;
                 //case 3: mapState[i][j] = TILE_TREE;
