@@ -143,6 +143,8 @@ add_executable(2025_I2P2_TowerDefense
 
         Scene/IntroScene.cpp
         Scene/IntroScene.hpp
+        Scene/VillageScene.cpp
+        Scene/VillageScene.hpp
 
 )
 

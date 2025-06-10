@@ -1,6 +1,3 @@
-//
-// Created by Shenice Mau on 6/10/2025.
-//
 #include <vector>
 #include <string>
 #include "UI/Component/Label.hpp"
@@ -16,11 +13,13 @@
 
 class IntroScene final : public Engine::IScene {
 private:
+
     std::vector<std::string> dialogueLines;
     std::shared_ptr<Engine::Image> dialogueBoxImage;
     std::shared_ptr<Engine::Image> rin_normal;
     std::shared_ptr<Engine::Image> rin_worry;
     std::shared_ptr<Engine::Image> rin_close;
+    std::shared_ptr<Engine::Image> blackScreen;
 
     int currentLine = 0;
     Engine::Label* dialogueLabel = nullptr;

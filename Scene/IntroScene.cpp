@@ -26,7 +26,7 @@ void IntroScene::Initialize() {
 
     int wpic = 1900;
     int hpic = 1300;
-    AddNewObject(new Engine::Image("play/intro-village.jpeg", 0, 0, wpic, hpic));
+    AddNewObject(new Engine::Image("play/darkforest.jpg", 0, 0, wpic, hpic));
     //AddNewObject(new Engine::Image("play/rin dialogue expressions.png", 0, 620, 2700, 600));
 
     // Fill dialogue lines
@@ -44,28 +44,37 @@ void IntroScene::Initialize() {
         "The riverbed that once sang now sleeps", //10
         "dry and cracked like old parchment.", //11
         "yeah...", // 12
-        "Oh look a villager!"//make this postion on the bottom //13
+        "Oh look a villager!",//make this postion on the bottom //13
+        "You slowly approached the villager" //14
     };
 
     // Create the first line label
     float lineHeight = 70;
     float startX = halfW - 600;
     float startY = halfH - 100;
+    // Black screen
+    auto black = new Engine::Image("play/black.png", 0, 0, w, h);
+    black->Visible = false;
+    AddNewObject(black);
+    blackScreen.reset(black);
 
-    dialogueBoxImage = std::make_shared<Engine::Image>(
-   "play/dialogue.png", halfW - 600, h - 210, 1250, 150);
-    dialogueBoxImage->Visible = false; // Make it hidden initially
-    AddNewObject(dialogueBoxImage.get());
+    // Dialogue box
+    auto dialogueBox = new Engine::Image("play/dialogue.png", halfW - 600, h - 210, 1250, 150);
+    dialogueBox->Visible = false;
+    AddNewObject(dialogueBox);
+    dialogueBoxImage.reset(dialogueBox);
 
-    rin_normal = std::make_shared<Engine::Image>(
-    "play/rin normal.png", halfW -950, h - 500, 720, 480);
-    rin_normal->Visible = false; // Make it hidden initially
-    AddNewObject(rin_normal.get());
+    // Rin normal
+    auto rinNormal = new Engine::Image("play/rin normal.png", halfW - 950, h - 500, 720, 480);
+    rinNormal->Visible = false;
+    AddNewObject(rinNormal);
+    rin_normal.reset(rinNormal);
 
-    rin_worry = std::make_shared<Engine::Image>(
-    "play/rin worried.png", halfW -950, h - 500, 720, 480);
-    rin_worry->Visible = false; // Make it hidden initially
-    AddNewObject(rin_worry.get());
+    // Rin worried
+    auto rinWorry = new Engine::Image("play/rin worried.png", halfW - 950, h - 500, 720, 480);
+    rinWorry->Visible = false;
+    AddNewObject(rinWorry);
+    rin_worry.reset(rinWorry);
 
 
     dialogueLabel = new Engine::Label(dialogueLines[0], "To The Point.ttf", 70, startX, startY, 255, 255, 255, 255, 0.0, 0.5);
@@ -91,7 +100,6 @@ void IntroScene::Initialize() {
     bgmInstance = AudioHelper::PlaySample("title.wav", true, AudioHelper::BGMVolume);
 }
 void IntroScene::Terminate() {
-    AudioHelper::StopSample(bgmInstance);
     if (bgmInstance) {
         AudioHelper::StopSample(bgmInstance);
         bgmInstance.reset();  // safer and clearer
@@ -102,8 +110,8 @@ void IntroScene::BackOnClick(int stage) {
 
 }
 void IntroScene::NextOnClick(int stage) {
-    currentLine++;
-    if (currentLine < dialogueLines.size()) {
+    if (currentLine + 1 < (int)dialogueLines.size()) {
+        currentLine++;
         dialogueLabel->Text = dialogueLines[currentLine];
 
         int screenW = Engine::GameEngine::GetInstance().GetScreenSize().x;
@@ -118,6 +126,9 @@ void IntroScene::NextOnClick(int stage) {
         rin_normal->Visible = false;
         rin_worry->Visible = false;
 
+        // Hide black screen by default
+        if (blackScreen) blackScreen->Visible = false;
+
         // Special cases: Show dialogue box + appropriate Rin expression
         if (currentLine == 4 || currentLine == 5 || currentLine == 12 || currentLine == 13) {
             dialogueLabel->Position.x = halfW - 300;
@@ -130,10 +141,28 @@ void IntroScene::NextOnClick(int stage) {
                 rin_normal->Visible = true;
             }
         }
+
+        // Show black screen on "You slowly approached the villager"
+        if (currentLine == 14) {
+            if (blackScreen) blackScreen->Visible = true;
+
+            dialogueBoxImage->Visible = false;
+            rin_normal->Visible = false;
+            rin_worry->Visible = false;
+
+            // Position dialogue label at bottom center
+            dialogueLabel->Position.x = halfW - 250;
+            dialogueLabel->Position.y = screenH - 150;  // near bottom with some padding
+
+            // Optionally, make sure the label is visible if you hid it earlier
+            dialogueLabel->Visible = true;
+        }
+
     } else {
-        Engine::GameEngine::GetInstance().ChangeScene("play");
+        Engine::GameEngine::GetInstance().ChangeScene("village");
     }
 }
+
 
 
 void IntroScene::BGMSlideOnValueChanged(float value) {
