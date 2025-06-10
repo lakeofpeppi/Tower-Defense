@@ -304,7 +304,7 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
         }
         if (target) {
             TowerGroup->RemoveObject(target->GetObjectIterator());
-            mapState[y][x] = TILE_DIRT;
+            mapState[y][x] = TILE_GRASS;
             int refund = 25;
             EarnMoney(refund);
             refundLabel = new Engine::Label("+$" + std::to_string(refund), "pirulen.ttf", 24, mx, my, 0, 255, 0);
@@ -436,12 +436,12 @@ void PlayScene::ReadMap() {
     std::string filename = std::string("Resource/map") + std::to_string(MapId) + ".txt";
     // Read map file.
     char c;
-    std::vector<bool> mapData;
+    std::vector<int> mapData;
     std::ifstream fin(filename);
     while (fin >> c) {
         switch (c) {
-            case '0': mapData.push_back(false); break;
-            case '1': mapData.push_back(true); break;
+            case '0': mapData.push_back(0); break;
+            case '1': mapData.push_back(1); break;
             case '\n':
             case '\r':
                 if (static_cast<int>(mapData.size()) / MapWidth != 0)
@@ -459,11 +459,29 @@ void PlayScene::ReadMap() {
     for (int i = 0; i < MapHeight; i++) {
         for (int j = 0; j < MapWidth; j++) {
             const int num = mapData[i * MapWidth + j];
-            mapState[i][j] = num ? TILE_FLOOR : TILE_DIRT;
-            if (num)
-                TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
-            else
-                TileMapGroup->AddNewObject(new Engine::Image("play/grass.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+            //mapState[i][j] = num ? TILE_FLOOR : TILE_DIRT;
+            // if (1) {
+            //     TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize)); // previously floor.png
+            // }
+            // if (2) {
+            //     TileMapGroup->AddNewObject(new Engine::Image("play/grass.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
+            // }
+            switch(num) {
+                case 0: mapState[i][j] = TILE_GRASS;
+                    TileMapGroup->AddNewObject( new Engine::Image("play/grass.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize) );
+                    break;
+                case 1: mapState[i][j] = TILE_FLOOR;
+                    TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize));
+                    break;
+                //case 2: mapState[i][j] = TILE_GRASS;
+                    //TileMapGroup->AddNewObject(new Engine::Image("play/grass.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize) );
+                    //break;
+                //case 3: mapState[i][j] = TILE_TREE;
+                   // TileMapGroup->AddNewObject(new Engine::Image("play/tree.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize) );
+                   // break;
+                //default:
+                    //break;
+            }
         }
     }
 }
@@ -486,7 +504,7 @@ void PlayScene::ReadEnemyWave() {
 void PlayScene::ConstructUI() {
     // setup tombol-tombol turret, text UI (stage, money, lives)
     // Background
-    UIGroup->AddNewObject(new Engine::Image("play/sand.png", 1472, 0, 320, 1216));
+    UIGroup->AddNewObject(new Engine::Image("play/wooden_forest.png", 1472, 0, 320, 1216));
     // Text
     UIGroup->AddNewObject(new Engine::Label(std::string("Stage ") + std::to_string(MapId), "pirulen.ttf", 32, 1486, 0));
     UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("$") + std::to_string(money), "pirulen.ttf", 24, 1486, 48));
@@ -599,7 +617,7 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
     std::queue<Engine::Point> que;
     // Push end point.
     // BFS from end point.
-    if (mapState[MapHeight - 1][MapWidth - 1] != TILE_DIRT)
+    if (mapState[MapHeight - 1][MapWidth - 1] != TILE_GRASS)
         return map;
     que.push(Engine::Point(MapWidth - 1, MapHeight - 1));
     map[MapHeight - 1][MapWidth - 1] = 0;
@@ -618,7 +636,7 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
             if (next_x < 0 || next_x >= MapWidth || next_y < 0 || next_y >= MapHeight)
                 continue;
             // availability check, kalo gakosong skip, kalo walls skip
-            if (mapState[next_y][next_x] != TILE_DIRT || map[next_y][next_x] != -1)
+            if (mapState[next_y][next_x] != TILE_GRASS || map[next_y][next_x] != -1)
                 continue;
 
             // distance formula= first until last diitung
