@@ -12,6 +12,8 @@ namespace Engine {
     /// </summary>
     class Sprite : public Image {
     public:
+        void SetBitmap(std::shared_ptr<ALLEGRO_BITMAP> newBmp);
+
         // Rotation angle in radians.
         float Rotation;
         // Pixel in seconds.

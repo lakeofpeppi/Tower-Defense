@@ -17,4 +17,8 @@ namespace Engine {
         Position.x += Velocity.x * deltaTime;
         Position.y += Velocity.y * deltaTime;
     }
+    void Sprite::SetBitmap(std::shared_ptr<ALLEGRO_BITMAP> newBmp) {
+        bmp = newBmp;
+    }
+
 };

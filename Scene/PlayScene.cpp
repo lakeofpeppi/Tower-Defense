@@ -243,6 +243,7 @@ void PlayScene::Update(float deltaTime) {
 }
 
 void PlayScene::Draw() const {
+
     // buat gambar ulang seluruh scene (dipanggil tiap frame)
     // kalo debug mode on, dia juga ngegambar jarak path musuh (BFS)
     IScene::Draw();
@@ -255,6 +256,7 @@ void PlayScene::Draw() const {
                     Engine::Label label(std::to_string(mapDistance[i][j]), "pirulen.ttf", 32, (j + 0.5) * BlockSize, (i + 0.5) * BlockSize);
                     label.Anchor = Engine::Point(0.5, 0.5);
                     label.Draw();
+                    std::cout << "TileMapGroup drawing done.\n";
                 }
             }
         }
