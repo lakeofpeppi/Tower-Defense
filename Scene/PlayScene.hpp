@@ -56,6 +56,7 @@ public:
         TILE_FLOOR,
         TILE_OCCUPIED,
         TILE_TREE,
+        TILE_FENCE,
     };
 
     bool keyUpDown    = false;

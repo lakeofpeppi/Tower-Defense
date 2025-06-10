@@ -493,6 +493,8 @@ void PlayScene::ReadMap() {
                 case 1: mapState[i][j] = TILE_FLOOR;
                     TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize));
                     break;
+                case 2: mapState[i][j] = TILE_FENCE;
+                    TileMapGroup->AddNewObject(new Engine::Image("play/fence.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize));
                 //case 2: mapState[i][j] = TILE_GRASS;
                     //TileMapGroup->AddNewObject(new Engine::Image("play/grass.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize) );
                     //break;
