@@ -29,6 +29,7 @@
 #include "UI/Component/Label.hpp"
 #include "Scene/WinScene.hpp"
 #include "Character/RinCharacter.hpp"
+#include "IntroScene.hpp"
 
 // TODO HACKATHON-4 (1/3): Trace how the game handles keyboard input.
 // TODO HACKATHON-4 (2/3): Find the cheat code sequence in this file.
@@ -95,7 +96,7 @@ void PlayScene::Initialize() {
     deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
     // Start BGM.
-    bgmId = AudioHelper::PlayBGM("play.ogg");
+    bgmId = AudioHelper::PlayBGM("village-explore.mp3");
 }
 
 
