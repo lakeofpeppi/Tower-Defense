@@ -31,7 +31,7 @@
 #include "Scene/WinScene.hpp"
 #include "Character/RinCharacter.hpp"
 #include "Helper/House.hpp"
-
+#include "Helper/NPC.hpp"
 
 // TODO HACKATHON-4 (1/3): Trace how the game handles keyboard input.
 // TODO HACKATHON-4 (2/3): Find the cheat code sequence in this file.
@@ -91,6 +91,7 @@ void PlayScene::Initialize() {
         "play/house_inventory.png",
         "intro");
     EffectGroup->AddNewObject(Inventory);
+
     auto* Book = new House(
         288, 512,  // Example position
         "play/house_book.png",  // Image of the house
@@ -98,10 +99,18 @@ void PlayScene::Initialize() {
     );
     EffectGroup->AddNewObject(Book);
 
+    auto* npcTalker = new NPC(
+        512, 928,
+        "npc/npc_idle",
+        "intro");
+    EffectGroup->AddNewObject(npcTalker);
+
 
     auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
     rin->SetPlayScene(this);
     EffectGroup->AddNewObject(rin);
+
+
     ReadMap();
     ReadEnemyWave();
     mapDistance = CalculateBFSDistance();
@@ -195,6 +204,28 @@ void PlayScene::Update(float deltaTime) {
                 }
             }
         }
+        //RinCharacter* rin = nullptr;
+        for (auto& obj : EffectGroup->GetObjects()) {
+            rin = dynamic_cast<RinCharacter*>(obj);
+            if (rin) break;
+        }
+
+        if (rin) {
+            for (auto& obj : EffectGroup->GetObjects()) {
+                auto* npc = dynamic_cast<NPC*>(obj);
+                if (!npc) continue;
+
+                float dx = npc->Position.x - rin->Position.x;
+                float dy = npc->Position.y - rin->Position.y;
+                float distance = std::sqrt(dx * dx + dy * dy);
+
+                // Use a threshold for proximity, e.g., 64
+                if (distance < 64) {
+                    npc->OnTouch();
+                }
+            }
+        }
+
 
 
 

@@ -16,8 +16,8 @@ file(COPY allegro_monolith-5.2.dll DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 add_executable(2025_I2P2_TowerDefense
         Helper/House.cpp
         Helper/House.hpp
-        Helper/NPCTalker.cpp
-        Helper/NPCTalker.hpp
+        Helper/NPC.cpp
+        Helper/NPC.hpp
     Bullet/Bullet.cpp
     Bullet/Bullet.hpp
     Bullet/FireBullet.cpp
@@ -151,8 +151,8 @@ add_executable(2025_I2P2_TowerDefense
         Scene/VillageScene.hpp
         Helper/House.hpp
         Helper/House.cpp
-        Helper/NPCTalker.cpp
-        Helper/NPCTalker.hpp
+        Helper/NPC.cpp
+        Helper/NPC.hpp
 
 )
 
