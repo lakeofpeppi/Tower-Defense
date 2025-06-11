@@ -15,6 +15,11 @@
 #include "Scene/SettingsScene.hpp"
 #include "IntroScene.hpp"
 
+#include <iostream>
+#include <ostream>
+
+#include "PlayScene.hpp"
+
 void IntroScene::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
@@ -159,7 +164,11 @@ void IntroScene::NextOnClick(int stage) {
         }
 
     } else {
-        Engine::GameEngine::GetInstance().ChangeScene("village");
+        PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"));
+        if (scene) {
+            scene->MapId = stage;
+            Engine::GameEngine::GetInstance().ChangeScene("play");
+        }
     }
 }
 

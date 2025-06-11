@@ -1,0 +1,3 @@
+C:/Users/Shenice Mau/CLionProjects/TOM/cmake-build-debug/CMakeFiles/2025_I2P2_TowerDefense.dir
+C:/Users/Shenice Mau/CLionProjects/TOM/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Shenice Mau/CLionProjects/TOM/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -11,7 +11,7 @@
 #include "Scene/SettingsScene.hpp"
 #include "Scene/ScoreboardScene.hpp"
 #include "Scene/IntroScene.hpp"
-#include "Scene/VillageScene.hpp"
+//#include "Scene/VillageScene.hpp"
 
 
 
@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
 	game.AddNewScene("settings", new SettingsScene());
 	game.AddNewScene("scoreboard-scene", new ScoreboardScene());
 	game.AddNewScene("intro", new IntroScene());
-	game.AddNewScene("village", new VillageScene());
+	//game.AddNewScene("village", new VillageScene());
 
     // TODO HACKATHON-1 (1/1): Change the start scene (DONE)
 	game.Start("start", 60, 1792, 1216);
