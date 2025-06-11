@@ -137,20 +137,21 @@
 
 #pragma once
 #include "Engine/Sprite.hpp"
-
+#include "Scene/BasePlayScene.hpp"
 class PlayScene;
+
 
 class RinCharacter : public Engine::Sprite {
 public:
     RinCharacter(float x, float y);
     void Update(float deltaTime) override;
-    void SetPlayScene(PlayScene* playScene);
+    void SetPlayScene(BasePlayScene* playScene);
     int animationFrame = 0; // Current frame index (0, 1, 2)
     float animationTimer = 0; // Timer to change frame
     const float animationInterval = 0.1f; // Change frame every 0.1 second
     enum Direction { DOWN, LEFT, RIGHT, UP } direction;
 
 private:
-    PlayScene* playScene;
+    BasePlayScene* playScene;
     float speed; // pixels per second
 };

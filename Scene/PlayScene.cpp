@@ -63,6 +63,11 @@ Engine::Point PlayScene::GetClientSize() {
     return Engine::Point(MapWidth * BlockSize, MapHeight * BlockSize);
 }
 
+bool PlayScene::IsTileWalkable(int tileType) const {
+    return tileType == TILE_GRASS; // only grass is walkable
+}
+
+
 void PlayScene::Initialize() {
    // buat initialize stage pas masuk level
     // ini kayak setup awal: load map, load musuh, set UI,sm start bgms
@@ -123,7 +128,7 @@ void PlayScene::Initialize() {
     deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
     // Start BGM.
-    bgmId = AudioHelper::PlayBGM("village-explore.mp3");
+    //bgmId = AudioHelper::PlayBGM("village-explore.mp3");
 }
 
 

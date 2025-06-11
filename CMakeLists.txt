@@ -153,6 +153,10 @@ add_executable(2025_I2P2_TowerDefense
         Helper/House.cpp
         Helper/NPC.cpp
         Helper/NPC.hpp
+        Scene/BasePlayScene.cpp
+        Scene/BasePlayScene.hpp
+        Scene/OceanScene.cpp
+        Scene/OceanScene.hpp
 
 )
 

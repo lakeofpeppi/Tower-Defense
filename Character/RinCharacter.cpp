@@ -3,7 +3,9 @@
 //
 #include "RinCharacter.hpp"
 #include "Engine/GameEngine.hpp"
+#include "Scene/BasePlayScene.hpp"
 #include "Scene/PlayScene.hpp"
+#include "Scene/OceanScene.hpp"
 #include "Engine/Resources.hpp"
 #include "Engine/Sprite.hpp"
 #include<iostream>
@@ -15,59 +17,77 @@
 RinCharacter::RinCharacter(float x, float y)
     : Engine::Sprite("Character/down_1.png", x, y, 128, 128, 0.5, 0.5), playScene(nullptr), speed(200), direction(DOWN) {}
 //PlayScene::BlockSize, PlayScene::BlockSize --> original w and h
-void RinCharacter::SetPlayScene(PlayScene* playScene) {
+void RinCharacter::SetPlayScene(BasePlayScene* playScene) {
     this->playScene = playScene;
 }
 
 void RinCharacter::Update(float deltaTime) {
-    //std::cout << "[Rin] Update called\n";
     std::cout << "Rin Position: (" << Position.x << ", " << Position.y << ")\n";
-
     if (!playScene) return;
+
+    // Cast to both possible scene types
+    auto* ps = dynamic_cast<PlayScene*>(playScene);
+    //auto* os = dynamic_cast<OceanScene*>(playScene);
+
+    // Unified key states
+    bool keyUp = false, keyDown = false, keyLeft = false, keyRight = false;
+    if (ps) {
+        keyUp = ps->keyUpDown;
+        keyDown = ps->keyDownDown;
+        keyLeft = ps->keyLeftDown;
+        keyRight = ps->keyRightDown;
+    } /*else if (os) {
+        keyUp = os->keyUpDown;
+        keyDown = os->keyDownDown;
+        keyLeft = os->keyLeftDown;
+        keyRight = os->keyRightDown;
+    }*/
 
     float newX = Position.x;
     float newY = Position.y;
     bool moving = false;
 
-    if (playScene->keyUpDown) {
+    // Movement logic
+    if (keyUp) {
         newY -= speed * deltaTime;
         direction = UP;
         moving = true;
     }
-    if (playScene->keyDownDown) {
+    if (keyDown) {
         newY += speed * deltaTime;
         direction = DOWN;
         moving = true;
     }
-    if (playScene->keyLeftDown) {
+    if (keyLeft) {
         newX -= speed * deltaTime;
         direction = LEFT;
         moving = true;
     }
-    if (playScene->keyRightDown) {
+    if (keyRight) {
         newX += speed * deltaTime;
         direction = RIGHT;
         moving = true;
     }
+
     float oldX = Position.x, oldY = Position.y;
     Position.x = newX;
     Position.y = newY;
 
-    int gridX = std::floor(newX / PlayScene::BlockSize);
-    int gridY = std::floor(newY / PlayScene::BlockSize);
+    int gridX = std::floor(newX / playScene->BlockSize);
+    int gridY = std::floor(newY / playScene->BlockSize);
 
-    //if (gridX < 0 || gridX >= PlayScene::MapWidth || gridY < 0 || gridY >= PlayScene::MapHeight)
-     //   return;
-/*
-    if (playScene->mapState[gridY][gridX] == PlayScene::TILE_GRASS) {
-        Position.x = gridX * PlayScene::BlockSize + PlayScene::BlockSize / 2;
-        Position.y = gridY * PlayScene::BlockSize + PlayScene::BlockSize / 2;
+    // Safe check for mapState bounds
+    if (playScene &&
+        gridY >= 0 && gridY < playScene->mapState.size() &&
+        gridX >= 0 && gridX < playScene->mapState[gridY].size()) {
+        // If the tile is not walkable, revert to old position
+        if (!playScene->IsTileWalkable(playScene->mapState[gridY][gridX])) {
+            Position.x = oldX;
+            Position.y = oldY;
+        }
     }
-    */
-    if (playScene->mapState[gridY][gridX] != PlayScene::TILE_GRASS) {
-        Position.x = oldX;
-        Position.y = oldY;
-    }
+
+    // Animation logic
     if (moving) {
         animationTimer += deltaTime;
         if (animationTimer >= animationInterval) {
@@ -88,6 +108,5 @@ void RinCharacter::Update(float deltaTime) {
     }
     std::string filename = "Character/" + dirStr + "_" + std::to_string(animationFrame + 1) + ".png";
     SetBitmap(Engine::Resources::GetInstance().GetBitmap(filename));
-    //std::cout << "speed=" << speed << ", dt=" << deltaTime << "\n";
-
 }
+

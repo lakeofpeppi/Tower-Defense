@@ -1,0 +1,62 @@
+# IDEs
+.idea
+.vscode
+
+# Linked files
+# But keep allegro for convenience
+*.dll
+!allegro_monolith-5.2.dll
+build
+
+# MacOS
+.DS_Store
+
+# Others
+log.txt
+# Ignore build directories
+cmake-build-debug/
+build/
+CMakeFiles/
+*.o
+*.obj
+*.dir/
+*.a
+*.lib
+*.dll
+*.so
+*.dylib
+*.exe
+
+# Ignore IDE-specific stuff
+.idea/
+.vscode/
+*.iml
+
+# Ignore other generated files
+
+*.log
+*.tmp
+
+cmake-build-debug/
+build/
+CMakeFiles/
+*.o
+*.obj
+*.dir/
+*.a
+*.lib
+*.dll
+*.so
+*.dylib
+*.exe
+
+# Ignore IDE-specific stuff
+.idea/
+.vscode/
+*.iml
+
+# Ignore other generated files
+*.log
+*.tmp
+
+

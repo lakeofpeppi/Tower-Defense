@@ -5,6 +5,7 @@
 #include <memory>
 #include <utility>
 #include <vector>
+#include "BasePlayScene.hpp"
 
 #include "Engine/IScene.hpp"
 #include "Engine/Point.hpp"
@@ -23,7 +24,7 @@ namespace Engine {
 
 
 
-class PlayScene final : public Engine::IScene {
+class PlayScene final : public BasePlayScene  {
     ALLEGRO_SAMPLE_ID bgmId;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> deathBGMInstance;
 
@@ -49,6 +50,8 @@ public:
         BUILD_TURRET,
         SHOVEL
     };
+    bool IsTileWalkable(int tileType) const override;
+
     PlayMode Mode = PlayMode::NONE;
     Engine::Sprite* shovelPreview = nullptr;
     enum TileType {
@@ -123,8 +126,8 @@ public:
     void Hit();
     int GetMoney() const;
     void EarnMoney(int money);
-    void ReadMap();
-    void ReadEnemyWave();
+    void ReadMap() override;
+    void ReadEnemyWave() override;
     void ConstructUI();
     void UIBtnClicked(int id);
     bool CheckSpaceValid(int x, int y);
