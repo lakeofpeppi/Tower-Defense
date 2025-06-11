@@ -70,13 +70,13 @@ void IntroScene::Initialize() {
     dialogueBoxImage.reset(dialogueBox);
 
     // Rin normal
-    auto rinNormal = new Engine::Image("play/rin normal.png", halfW - 950, h - 500, 720, 480);
+    auto rinNormal = new Engine::Image("play/rin normal.png", halfW - 950, h - 480, 720, 480);
     rinNormal->Visible = false;
     AddNewObject(rinNormal);
     rin_normal.reset(rinNormal);
 
     // Rin worried
-    auto rinWorry = new Engine::Image("play/rin worried.png", halfW - 950, h - 500, 720, 480);
+    auto rinWorry = new Engine::Image("play/rin worried.png", halfW - 950, h - 480, 720, 480);
     rinWorry->Visible = false;
     AddNewObject(rinWorry);
     rin_worry.reset(rinWorry);

@@ -100,7 +100,7 @@ void PlayScene::Initialize() {
     auto* Book = new House(
         288, 512,  // Example position
         "play/house_book.png",  // Image of the house
-        "intro"         // The scene it should go to when touched
+        "book"         // The scene it should go to when touched
     );
     EffectGroup->AddNewObject(Book);
 

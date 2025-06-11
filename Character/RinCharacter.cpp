@@ -15,7 +15,7 @@
 #include <cmath>
 
 RinCharacter::RinCharacter(float x, float y)
-    : Engine::Sprite("Character/down_1.png", x, y, 128, 128, 0.5, 0.5), playScene(nullptr), speed(200), direction(DOWN) {}
+    : Engine::Sprite("Character/down_1.png", x, y, PlayScene::BlockSize, PlayScene::BlockSize, 0.5, 0.5), playScene(nullptr), speed(200), direction(DOWN) {}
 //PlayScene::BlockSize, PlayScene::BlockSize --> original w and h
 void RinCharacter::SetPlayScene(BasePlayScene* playScene) {
     this->playScene = playScene;
@@ -88,6 +88,19 @@ void RinCharacter::Update(float deltaTime) {
     }
 
     // Animation logic
+    //if (gridX < 0 || gridX >= PlayScene::MapWidth || gridY < 0 || gridY >= PlayScene::MapHeight)
+     //   return;
+/*
+    if (playScene->mapState[gridY][gridX] == PlayScene::TILE_GRASS) {
+        Position.x = gridX * PlayScene::BlockSize + PlayScene::BlockSize / 2;
+        Position.y = gridY * PlayScene::BlockSize + PlayScene::BlockSize / 2;
+    }
+    */
+    // if (playScene->mapState[gridY][gridX] != PlayScene::TILE_GRASS) {
+    //     Position.x = oldX;
+    //     Position.y = oldY;
+    // }
+
     if (moving) {
         animationTimer += deltaTime;
         if (animationTimer >= animationInterval) {
@@ -106,7 +119,14 @@ void RinCharacter::Update(float deltaTime) {
         case RIGHT: dirStr = "right"; break;
         case UP: dirStr = "up"; break;
     }
+    if (gridX < 0 || gridX >= PlayScene::MapWidth ||
+    gridY < 0 || gridY >= PlayScene::MapHeight) {
+        std::cerr << "[Warning] Rin attempted to move out of bounds: (" << gridX << ", " << gridY << ")\n";
+    }
+
     std::string filename = "Character/" + dirStr + "_" + std::to_string(animationFrame + 1) + ".png";
     SetBitmap(Engine::Resources::GetInstance().GetBitmap(filename));
+    //std::cout << "speed=" << speed << ", dt=" << deltaTime << "\n";
+
 }
 
