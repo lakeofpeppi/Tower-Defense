@@ -18,6 +18,7 @@
 #include "Engine/LOG.hpp"
 #include "Engine/Resources.hpp"
 #include "PlayScene.hpp"
+#include "IntroScene.hpp"
 #include "Turret/LaserTurret.hpp"
 #include "Turret/FireTurret.hpp"
 #include "Turret/MachineGunTurret.hpp"
@@ -29,7 +30,8 @@
 #include "UI/Component/Label.hpp"
 #include "Scene/WinScene.hpp"
 #include "Character/RinCharacter.hpp"
-#include "IntroScene.hpp"
+#include "Helper/House.hpp"
+
 
 // TODO HACKATHON-4 (1/3): Trace how the game handles keyboard input.
 // TODO HACKATHON-4 (2/3): Find the cheat code sequence in this file.
@@ -81,6 +83,22 @@ void PlayScene::Initialize() {
     AddNewObject(EffectGroup = new Group());
     // Should support buttons.
     AddNewControlObject(UIGroup = new Group());
+
+
+    // Create house
+    auto* Inventory = new House(
+        1184, 928,
+        "play/house_inventory.png",
+        "intro");
+    EffectGroup->AddNewObject(Inventory);
+    auto* Book = new House(
+        288, 512,  // Example position
+        "play/house_book.png",  // Image of the house
+        "intro"         // The scene it should go to when touched
+    );
+    EffectGroup->AddNewObject(Book);
+
+
     auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
     rin->SetPlayScene(this);
     EffectGroup->AddNewObject(rin);
@@ -158,6 +176,28 @@ void PlayScene::Update(float deltaTime) {
         deathCountDown = -1;
     for (int i = 0; i < SpeedMult; i++) {
         IScene::Update(deltaTime);
+
+
+        RinCharacter* rin = nullptr;
+        for (auto& obj : EffectGroup->GetObjects()) {
+            rin = dynamic_cast<RinCharacter*>(obj);
+            if (rin) break;
+        }        if (rin) {
+            for (auto& obj : EffectGroup->GetObjects()) {
+                auto* house = dynamic_cast<House*>(obj);
+                if (!house) continue;
+
+                float dx = house->Position.x - rin->Position.x;
+                float dy = house->Position.y - rin->Position.y;
+                float distance = std::sqrt(dx * dx + dy * dy);
+                if (distance < 64) { // 64 instead of BlockSize/2
+                    house->OnTouch();
+                }
+            }
+        }
+
+
+
         // Check if we should create new enemy.
         ticks += deltaTime;
         if (enemyWaveData.empty()) {
@@ -468,6 +508,7 @@ void PlayScene::ReadMap() {
             case '4': mapData.push_back(4); break;
             case '5': mapData.push_back(5); break;
             case '6': mapData.push_back(6); break;
+            case '7': mapData.push_back(7); break;
             case '\n':
             case '\r':
                 if (static_cast<int>(mapData.size()) / MapWidth != 0)
@@ -513,6 +554,9 @@ void PlayScene::ReadMap() {
                     break;
                 case 6: mapState[i][j] = TILE_BOOK;
                     TileMapGroup->AddNewObject(new Engine::Image("play/house_book.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize));
+                    break;
+                case 7: mapState[i][j] = TILE_INVENTORY;
+                    TileMapGroup->AddNewObject(new Engine::Image("play/house_inventory.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize));
                     break;
                     //case 2: mapState[i][j] = TILE_GRASS;
                     //TileMapGroup->AddNewObject(new Engine::Image("play/grass.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize) );
