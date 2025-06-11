@@ -13,8 +13,8 @@
 #include <cmath>
 
 RinCharacter::RinCharacter(float x, float y)
-    : Engine::Sprite("Character/down_1.png", x, y, PlayScene::BlockSize, PlayScene::BlockSize, 0.5, 0.5), playScene(nullptr), speed(200), direction(DOWN) {}
-
+    : Engine::Sprite("Character/down_1.png", x, y, 128, 128, 0.5, 0.5), playScene(nullptr), speed(200), direction(DOWN) {}
+//PlayScene::BlockSize, PlayScene::BlockSize --> original w and h
 void RinCharacter::SetPlayScene(PlayScene* playScene) {
     this->playScene = playScene;
 }
@@ -75,7 +75,7 @@ void RinCharacter::Update(float deltaTime) {
             animationFrame = (animationFrame + 1) % 3; // Loop 0-2
         }
     } else {
-        animationFrame = 1; // Stay on middle frame when idle
+        animationFrame = 2; // Stay on middle frame when idle
     }
 
     // Set the correct sprite frame
