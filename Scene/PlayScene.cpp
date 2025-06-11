@@ -71,6 +71,11 @@ bool PlayScene::IsTileWalkable(int tileType) const {
 void PlayScene::Initialize() {
    // buat initialize stage pas masuk level
     // ini kayak setup awal: load map, load musuh, set UI,sm start bgms
+    keyUpDown = false;
+    keyDownDown = false;
+    keyLeftDown = false;
+    keyRightDown = false;
+
     mapState.clear();
     keyStrokes.clear();
     ticks = 0;

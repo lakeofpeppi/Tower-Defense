@@ -87,6 +87,7 @@ void RinCharacter::Update(float deltaTime) {
         }
     }
 
+
     // Animation logic
     //if (gridX < 0 || gridX >= PlayScene::MapWidth || gridY < 0 || gridY >= PlayScene::MapHeight)
      //   return;
