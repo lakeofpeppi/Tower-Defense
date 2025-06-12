@@ -11,8 +11,6 @@
 #include "Engine/Group.hpp"
 #include "Engine/Point.hpp"
 
-
-
 class BasePlayScene : public Engine::IScene {
 public:
     static const int BlockSize = 64;

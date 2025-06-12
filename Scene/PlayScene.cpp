@@ -107,6 +107,7 @@ void PlayScene::Initialize() {
         "play/house_book.png",  // Image of the house
         "book"         // The scene it should go to when touched
     );
+
     EffectGroup->AddNewObject(Book);
 
     auto* npcTalker = new NPC(

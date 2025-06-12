@@ -22,7 +22,6 @@ protected:
     // Reference: Design Patterns - Factory Method.
     virtual void CreateBullet() = 0;
 
-
 public:
     bool Enabled = true;
     bool Preview = false;

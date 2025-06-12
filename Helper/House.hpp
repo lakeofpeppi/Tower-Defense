@@ -13,7 +13,7 @@ public:
     std::string targetSceneName;
 
     House(float x, float y, std::string img, std::string targetSceneName)
-        : Engine::Sprite(img, x, y, 128, 128, 0.5, 0.5),
+        : Engine::Sprite(img, x, y, 256, 256, 0.5, 0.5),
     targetSceneName(targetSceneName) {}
 
     void OnTouch() {

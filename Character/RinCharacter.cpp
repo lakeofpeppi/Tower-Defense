@@ -12,10 +12,20 @@
 #include <allegro5/allegro.h>
 //#include "PlayScene.hpp"
 
-#include <cmath>
 
-RinCharacter::RinCharacter(float x, float y)
-    : Engine::Sprite("Character/down_1.png", x, y, PlayScene::BlockSize, PlayScene::BlockSize, 0.5, 0.5), playScene(nullptr), speed(200), direction(DOWN) {}
+RinCharacter::RinCharacter(float x, float y) : Engine::Sprite(
+      "Character/down_1.png",
+      x, y,
+      PlayScene::BlockSize * 2,   // 64 → 128
+      PlayScene::BlockSize * 2,   // 64 → 128
+      0.5, 0.5
+    ),
+    playScene(nullptr),
+    speed(200),
+    direction(DOWN)
+  {
+      //SetSmooth(false);  // keep it pixel-perfect
+  }
 //PlayScene::BlockSize, PlayScene::BlockSize --> original w and h
 void RinCharacter::SetPlayScene(BasePlayScene* playScene) {
     this->playScene = playScene;

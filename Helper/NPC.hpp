@@ -21,7 +21,7 @@ public:
     std::string baseImagePath;
 
     NPC(float x, float y, std::string baseImagePath, std::string targetSceneName)
-        : Engine::Sprite(baseImagePath + "_1.png", x, y, 64, 64, 0.5, 0.5),
+        : Engine::Sprite(baseImagePath + "_1.png", x, y, 128, 128, 0.5, 0.5),
           targetSceneName(targetSceneName), baseImagePath(baseImagePath) {}
 
     void Update(float deltaTime) override {
