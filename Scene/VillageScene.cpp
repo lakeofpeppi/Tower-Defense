@@ -262,7 +262,7 @@ void VillageScene::OnKeyDown(int keyCode) {
     if (keyCode == ALLEGRO_KEY_Q) {
         // Hotkey for MachineGunTurret.
         UIBtnClicked(0);
-    } else if (keyCode == ALLEGRO_KEY_W) {
+    } else if (keyCode == ALLEGRO_KEY_T) {
         // Hotkey for LaserTurret.
         UIBtnClicked(1);
     } else if (keyCode == ALLEGRO_KEY_E) {
@@ -348,6 +348,10 @@ void VillageScene::AdvanceDialogue() {
         if (toma_shock) toma_shock->Visible = false;
         if (toma_worry) toma_worry->Visible = false;
 
+        if (currentDialogueIndex == 22) {
+            EarnMoney(500); // or any value you want to reward
+            std::cout << "[DEBUG] Awarded 500 money for reaching dialogue 22\n";
+        }
         // Show expressions on specific lines
         //toma worry
         if (currentDialogueIndex == 4 || currentDialogueIndex == 5 || currentDialogueIndex == 8 || currentDialogueIndex == 9 || currentDialogueIndex == 10 || currentDialogueIndex == 11 || currentDialogueIndex == 12) {
