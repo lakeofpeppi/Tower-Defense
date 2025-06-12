@@ -134,7 +134,7 @@ void VillageScene::Initialize() {
     deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
     // Start BGM.
-    //bgmId = AudioHelper::PlayBGM("village-explore.mp3");
+    bgmId = AudioHelper::PlayBGM("village-explore.mp3");
 }
 void VillageScene::ReadMap() {
     // load file map.txt jd mapState

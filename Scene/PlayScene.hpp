@@ -36,12 +36,17 @@ protected:
     int lives;
     int money;
     int SpeedMult;
+    int knowledge;
+    int strength;
+    int speed;
     Engine::Label* cheatLabel = nullptr;
     float cheatTimer = 0.0f;
     bool cheatActive = false;
     Engine::Label* refundLabel = nullptr;
     float refundTimer = 0.0f;
     bool refundActive = false;
+
+    Engine::Image* rin_prof = nullptr;
 
 
 
@@ -119,6 +124,9 @@ public:
     Group *EffectGroup;
     Group *UIGroup;
     Engine::Label *UIMoney;
+    Engine::Label *UIKnowledge;
+    Engine::Label *UISpeed;
+    Engine::Label *UIstrength;
     Engine::Label *UILives;
     Engine::Image *imgTarget;
     Engine::Sprite *dangerIndicator;
@@ -150,6 +158,9 @@ public:
     void Hit();
     int GetMoney() const;
     void EarnMoney(int money);
+    void GainKnowledge();
+    void LoseStrength();
+    void LoseSpeed();
     void ConstructUI();
     void UIBtnClicked(int id);
     bool CheckSpaceValid(int x, int y);
