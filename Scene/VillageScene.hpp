@@ -28,6 +28,7 @@ public:
     void Transition() override;
     void Update(float deltaTime) override;
 
+
     bool dialogueActive = false;
     int currentDialogueIndex = 0;
 
@@ -37,3 +38,4 @@ public:
 };
 
 #endif
+//hello

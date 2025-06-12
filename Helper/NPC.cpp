@@ -47,7 +47,7 @@ void NPC::OnTouch() {
             "everyone agreed to give Rin the money.",
             "...Okay then, but keep your promise.",
             "Thank you! To save the princess you’ll need this",
-            "Toma hands Rin a pocket with coins",
+            "Toma hands Rin a pocket with coins", //150 coins --> 22
             "use this to buy any items you need.",
             "Again thank you traveller!",
         });
