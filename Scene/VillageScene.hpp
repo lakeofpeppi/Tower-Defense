@@ -26,6 +26,7 @@ public:
 
 
 
+
     bool dialogueActive = false;
     int currentDialogueIndex = 0;
 
