@@ -14,6 +14,9 @@
 #include "Scene/VillageScene.hpp"
 #include "Scene/BookScene.hpp"
 #include "Scene/OceanScene.hpp"
+#include "Scene/ForestScene.hpp"
+
+#include "Scene/SaharaScene.hpp"
 
 
 
@@ -27,7 +30,9 @@ int main(int argc, char **argv) {
     game.AddNewScene("stage-select", new StageSelectScene());
 	//game.AddNewScene("play", new PlayScene());
 	game.AddNewScene("village", new VillageScene());
+	game.AddNewScene("sahara", new SaharaScene());
 	game.AddNewScene("ocean", new OceanScene());
+	game.AddNewScene("forest", new ForestScene());
 	game.AddNewScene("lose", new LoseScene());
 	game.AddNewScene("win", new WinScene());
 	game.AddNewScene("settings", new SettingsScene());

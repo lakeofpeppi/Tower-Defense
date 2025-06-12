@@ -158,6 +158,10 @@ add_executable(2025_I2P2_TowerDefense
         Scene/OceanScene.cpp
         Scene/OceanScene.hpp
         Helper/Fence.hpp
+        Scene/SaharaScene.cpp
+        Scene/SaharaScene.hpp
+        Scene/ForestScene.cpp
+        Scene/ForestScene.hpp
 
 )
 
