@@ -42,16 +42,7 @@ protected:
     Engine::Label* refundLabel = nullptr;
     float refundTimer = 0.0f;
     bool refundActive = false;
-    Engine::Label* dialogueLabel = nullptr;
-    std::vector<std::string> dialogueLines;
 
-    Engine::Image* rin_normal = nullptr;
-    Engine::Image* rin_worry = nullptr;
-    Engine::Image* rin_close = nullptr;
-    Engine::Image* toma_happy = nullptr;
-    Engine::Image* toma_shock = nullptr;
-    Engine::Image* toma_worry = nullptr;
-    Engine::Image* dialogueBoxImage = nullptr;
 
 
 
@@ -96,16 +87,16 @@ public:
     };
     PlayMode Mode = PlayMode::NONE;
     */
-    void ShowDialogue(const std::vector<std::string>& lines);
-    void AdvanceDialogue();
-
-
-    bool dialogueActive = false;
-    int currentDialogueIndex = 0;
+    // void ShowDialogue(const std::vector<std::string>& lines);
+    // void AdvanceDialogue();
 
 
 
-    void HideDialogue();
+    // int currentDialogueIndex = 0;
+
+
+
+    // void HideDialogue();
     static bool DebugMode;
     static const std::vector<Engine::Point> directions;
     static const int MapWidth, MapHeight;

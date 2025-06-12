@@ -33,6 +33,7 @@
 #include "Helper/House.hpp"
 #include "Helper/NPC.hpp"
 #include "Helper/Fence.hpp"
+#include "Scene/VillageScene.hpp"
 
 // TODO HACKATHON-4 (1/3): Trace how the game handles keyboard input.
 // TODO HACKATHON-4 (2/3): Find the cheat code sequence in this file.
@@ -509,11 +510,11 @@ void PlayScene::OnKeyDown(int keyCode) {
 // juga logic cheat code masuk disini (bisa spawn plane + 10k)
     std::cout << "Pressed: " << keyCode << std::endl;
 
-    if (keyCode == ALLEGRO_KEY_SPACE && dialogueActive) {
-        std::cout << "SPACE PRESSED & dialogueActive is TRUE\n";
-        AdvanceDialogue();
-        return;
-    }
+    // if (keyCode == ALLEGRO_KEY_SPACE && dialogueActive) {
+    //     std::cout << "SPACE PRESSED & dialogueActive is TRUE\n";
+    //     AdvanceDialogue();
+    //     return;
+    // }
     IScene::OnKeyDown(keyCode);
     if (keyCode == ALLEGRO_KEY_W || keyCode == 84 || keyCode == ALLEGRO_KEY_UP) keyUpDown = true;
     if (keyCode == ALLEGRO_KEY_S || keyCode == 85 || keyCode == ALLEGRO_KEY_DOWN) keyDownDown = true;
@@ -761,111 +762,4 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
         }
     }
     return map;
-}
-void PlayScene::ShowDialogue(const std::vector<std::string>& lines) {
-    auto screenSize = Engine::GameEngine::GetInstance().GetScreenSize();
-    int halfW = screenSize.x / 2;
-    int startX = halfW - 600;
-    int startY = screenSize.y - 140;
-    int screenH = Engine::GameEngine::GetInstance().GetScreenSize().y;
-
-    dialogueLines = lines;
-    currentDialogueIndex = 0;
-    dialogueActive = true;
-
-    // Create dialogue box image if not already created
-    if (!dialogueBoxImage) {
-        dialogueBoxImage = new Engine::Image("play/dialogue.png", halfW - 600, screenSize.y - 210, 1140, 150);
-        UIGroup->AddNewObject(dialogueBoxImage);
-    }
-    dialogueBoxImage->Visible = true;
-
-
-    // Create dialogue label if not already created
-    if (!dialogueLabel) {
-        dialogueLabel = new Engine::Label("", "To The Point.ttf", 70, startX-15, startY, 255, 255, 255, 255);
-        dialogueLabel->Anchor = Engine::Point(0.0, 0.5);
-        UIGroup->AddNewObject(dialogueLabel);
-    }
-    dialogueLabel->Visible = true;
-
-    // Set first line of dialogue
-    if (!dialogueLines.empty()) {
-        std::cout << "Setting initial dialogue line: " << dialogueLines[0] << std::endl;
-
-        dialogueLabel->Text = ""; // Force refresh
-        dialogueLabel->Text = dialogueLines[0];
-        dialogueLabel->Visible = true;
-        dialogueLabel->Position.x = halfW - 450;
-        dialogueLabel->Position.y = screenH - 150;
-
-        currentDialogueIndex = 1;
-    }
-
-}
-
-void PlayScene::AdvanceDialogue() {
-    if (!dialogueActive) return;
-
-    if (currentDialogueIndex < (int)dialogueLines.size()) {
-        std::cout << "Advancing to line: " << dialogueLines[currentDialogueIndex] << std::endl;
-
-        // Force refresh text
-        if (dialogueLabel)dialogueLabel->Text = "";
-        if (dialogueLabel)dialogueLabel->Text = dialogueLines[currentDialogueIndex];
-        // Optionally force position and visibility again
-        if (dialogueLabel)dialogueLabel->Visible = true;
-
-        if (rin_normal) rin_normal->Visible = false;
-        if (rin_worry) rin_worry->Visible = false;
-        if (rin_close) rin_close->Visible = false;
-        if (toma_happy) toma_happy->Visible = false;
-        if (toma_shock) toma_shock->Visible = false;
-        if (toma_worry) toma_worry->Visible = false;
-
-        // Show expressions on specific lines
-        //toma worry
-        if (currentDialogueIndex == 4 || currentDialogueIndex == 5 || currentDialogueIndex == 8 || currentDialogueIndex == 9 || currentDialogueIndex == 10 || currentDialogueIndex == 11 || currentDialogueIndex == 12) {
-            if (toma_worry) toma_worry->Visible = true;
-        } // toma happy
-        else if (currentDialogueIndex == 3 || currentDialogueIndex == 6 || currentDialogueIndex == 17 || currentDialogueIndex == 21 || currentDialogueIndex == 23 || currentDialogueIndex == 24 || currentDialogueIndex == 16) {
-            if (toma_happy) toma_happy->Visible = true;
-        } //toma shock
-        else if (currentDialogueIndex == 0 || currentDialogueIndex == 1 || currentDialogueIndex == 2 || currentDialogueIndex == 13 || currentDialogueIndex == 15)
-        {
-            if (toma_shock) toma_shock->Visible = true;
-        }//rin worry
-        else if (currentDialogueIndex == 7)
-        {
-            if (rin_worry) rin_worry->Visible = true;
-        }//rin normal
-        else if (currentDialogueIndex == 20)
-        {
-            if (rin_normal) rin_normal->Visible = true;
-        }//rin close
-        else if (currentDialogueIndex == 14)
-        {
-            if (rin_close) rin_close->Visible = true;
-        }
-
-        currentDialogueIndex++;
-    } else {
-        std::cout << "End of dialogue.\n";
-        if (rin_normal) rin_normal->Visible = false;
-        if (rin_worry) rin_worry->Visible = false;
-        if (rin_close) rin_close->Visible = false;
-        if (toma_happy) toma_happy->Visible = false;
-        if (toma_shock) toma_shock->Visible = false;
-        if (toma_worry) toma_worry->Visible = false;
-        dialogueActive = false;
-        if (dialogueBoxImage) dialogueBoxImage->Visible = false;
-        if (dialogueLabel) dialogueLabel->Visible = false;
-    }
-}
-
-
-void PlayScene::HideDialogue() {
-    dialogueActive = false;
-    if (dialogueBoxImage) dialogueBoxImage->Visible = false;
-    if (dialogueLabel) dialogueLabel->Visible = false;
 }
