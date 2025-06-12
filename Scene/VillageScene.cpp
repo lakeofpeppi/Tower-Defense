@@ -349,7 +349,7 @@ void VillageScene::AdvanceDialogue() {
         if (toma_worry) toma_worry->Visible = false;
 
         if (currentDialogueIndex == 22) {
-            EarnMoney(500); // or any value you want to reward
+            EarnMoney(700); // or any value you want to reward
             std::cout << "[DEBUG] Awarded 500 money for reaching dialogue 22\n";
         }
         // Show expressions on specific lines

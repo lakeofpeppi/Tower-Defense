@@ -40,16 +40,23 @@ protected:
     int knowledge = 0;
     int strength = 100;
     int speed = 100;
-    bool invincible = false;
-    double invincibleStartTime = 0;
+
     Engine::Label* cheatLabel = nullptr;
     float cheatTimer = 0.0f;
     bool cheatActive = false;
     Engine::Label* refundLabel = nullptr;
     float refundTimer = 0.0f;
     bool refundActive = false;
+
+    //for invincibility to catch lizard
+    bool invincible = false;
+    double invincibleStartTime = 0;
     Engine::Label* InvincibleLabel = nullptr;
 
+    //for null emotion so that when fighting sea creature your hp wont drain
+    bool null_emotion = false;
+    double null_emotionStartTime = 0;
+    Engine::Label* null_emotionLabel = nullptr;
 
     Engine::Image* rin_prof = nullptr;
 

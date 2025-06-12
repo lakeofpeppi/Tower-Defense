@@ -9,7 +9,7 @@
 #include "Bullet/BurningBullet.hpp"
 #include<iostream>
 
-const int FireTurret::Price = 75;
+const int FireTurret::Price = 100;
 FireTurret::FireTurret(float x, float y)
     : Turret("play/tower-base.png", "play/turret-fire.png", x, y, 200, Price, 0.5) {
     // Move center downward, since we the turret head is slightly biased upward.
