@@ -36,8 +36,7 @@ void SaharaScene::Initialize() {
     keyStrokes.clear();
     ticks = 0;
     deathCountDown = -1;
-    lives = 10;
-    money = 150;
+
     SpeedMult = 1;
     // Add groups from bottom to top.
     AddNewObject(TileMapGroup = new Engine::Group());
@@ -91,7 +90,7 @@ void SaharaScene::Initialize() {
     deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
     // Start BGM.
-    //bgmId = AudioHelper::PlayBGM("village-explore.mp3");
+    bgmId = AudioHelper::PlayBGM("desert-explore.mp3");
 }
 void SaharaScene::ReadMap() {
     // load file map.txt jd mapState

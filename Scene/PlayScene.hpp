@@ -34,12 +34,12 @@ protected:
     ALLEGRO_SAMPLE_ID bgmId;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> deathBGMInstance;
 
-    int lives = 50;
-    int money = 0;
+    // int lives = 50;
+    // int money = 0;
     int SpeedMult;
-    int knowledge = 0;
-    int strength = 100;
-    int speed = 100;
+    // int knowledge = 0;
+    // int strength = 100;
+    // int speed = 100;
 
     Engine::Label* cheatLabel = nullptr;
     float cheatTimer = 0.0f;

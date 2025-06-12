@@ -9,6 +9,8 @@
 #include "Helper/NPC.hpp"
 #include "UI/Component/Label.hpp"
 #include <allegro5/allegro.h>
+
+#include "GameData.hpp"
 #include "UI/Animation/Plane.hpp"
 
 bool VillageScene::IsTileWalkable(int tileType) const {
@@ -37,8 +39,6 @@ void VillageScene::Initialize() {
     keyStrokes.clear();
     ticks = 0;
     deathCountDown = -1;
-    lives;
-    money;
     SpeedMult = 1;
     // Add groups from bottom to top.
     AddNewObject(TileMapGroup = new Engine::Group());
@@ -117,10 +117,9 @@ void VillageScene::Initialize() {
     EffectGroup->AddNewObject(npcTalker);
 
 
-    auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
+    rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
     rin->SetPlayScene(this);
     EffectGroup->AddNewObject(rin);
-
 
     ReadMap();
     ReadEnemyWave();
@@ -136,6 +135,14 @@ void VillageScene::Initialize() {
     // Start BGM.
     bgmId = AudioHelper::PlayBGM("village-explore.mp3");
 }
+void VillageScene::Terminate() {
+    if (footstepsPlaying && footstepsInstance) {
+        al_stop_sample_instance(footstepsInstance.get());
+        footstepsPlaying = false;
+    }
+    PlayScene::Terminate(); // Call base class cleanup
+}
+
 void VillageScene::ReadMap() {
     // load file map.txt jd mapState
     // ngegambar tile floor / dirt ke TileMapGroup
@@ -223,6 +230,12 @@ void VillageScene::OnKeyDown(int keyCode) {
 // juga logic cheat code masuk disini (bisa spawn plane + 10k)
     std::cout << "Pressed: " << keyCode << std::endl;
 
+    if (!footstepsPlaying) {
+        footstepsInstance = AudioHelper::PlaySample("footsteps.mp3", true); // looped
+        footstepsPlaying = true;
+    }
+
+
     if (keyCode == ALLEGRO_KEY_SPACE && dialogueActive) {
         std::cout << "SPACE PRESSED & dialogueActive is TRUE\n";
         AdvanceDialogue();
@@ -259,23 +272,23 @@ void VillageScene::OnKeyDown(int keyCode) {
             keyStrokes.clear();
         }
     }
-    if (keyCode == ALLEGRO_KEY_Q) {
-        // Hotkey for MachineGunTurret.
-        UIBtnClicked(0);
-    } else if (keyCode == ALLEGRO_KEY_T) {
-        // Hotkey for LaserTurret.
-        UIBtnClicked(1);
-    } else if (keyCode == ALLEGRO_KEY_E) {
-        // Hotkey for FireTurret.
-        UIBtnClicked(2);
-    } else if (keyCode == ALLEGRO_KEY_R) {
-        // Hotkey for RocketTurretw.
-        UIBtnClicked(3);
-    }
-    else if (keyCode >= ALLEGRO_KEY_0 && keyCode <= ALLEGRO_KEY_9) {
-        // Hotkey for Speed up.
-        SpeedMult = keyCode - ALLEGRO_KEY_0;
-    }
+    // if (keyCode == ALLEGRO_KEY_Q) {
+    //     // Hotkey for MachineGunTurret.
+    //     UIBtnClicked(0);
+    // } else if (keyCode == ALLEGRO_KEY_T) {
+    //     // Hotkey for LaserTurret.
+    //     UIBtnClicked(1);
+    // } else if (keyCode == ALLEGRO_KEY_E) {
+    //     // Hotkey for FireTurret.
+    //     UIBtnClicked(2);
+    // } else if (keyCode == ALLEGRO_KEY_R) {
+    //     // Hotkey for RocketTurretw.
+    //     UIBtnClicked(3);
+    // }
+    // else if (keyCode >= ALLEGRO_KEY_0 && keyCode <= ALLEGRO_KEY_9) {
+    //     // Hotkey for Speed up.
+    //     SpeedMult = keyCode - ALLEGRO_KEY_0;
+    // }
 }
 
 void VillageScene::OnKeyUp(int keyCode) {
@@ -285,6 +298,12 @@ void VillageScene::OnKeyUp(int keyCode) {
     if (keyCode == ALLEGRO_KEY_S || keyCode == 85 || keyCode == ALLEGRO_KEY_DOWN) keyDownDown = false;
     if (keyCode == ALLEGRO_KEY_A || keyCode == 82 || keyCode == ALLEGRO_KEY_LEFT) keyLeftDown = false;
     if (keyCode == ALLEGRO_KEY_D || keyCode == 83 || keyCode == ALLEGRO_KEY_RIGHT) keyRightDown = false;
+
+    if (footstepsPlaying && footstepsInstance) {
+        al_stop_sample_instance(footstepsInstance.get());
+        footstepsPlaying = false;
+    }
+
 }
 
 void VillageScene::ShowDialogue(const std::vector<std::string>& lines) {
@@ -351,6 +370,7 @@ void VillageScene::AdvanceDialogue() {
         if (currentDialogueIndex == 22) {
             EarnMoney(700); // or any value you want to reward
             std::cout << "[DEBUG] Awarded 500 money for reaching dialogue 22\n";
+            UIMoney->Text = "COINS: " + std::to_string(GameData::money);
         }
         // Show expressions on specific lines
         //toma worry
@@ -404,6 +424,12 @@ void VillageScene::HideDialogue() {
 
 void VillageScene::Update(float deltaTime) {
     PlayScene::Update(deltaTime);
+    if (!IsPlayerInBounds()) {
+        if (footstepsPlaying && footstepsInstance) {
+            al_stop_sample_instance(footstepsInstance.get());
+            footstepsPlaying = false;
+        }
+    }
     Transition();
 }
 
@@ -424,6 +450,12 @@ void VillageScene::Transition() {
     // if she's on bottom‐right, switch scenes once
     if (gx == MapWidth - 1 && gy == MapHeight - 1) {
         _didTransition = true;
+        footstepsPlaying=false;
         Engine::GameEngine::GetInstance().ChangeScene("forest");
     }
+}
+bool VillageScene::IsPlayerInBounds() {
+    if (!rin) return false;
+    return rin->Position.x >= 0 && rin->Position.x <= 1792 &&
+           rin->Position.y >= 0 && rin->Position.y <= 1216;
 }

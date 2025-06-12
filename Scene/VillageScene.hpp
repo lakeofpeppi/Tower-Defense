@@ -2,6 +2,7 @@
 #define VILLAGESCENE_HPP
 
 #include "PlayScene.hpp"
+#include "Character/RinCharacter.hpp"
 class VillageScene : public PlayScene {
     Engine::Label* dialogueLabel = nullptr;
     std::vector<std::string> dialogueLines;
@@ -14,6 +15,7 @@ class VillageScene : public PlayScene {
     Engine::Image* toma_worry = nullptr;
     Engine::Image* dialogueBoxImage = nullptr;
     bool _didTransition = false;
+    RinCharacter* rin = nullptr;
 
 public:
 
@@ -26,7 +28,14 @@ public:
     void OnKeyDown(int keyCode) override;
     void OnKeyUp(int keyCode) override;
     void Transition() override;
+    void Terminate()override;
     void Update(float deltaTime) override;
+    bool footstepsPlaying = false;
+    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> footstepsInstance;
+    bool IsPlayerInBounds();
+
+
+
 
 
     bool dialogueActive = false;

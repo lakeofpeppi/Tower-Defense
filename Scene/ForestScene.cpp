@@ -39,8 +39,7 @@ void ForestScene::Initialize() {
     keyStrokes.clear();
     ticks = 0;
     deathCountDown = -1;
-    lives = 10;
-    money = 150;
+
     SpeedMult = 1;
     // Add groups from bottom to top.
     AddNewObject(TileMapGroup = new Engine::Group());
@@ -94,7 +93,7 @@ void ForestScene::Initialize() {
     deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
     // Start BGM.
-    //bgmId = AudioHelper::PlayBGM("village-explore.mp3");
+    bgmId = AudioHelper::PlayBGM("forest-explore.wav");
 }
 void ForestScene::ReadMap() {
     // load file map.txt jd mapState
@@ -193,6 +192,7 @@ void ForestScene::ReadMap() {
 }
 void ForestScene::Update(float deltaTime) {
     PlayScene::Update(deltaTime);
+
     Transition();
 }
 

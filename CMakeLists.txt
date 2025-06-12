@@ -162,6 +162,10 @@ add_executable(2025_I2P2_TowerDefense
         Scene/SaharaScene.hpp
         Scene/ForestScene.cpp
         Scene/ForestScene.hpp
+        Scene/GameData.cpp
+        Scene/GameData.hpp
+        Scene/PrincessScene.cpp
+        Scene/PrincessScene.hpp
 
 )
 

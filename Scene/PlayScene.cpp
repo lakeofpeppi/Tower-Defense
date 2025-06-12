@@ -18,6 +18,8 @@
 #include "Engine/LOG.hpp"
 #include "Engine/Resources.hpp"
 #include "PlayScene.hpp"
+
+#include "GameData.hpp"
 #include "IntroScene.hpp"
 #include "Turret/LaserTurret.hpp"
 #include "Turret/FireTurret.hpp"
@@ -245,7 +247,7 @@ void PlayScene::Update(float deltaTime) {
     // Can use Heap / Priority-Queue instead. But since we won't have too many enemies, sorting is fast enough.
     std::sort(reachEndTimes.begin(), reachEndTimes.end());
     float newDeathCountDown = -1;
-    int danger = lives;
+    int danger = GameData::lives;
     for (auto &it : reachEndTimes) {
         if (it <= DangerTime) {
             danger--;
@@ -269,7 +271,7 @@ void PlayScene::Update(float deltaTime) {
     deathCountDown = newDeathCountDown;
     if (SpeedMult == 0)
         AudioHelper::StopSample(deathBGMInstance);
-    if (deathCountDown == -1 && lives > 0) {
+    if (deathCountDown == -1 && GameData::lives > 0) {
         AudioHelper::StopSample(deathBGMInstance);
         dangerIndicator->Tint.a = 0;
     }
@@ -539,7 +541,7 @@ void PlayScene::OnKeyDown(int keyCode) {
     //     return;
     // }
     IScene::OnKeyDown(keyCode);
-    if (keyCode == ALLEGRO_KEY_W || keyCode == 84 || keyCode == ALLEGRO_KEY_UP) keyUpDown = true;
+    if (keyCode == ALLEGRO_KEY_W || keyCode == 84 || keyCode == ALLEGRO_KEY_UP)keyUpDown = true;
     if (keyCode == ALLEGRO_KEY_S || keyCode == 85 || keyCode == ALLEGRO_KEY_DOWN) keyDownDown = true;
     if (keyCode == ALLEGRO_KEY_A || keyCode == 82 || keyCode == ALLEGRO_KEY_LEFT) keyLeftDown = true;
     if (keyCode == ALLEGRO_KEY_D || keyCode == 83 || keyCode == ALLEGRO_KEY_RIGHT) keyRightDown = true;
@@ -569,23 +571,23 @@ void PlayScene::OnKeyDown(int keyCode) {
             keyStrokes.clear();
         }
     }
-    if (keyCode == ALLEGRO_KEY_Q) {
-        // Hotkey for MachineGunTurret.
-        UIBtnClicked(0);
-    } else if (keyCode == ALLEGRO_KEY_W) {
-        // Hotkey for LaserTurret.
-        UIBtnClicked(1);
-    } else if (keyCode == ALLEGRO_KEY_E) {
-        // Hotkey for FireTurret.
-        UIBtnClicked(2);
-    } else if (keyCode == ALLEGRO_KEY_R) {
-        // Hotkey for RocketTurretw.
-        UIBtnClicked(3);
-    }
-    else if (keyCode >= ALLEGRO_KEY_0 && keyCode <= ALLEGRO_KEY_9) {
-        // Hotkey for Speed up.
-        SpeedMult = keyCode - ALLEGRO_KEY_0;
-    }
+    // if (keyCode == ALLEGRO_KEY_Q) {
+    //     // Hotkey for MachineGunTurret.
+    //     UIBtnClicked(0);
+    // } else if (keyCode == ALLEGRO_KEY_W) {
+    //     // Hotkey for LaserTurret.
+    //     UIBtnClicked(1);
+    // } else if (keyCode == ALLEGRO_KEY_E) {
+    //     // Hotkey for FireTurret.
+    //     UIBtnClicked(2);
+    // } else if (keyCode == ALLEGRO_KEY_R) {
+    //     // Hotkey for RocketTurretw.
+    //     UIBtnClicked(3);
+    // }
+    // else if (keyCode >= ALLEGRO_KEY_0 && keyCode <= ALLEGRO_KEY_9) {
+    //     // Hotkey for Speed up.
+    //     SpeedMult = keyCode - ALLEGRO_KEY_0;
+    // }
 }
 
 void PlayScene::OnKeyUp(int keyCode) {
@@ -599,12 +601,12 @@ void PlayScene::OnKeyUp(int keyCode) {
 
 void PlayScene::Hit() {
     // ini dipanggil kalo enemy tembus base. ngurangin nyawa dan update UI life
-    lives--;
+    GameData::lives--;
     if (UILives) {
-        UILives->Text = std::string("Life ") + std::to_string(lives);
+        UILives->Text = std::string("Life ") + std::to_string(GameData::lives);
         UILives->Color = al_map_rgb(255, 50, 50);
     }
-    if (lives <= 0) {
+    if (GameData::lives <= 0) {
         Engine::GameEngine::GetInstance().ChangeScene("lose");
     }
 }
@@ -613,32 +615,32 @@ void PlayScene::Hit() {
 
 int PlayScene::GetMoney() const {
     // getter buat current money. i can call dari luar
-    return money;
+    return GameData::money;
 }
 
 void PlayScene::EarnMoney(int money) {
     // update label UI money bisa nambah bisa ngurang
-    this->money += money;
-    UIMoney->Text = std::string("COINS: ") + std::to_string(this->money);
+    GameData::money += money;
+    UIMoney->Text = std::string("COINS: ") + std::to_string(GameData::money);
 }
 
 
 void PlayScene::GainKnowledge()
 {
-    this->knowledge = 100;
-    UIKnowledge->Text = std::string("Knowledge -- ") + std::to_string(this->knowledge);
+    GameData::knowledge = 100;
+    UIKnowledge->Text = std::string("Knowledge -- ") + std::to_string(GameData::knowledge);
 }
 
 void PlayScene::LoseSpeed()
 {
-    this->speed -= 20;
-    UIKnowledge->Text = std::string("Speed -- ") + std::to_string(this->speed);
+    GameData::speed -= 20;
+    UIKnowledge->Text = std::string("Speed -- ") + std::to_string(GameData::speed);
 }
 
 void PlayScene::LoseStrength()
 {
-    this->strength -= 20;
-    UIKnowledge->Text = std::string("Strength -- ") + std::to_string(this->strength);
+    GameData::strength -= 20;
+    UIKnowledge->Text = std::string("Strength -- ") + std::to_string(GameData::strength);
 }
 
 void PlayScene::ReadEnemyWave() {
@@ -669,12 +671,12 @@ void PlayScene::ConstructUI() {
 
     UIGroup->AddNewObject(new Engine::Image("play/wooden_forest.png", 1472, 0, 320, 1216));
     // Text
-    UIGroup->AddNewObject(UILives = new Engine::Label(std::string("HP: ") + std::to_string(lives), "pirulen.ttf", 32, 1500, 300));
-    UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("COINS: ") + std::to_string(money), "pirulen.ttf", 32, 1500, 350));
+    UIGroup->AddNewObject(UILives = new Engine::Label(std::string("HP: ") + std::to_string(GameData::lives), "pirulen.ttf", 32, 1500, 300));
+    UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("COINS: ") + std::to_string(GameData::money), "pirulen.ttf", 32, 1500, 350));
     //UIGroup->AddNewObject(UILives = new Engine::Label(std::string("STAGE: ") + std::to_string(MapId), "pirulen.ttf", 24, 1486, 400));
-    UIGroup->AddNewObject(UIKnowledge = new Engine::Label(std::string("Knowledge -- ") + std::to_string(knowledge), "pirulen.ttf", 24, 1486, 450));
-    UIGroup->AddNewObject(UISpeed = new Engine::Label(std::string("Speed -- ") + std::to_string(speed), "pirulen.ttf", 24, 1486, 500));
-    UIGroup->AddNewObject(UIStrength = new Engine::Label(std::string("Strength -- ") + std::to_string(strength), "pirulen.ttf", 24, 1486, 550));
+    UIGroup->AddNewObject(UIKnowledge = new Engine::Label(std::string("Knowledge -- ") + std::to_string(GameData::knowledge), "pirulen.ttf", 24, 1486, 450));
+    UIGroup->AddNewObject(UISpeed = new Engine::Label(std::string("Speed -- ") + std::to_string(GameData::speed), "pirulen.ttf", 24, 1486, 500));
+    UIGroup->AddNewObject(UIStrength = new Engine::Label(std::string("Strength -- ") + std::to_string(GameData::strength), "pirulen.ttf", 24, 1486, 550));
     TurretButton *btn;
     // Button 1
     btn = new TurretButton("play/floor.png", "play/dirt.png",
@@ -743,29 +745,29 @@ void PlayScene::UIBtnClicked(int id) {
     // pas tombol turret diklik, ini yg buat turret preview muncul
     if (preview)
         UIGroup->RemoveObject(preview->GetObjectIterator());
-    if ((id == 0 || id == 1) && money >= 50)
+    if ((id == 0 || id == 1) && GameData::money >= 50)
     {
         const int hpCost = 50;
         const int hpGain = 20;
-        if (money >= hpCost) {
-            money -= hpCost;
+        if (GameData::money >= hpCost) {
+            GameData::money -= hpCost;
             std::cout << "lose money"<< std::endl;
-            lives += hpGain;
+            GameData::lives += hpGain;
             std::cout << "gain hp"<< std::endl;
-            UIMoney->Text = "COINS: " + std::to_string(money);
-            UILives->Text = "HP: " + std::to_string(lives);
+            UIMoney->Text = "COINS: " + std::to_string(GameData::money);
+            UILives->Text = "HP: " + std::to_string(GameData::lives);
             AudioHelper::PlaySample("bite.mp3");
         }
         return;
     }
     //buat null emotions
-    else if (id == 2 && money >= 100)
+    else if (id == 2 && GameData::money >= 100)
     {
         const int Cost = 100;
-        if (money >= Cost) {
-            money -= Cost;
+        if (GameData::money >= Cost) {
+            GameData::money -= Cost;
             std::cout << "lose money"<< std::endl;
-            UIMoney->Text = "COINS: " + std::to_string(money);
+            UIMoney->Text = "COINS: " + std::to_string(GameData::money);
 
             null_emotion = true;
             null_emotionStartTime = al_get_time();
@@ -775,14 +777,14 @@ void PlayScene::UIBtnClicked(int id) {
         return;
     }
     //buat invincible
-    else if (id == 3 && money >= 100)
+    else if (id == 3 && GameData::money >= 100)
     {
         const int Cost = 100;
-        if (money >= Cost) {
-            money -= Cost;
+        if (GameData::money >= Cost) {
+            GameData::money -= Cost;
             std::cout << "lose money"<< std::endl;
 
-            UIMoney->Text = "COINS: " + std::to_string(money);
+            UIMoney->Text = "COINS: " + std::to_string(GameData::money);
 
             invincible = true;
             invincibleStartTime = al_get_time();
@@ -791,7 +793,7 @@ void PlayScene::UIBtnClicked(int id) {
 
         }
         return;
-    }else if (id == 6 && money >= 200)
+    }else if (id == 6 && GameData::money >= 200)
     {
         preview = new RocketTurret(0, 0);
     }

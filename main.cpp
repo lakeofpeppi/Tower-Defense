@@ -17,6 +17,7 @@
 #include "Scene/ForestScene.hpp"
 
 #include "Scene/SaharaScene.hpp"
+#include "Scene/PrincessScene.hpp"
 
 
 
@@ -39,6 +40,7 @@ int main(int argc, char **argv) {
 	game.AddNewScene("scoreboard-scene", new ScoreboardScene());
 	game.AddNewScene("intro", new IntroScene());
 	game.AddNewScene("book", new BookScene());
+	game.AddNewScene("princess", new PrincessScene());
 
     // TODO HACKATHON-1 (1/1): Change the start scene (DONE)
 	game.Start("start", 60, 1792, 1216);

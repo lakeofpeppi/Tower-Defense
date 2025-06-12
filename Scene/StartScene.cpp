@@ -17,6 +17,7 @@
 #include "UI/Component/ImageButton.hpp"
 #include "UI/Component/Label.hpp"
 #include "UI/Component/Slider.hpp"
+#include "GameData.hpp"
 
 // TODO HACKATHON-2 (1/3): You can imitate the 2 files: 'StartScene.hpp', 'StartScene.cpp' to implement your SettingsScene.(DONE)
 void StartScene::Initialize() {
@@ -52,6 +53,8 @@ void StartScene::Terminate() {
     IScene::Terminate();
 }
 void StartScene::PlayOnClick(int stage) {
+    GameData::Reset();
+
     Engine::GameEngine::GetInstance().ChangeScene("intro");
 }
 void StartScene::StageOnClick(int stage) {
