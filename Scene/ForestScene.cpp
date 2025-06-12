@@ -12,6 +12,9 @@
 #include "Engine/Resources.hpp"
 #include "Character/RinCharacter.hpp"
 #include "Helper/House.hpp"
+#include "Enemy/OrcEnemy.hpp"
+#include "Enemy/LizardEnemy.hpp"
+
 
 bool ForestScene::IsTileWalkable(int tileType) const {
     return tileType == TILE_SOIL;
@@ -76,6 +79,17 @@ void ForestScene::Initialize() {
         "intro");
     EffectGroup->AddNewObject(npcTalker);
     */
+    auto* orc_enemy = new OrcEnemy(
+            512, 300,
+            "enemy/orc",
+            "intro");
+    EffectGroup->AddNewObject(orc_enemy);
+
+    auto* lizard_enemy = new LizardEnemy(
+             1184, 928,
+            "enemy/lizard",
+            "intro");
+    EffectGroup->AddNewObject(lizard_enemy);
 
     auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
     rin->SetPlayScene(this);
