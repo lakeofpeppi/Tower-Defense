@@ -80,6 +80,26 @@ public:
     };
     PlayMode Mode = PlayMode::NONE;
     */
+    void ShowDialogue(const std::vector<std::string>& lines);
+    void AdvanceDialogue();
+
+    std::shared_ptr<Engine::Image> rin_normal;
+    std::shared_ptr<Engine::Image> rin_worry;
+    std::shared_ptr<Engine::Image> rin_close;
+    std::shared_ptr<Engine::Image> toma_happy;
+    std::shared_ptr<Engine::Image> toma_shock;
+    std::shared_ptr<Engine::Image> toma_worry;
+    std::shared_ptr<Engine::Image> blackScreen;
+    std::unique_ptr<Engine::Image> dialogueBoxImage;
+
+    Engine::Label* dialogueLabel = nullptr;
+    bool dialogueActive = false;
+    std::vector<std::string> dialogueLines;
+    int currentDialogueIndex = 0;
+
+
+
+    void HideDialogue();
     static bool DebugMode;
     static const std::vector<Engine::Point> directions;
     static const int MapWidth, MapHeight;

@@ -125,25 +125,25 @@ void IntroScene::NextOnClick(int stage) {
         int halfH = screenH / 2;
 
         // Default position and visibility
-        dialogueLabel->Position.x = halfW - 600;
-        dialogueLabel->Position.y = halfH - 100;
-        dialogueBoxImage->Visible = false;
-        rin_normal->Visible = false;
-        rin_worry->Visible = false;
+        if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
+        if (dialogueLabel)dialogueLabel->Position.y = halfH - 100;
+        if (dialogueBoxImage)dialogueBoxImage->Visible = false;
+        if (rin_normal)rin_normal->Visible = false;
+        if (rin_worry)rin_worry->Visible = false;
 
         // Hide black screen by default
         if (blackScreen) blackScreen->Visible = false;
 
         // Special cases: Show dialogue box + appropriate Rin expression
         if (currentLine == 4 || currentLine == 5 || currentLine == 12 || currentLine == 13) {
-            dialogueLabel->Position.x = halfW - 300;
-            dialogueLabel->Position.y = screenH - 150;
-            dialogueBoxImage->Visible = true;
+            if (dialogueLabel)dialogueLabel->Position.x = halfW - 300;
+            if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
+            if (dialogueBoxImage)dialogueBoxImage->Visible = true;
 
             if (currentLine == 4 || currentLine == 5) {
-                rin_worry->Visible = true;
+                if (rin_worry)rin_worry->Visible = true;
             } else if (currentLine == 12 || currentLine == 13) {
-                rin_normal->Visible = true;
+                if (rin_normal)rin_normal->Visible = true;
             }
         }
 
@@ -151,16 +151,16 @@ void IntroScene::NextOnClick(int stage) {
         if (currentLine == 14) {
             if (blackScreen) blackScreen->Visible = true;
 
-            dialogueBoxImage->Visible = false;
-            rin_normal->Visible = false;
-            rin_worry->Visible = false;
+            if (dialogueBoxImage)dialogueBoxImage->Visible = false;
+            if (rin_normal)rin_normal->Visible = false;
+            if (rin_worry)rin_worry->Visible = false;
 
             // Position dialogue label at bottom center
-            dialogueLabel->Position.x = halfW - 250;
-            dialogueLabel->Position.y = screenH - 150;  // near bottom with some padding
+            if (dialogueLabel)dialogueLabel->Position.x = halfW - 250;
+            if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;  // near bottom with some padding
 
             // Optionally, make sure the label is visible if you hid it earlier
-            dialogueLabel->Visible = true;
+            if (dialogueLabel)dialogueLabel->Visible = true;
         }
 
     } else {

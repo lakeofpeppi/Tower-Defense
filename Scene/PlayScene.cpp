@@ -71,7 +71,11 @@ bool PlayScene::IsTileWalkable(int tileType) const {
 
 void PlayScene::Initialize() {
    // buat initialize stage pas masuk level
-    // ini kayak setup awal: load map, load musuh, set UI,sm start bgms
+    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
+    int halfW = w / 2;
+    int halfH = h / 2;    // ini kayak setup awal: load map, load musuh, set UI,sm start bgms
+
     keyUpDown = false;
     keyDownDown = false;
     keyLeftDown = false;
@@ -96,6 +100,42 @@ void PlayScene::Initialize() {
     AddNewControlObject(UIGroup = new Group());
 
 
+    //rin normal
+    auto rinNormal = new Engine::Image("play/rin normal.png", halfW - 950, h - 480, 720, 480);
+    rinNormal->Visible = false;
+    AddNewObject(rinNormal);
+    rin_normal.reset(rinNormal);
+
+    // Rin worried
+    auto rinWorry = new Engine::Image("play/rin worried.png", halfW - 950, h - 480, 720, 480);
+    rinWorry->Visible = false;
+    AddNewObject(rinWorry);
+    rin_worry.reset(rinWorry);
+
+    // Rin close
+    auto rinClose = new Engine::Image("play/rin close.png", halfW - 950, h - 480, 720, 480);
+    rinClose->Visible = false;
+    AddNewObject(rinClose);
+    rin_close.reset(rinClose);
+
+    // toma happy
+    auto tomaHappy = new Engine::Image("play/toma happy.png", halfW - 950, h - 480, 720, 480);
+    tomaHappy->Visible = false;
+    AddNewObject(tomaHappy);
+    toma_happy.reset(tomaHappy);
+
+    // toma shock
+    auto tomaShock = new Engine::Image("play/toma shock.png", halfW - 950, h - 480, 720, 480);
+    tomaShock->Visible = false;
+    AddNewObject(tomaShock);
+    toma_shock.reset(tomaShock);
+    // toma shock
+    auto tomaWorry = new Engine::Image("play/toma worry.png", halfW - 950, h - 480, 720, 480);
+    tomaWorry->Visible = false;
+    AddNewObject(tomaWorry);
+    toma_worry.reset(tomaWorry);
+
+
     // Create house
     auto* Inventory = new House(
         1184, 928,
@@ -114,8 +154,8 @@ void PlayScene::Initialize() {
 
 
     auto* npcTalker = new NPC(
-        512, 928,
-        "npc/npc_idle",
+        512, 300,
+        "npc/toma",
         "intro");
     EffectGroup->AddNewObject(npcTalker);
 
@@ -137,7 +177,7 @@ void PlayScene::Initialize() {
     deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
     // Start BGM.
-    //bgmId = AudioHelper::PlayBGM("village-explore.mp3");
+    bgmId = AudioHelper::PlayBGM("village-explore.mp3");
 }
 
 
@@ -454,11 +494,19 @@ void PlayScene::OnKeyDown(int keyCode) {
     //handle shortcut turret Q/W/E/R
 // juga logic cheat code masuk disini (bisa spawn plane + 10k)
     std::cout << "Pressed: " << keyCode << std::endl;
+
+    if (keyCode == ALLEGRO_KEY_SPACE && dialogueActive) {
+        std::cout << "SPACE PRESSED & dialogueActive is TRUE\n";
+        AdvanceDialogue();
+        return;
+    }
     IScene::OnKeyDown(keyCode);
     if (keyCode == ALLEGRO_KEY_W || keyCode == 84 || keyCode == ALLEGRO_KEY_UP) keyUpDown = true;
     if (keyCode == ALLEGRO_KEY_S || keyCode == 85 || keyCode == ALLEGRO_KEY_DOWN) keyDownDown = true;
     if (keyCode == ALLEGRO_KEY_A || keyCode == 82 || keyCode == ALLEGRO_KEY_LEFT) keyLeftDown = true;
     if (keyCode == ALLEGRO_KEY_D || keyCode == 83 || keyCode == ALLEGRO_KEY_RIGHT) keyRightDown = true;
+
+
     if (keyCode == ALLEGRO_KEY_TAB) {
         DebugMode = !DebugMode;
     }
@@ -777,4 +825,112 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
         }
     }
     return map;
+}
+void PlayScene::ShowDialogue(const std::vector<std::string>& lines) {
+    auto screenSize = Engine::GameEngine::GetInstance().GetScreenSize();
+    int halfW = screenSize.x / 2;
+    int startX = halfW - 600;
+    int startY = screenSize.y - 140;
+    int screenW = Engine::GameEngine::GetInstance().GetScreenSize().x;
+    int screenH = Engine::GameEngine::GetInstance().GetScreenSize().y;
+
+    dialogueLines = lines;
+    currentDialogueIndex = 0;
+    dialogueActive = true;
+
+    // Create dialogue box image if not already created
+    if (!dialogueBoxImage) {
+        dialogueBoxImage = std::make_unique<Engine::Image>(
+            "play/dialogue.png", halfW - 600, screenSize.y - 210, 1250, 150);
+        UIGroup->AddNewObject(dialogueBoxImage.get());
+    }
+    dialogueBoxImage->Visible = true;
+
+    // Create dialogue label if not already created
+    if (!dialogueLabel) {
+        dialogueLabel = new Engine::Label("", "To The Point.ttf", 70, startX, startY, 255, 255, 255, 255);
+        dialogueLabel->Anchor = Engine::Point(0.0, 0.5);
+        UIGroup->AddNewObject(dialogueLabel);
+    }
+    dialogueLabel->Visible = true;
+
+    // Set first line of dialogue
+    if (!dialogueLines.empty()) {
+        std::cout << "Setting initial dialogue line: " << dialogueLines[0] << std::endl;
+
+        dialogueLabel->Text = ""; // Force refresh
+        dialogueLabel->Text = dialogueLines[0];
+        dialogueLabel->Visible = true;
+        dialogueLabel->Position.x = halfW - 400;
+        dialogueLabel->Position.y = screenH - 150;
+
+        currentDialogueIndex = 1;
+    }
+
+}
+
+void PlayScene::AdvanceDialogue() {
+    if (!dialogueActive) return;
+
+    if (currentDialogueIndex < (int)dialogueLines.size()) {
+        std::cout << "Advancing to line: " << dialogueLines[currentDialogueIndex] << std::endl;
+
+        // Force refresh text
+        dialogueLabel->Text = "";
+        dialogueLabel->Text = dialogueLines[currentDialogueIndex];
+        // Optionally force position and visibility again
+        dialogueLabel->Visible = true;
+
+        if (rin_normal) rin_normal->Visible = false;
+        if (rin_worry) rin_worry->Visible = false;
+        if (rin_close) rin_close->Visible = false;
+        if (toma_happy) toma_happy->Visible = false;
+        if (toma_shock) toma_shock->Visible = false;
+        if (toma_worry) toma_worry->Visible = false;
+
+        // Show expressions on specific lines
+        //toma worry
+        if (currentDialogueIndex == 4 || currentDialogueIndex == 5 || currentDialogueIndex == 8 || currentDialogueIndex == 9 || currentDialogueIndex == 10 || currentDialogueIndex == 11 || currentDialogueIndex == 12) {
+            if (toma_worry) toma_worry->Visible = true;
+        } // toma happy
+        else if (currentDialogueIndex == 3 || currentDialogueIndex == 6 || currentDialogueIndex == 17 || currentDialogueIndex == 21 || currentDialogueIndex == 23 || currentDialogueIndex == 24) {
+            if (toma_happy) toma_happy->Visible = true;
+        } //toma shock
+        else if (currentDialogueIndex == 0 || currentDialogueIndex == 1 || currentDialogueIndex == 2 || currentDialogueIndex == 13 || currentDialogueIndex == 15)
+        {
+            if (toma_shock) toma_shock->Visible = true;
+        }//rin worry
+        else if (currentDialogueIndex == 7)
+        {
+            if (rin_worry) rin_worry->Visible = true;
+        }//rin normal
+        else if (currentDialogueIndex == 20)
+        {
+            if (rin_normal) rin_normal->Visible = true;
+        }//rin close
+        else if (currentDialogueIndex == 14)
+        {
+            if (rin_close) rin_close->Visible = true;
+        }
+
+        currentDialogueIndex++;
+    } else {
+        std::cout << "End of dialogue.\n";
+        if (rin_normal) rin_normal->Visible = false;
+        if (rin_worry) rin_worry->Visible = false;
+        if (rin_close) rin_close->Visible = false;
+        if (toma_happy) toma_happy->Visible = false;
+        if (toma_shock) toma_shock->Visible = false;
+        if (toma_worry) toma_worry->Visible = false;
+        dialogueActive = false;
+        if (dialogueBoxImage) dialogueBoxImage->Visible = false;
+        if (dialogueLabel) dialogueLabel->Visible = false;
+    }
+}
+
+
+void PlayScene::HideDialogue() {
+    dialogueActive = false;
+    if (dialogueBoxImage) dialogueBoxImage->Visible = false;
+    if (dialogueLabel) dialogueLabel->Visible = false;
 }

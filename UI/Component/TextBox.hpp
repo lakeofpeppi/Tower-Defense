@@ -22,7 +22,7 @@ namespace Engine {
         Engine::Point Anchor;
 
         TextBox(std::string text, std::string font, int fontSize, float x, float y, unsigned char r, unsigned char g, unsigned char b, unsigned char a, float anchorX = 0, float anchorY = 0);
-        void Draw() const;
+        void Draw() const override;
         void OnKeyDown(int keyCode) override;
     };
 }
