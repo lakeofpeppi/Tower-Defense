@@ -14,9 +14,9 @@
 
 const int RocketTurret::Price = 200;
 RocketTurret::RocketTurret(float x, float y)
-    : Turret("play/tower-base.png", "play/turret-6.png", x, y, 500, Price, 0.5) {
+    : Turret("play/trap.png", "play/trap.png", x, y, 500, Price, 0.5) {
     // Move center downward, since we the turret head is slightly biased upward.
-    Anchor.y += 8.0f / GetBitmapHeight();
+    //Anchor.y += 8.0f / GetBitmapHeight();
 }
 void RocketTurret::CreateBullet() {
     Engine::Point diff = Engine::Point(cos(Rotation - ALLEGRO_PI / 2), sin(Rotation - ALLEGRO_PI / 2));

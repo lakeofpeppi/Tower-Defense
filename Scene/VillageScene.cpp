@@ -37,8 +37,8 @@ void VillageScene::Initialize() {
     keyStrokes.clear();
     ticks = 0;
     deathCountDown = -1;
-    lives = 10;
-    money = 0;
+    lives;
+    money;
     SpeedMult = 1;
     // Add groups from bottom to top.
     AddNewObject(TileMapGroup = new Engine::Group());
@@ -349,7 +349,7 @@ void VillageScene::AdvanceDialogue() {
         if (toma_worry) toma_worry->Visible = false;
 
         if (currentDialogueIndex == 22) {
-            EarnMoney(500); // or any value you want to reward
+            EarnMoney(700); // or any value you want to reward
             std::cout << "[DEBUG] Awarded 500 money for reaching dialogue 22\n";
         }
         // Show expressions on specific lines
@@ -375,6 +375,9 @@ void VillageScene::AdvanceDialogue() {
         else if (currentDialogueIndex == 14)
         {
             if (rin_close) rin_close->Visible = true;
+        }else if (currentDialogueIndex == 22)
+        {
+            AudioHelper::PlaySample("coins.mp3");
         }
 
         currentDialogueIndex++;

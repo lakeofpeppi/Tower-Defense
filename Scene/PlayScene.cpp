@@ -214,6 +214,25 @@ void PlayScene::Update(float deltaTime) {
     // spawn musuh, update status enemy, win/lose check, preview turret gerak, cheat code timer etc
     // If we use deltaTime directly, then we might have Bullet-through-paper problem.
     // Reference: Bullet-Through-Paper
+    //IScene::Update(deltaTime); // Keep this
+
+    // --- INVINCIBILITY TIMER CHECK ---
+    if (invincible) {
+        double currentTime = al_get_time();
+        if (currentTime - invincibleStartTime >= 5.0) {
+            invincible = false;
+            std::cout << "Invincibility ended" << std::endl;
+            InvincibleLabel->Visible = false;
+        }
+    }
+    if (null_emotion) {
+        double currentTime = al_get_time();
+        if (currentTime - null_emotionStartTime >= 10.0) {
+            null_emotion = false;
+            std::cout << "Null emotion ended" << std::endl;
+            null_emotionLabel->Visible = false;
+        }
+    }
     if (SpeedMult == 0)
         deathCountDown = -1;
     else if (deathCountDown != -1)
@@ -640,14 +659,22 @@ void PlayScene::ReadEnemyWave() {
 void PlayScene::ConstructUI() {
     // setup tombol-tombol turret, text UI (stage, money, lives)
     // Background
+    InvincibleLabel = new Engine::Label("INVINCIBLE!", "pirulen.ttf", 28,  650, 100,64, 224, 208, 255);
+    InvincibleLabel->Visible = false;
+    UIGroup->AddNewObject(InvincibleLabel);
+
+    null_emotionLabel = new Engine::Label("NULL EMOTIONS!", "pirulen.ttf", 28,  650, 100,128, 0, 128, 255);
+    null_emotionLabel->Visible = false;
+    UIGroup->AddNewObject(null_emotionLabel);
+
     UIGroup->AddNewObject(new Engine::Image("play/wooden_forest.png", 1472, 0, 320, 1216));
     // Text
-    UIGroup->AddNewObject(new Engine::Label(std::string("HP: ") + std::to_string(lives), "pirulen.ttf", 32, 1500, 300));
+    UIGroup->AddNewObject(UILives = new Engine::Label(std::string("HP: ") + std::to_string(lives), "pirulen.ttf", 32, 1500, 300));
     UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("COINS: ") + std::to_string(money), "pirulen.ttf", 32, 1500, 350));
     //UIGroup->AddNewObject(UILives = new Engine::Label(std::string("STAGE: ") + std::to_string(MapId), "pirulen.ttf", 24, 1486, 400));
     UIGroup->AddNewObject(UIKnowledge = new Engine::Label(std::string("Knowledge -- ") + std::to_string(knowledge), "pirulen.ttf", 24, 1486, 450));
     UIGroup->AddNewObject(UISpeed = new Engine::Label(std::string("Speed -- ") + std::to_string(speed), "pirulen.ttf", 24, 1486, 500));
-    UIGroup->AddNewObject(UIstrength = new Engine::Label(std::string("Strength -- ") + std::to_string(strength), "pirulen.ttf", 24, 1486, 550));
+    UIGroup->AddNewObject(UIStrength = new Engine::Label(std::string("Strength -- ") + std::to_string(strength), "pirulen.ttf", 24, 1486, 550));
     TurretButton *btn;
     // Button 1
     btn = new TurretButton("play/floor.png", "play/dirt.png",
@@ -674,7 +701,7 @@ void PlayScene::ConstructUI() {
     //rocket turret
     btn = new TurretButton("play/floor.png", "play/dirt.png",
                        Engine::Sprite("play/invinsible.png", 1714, 696, 0, 0, 0, 0),
-                       Engine::Sprite("play/invinsible.png", 1714, 696, 0, 0, 0, 0), 1714, 700, RocketTurret::Price);
+                       Engine::Sprite("play/invinsible.png", 1714, 696, 0, 0, 0, 0), 1714, 700, FireTurret::Price);
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 3));
     UIGroup->AddNewControlObject(btn);
 
@@ -687,13 +714,13 @@ void PlayScene::ConstructUI() {
 
     btn = new TurretButton("play/floor.png", "play/dirt.png",
                        Engine::Sprite("play/bone.png", 1562, 776, 0, 0, 0, 0),
-                       Engine::Sprite("play/bone.png", 1562, 776, 0, 0, 0, 0), 1562, 776, ShovelTool::Price);
+                       Engine::Sprite("play/bone.png", 1562, 776, 0, 0, 0, 0), 1562, 776, ShovelTool::Price); //will be obtained after killing orc
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 5));
     UIGroup->AddNewControlObject(btn);
 
     btn = new TurretButton("play/floor.png", "play/dirt.png",
                        Engine::Sprite("play/trap.png", 1636, 776, 0, 0, 0, 0),
-                       Engine::Sprite("play/trap.png", 1636, 776 , 0, 0, 0, 0), 1636, 776, ShovelTool::Price);
+                       Engine::Sprite("play/trap.png", 1636, 776 , 0, 0, 0, 0), 1636, 776, RocketTurret::Price);
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 6));
     UIGroup->AddNewControlObject(btn);
 
@@ -710,21 +737,71 @@ void PlayScene::ConstructUI() {
 
 }
 
+
+
 void PlayScene::UIBtnClicked(int id) {
     // pas tombol turret diklik, ini yg buat turret preview muncul
     if (preview)
         UIGroup->RemoveObject(preview->GetObjectIterator());
-    if (id == 0 && money >= MachineGunTurret::Price)
-        preview = new MachineGunTurret(0, 0);
-    else if (id == 1 && money >= LaserTurret::Price)
-        preview = new LaserTurret(0, 0);
-    //fireTurret new yeah
-    else if (id == 2 && money >= FireTurret::Price)
-        preview = new FireTurret(0, 0);
-    else if (id == 3 && money >= RocketTurret::Price)
+    if ((id == 0 || id == 1) && money >= 50)
+    {
+        const int hpCost = 50;
+        const int hpGain = 20;
+        if (money >= hpCost) {
+            money -= hpCost;
+            std::cout << "lose money"<< std::endl;
+            lives += hpGain;
+            std::cout << "gain hp"<< std::endl;
+            UIMoney->Text = "COINS: " + std::to_string(money);
+            UILives->Text = "HP: " + std::to_string(lives);
+            AudioHelper::PlaySample("bite.mp3");
+        }
+        return;
+    }
+    //buat null emotions
+    else if (id == 2 && money >= 100)
+    {
+        const int Cost = 100;
+        if (money >= Cost) {
+            money -= Cost;
+            std::cout << "lose money"<< std::endl;
+            UIMoney->Text = "COINS: " + std::to_string(money);
+
+            null_emotion = true;
+            null_emotionStartTime = al_get_time();
+            null_emotionLabel->Visible = true;
+            AudioHelper::PlaySample("collect.mp3");
+        }
+        return;
+    }
+    //buat invincible
+    else if (id == 3 && money >= 100)
+    {
+        const int Cost = 100;
+        if (money >= Cost) {
+            money -= Cost;
+            std::cout << "lose money"<< std::endl;
+
+            UIMoney->Text = "COINS: " + std::to_string(money);
+
+            invincible = true;
+            invincibleStartTime = al_get_time();
+            InvincibleLabel->Visible = true;
+            AudioHelper::PlaySample("collect.mp3");
+
+        }
+        return;
+    }else if (id == 6 && money >= 200)
+    {
         preview = new RocketTurret(0, 0);
-    else if (id == 4 && money >= ShovelTool::Price)
-        preview = new ShovelTool(0, 0);
+    }
+    //fireTurret new yeah
+    // else if (id == 2 && money >= FireTurret::Price)
+    //     preview = new FireTurret(0, 0);
+    // else if (id == 3 && money >= RocketTurret::Price)
+    //     preview = new RocketTurret(0, 0);
+    // else if (id == 4 && money >= ShovelTool::Price)
+    //     preview = new ShovelTool(0, 0);
     if (!preview)
         return;
     preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
