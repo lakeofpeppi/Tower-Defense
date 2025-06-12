@@ -6,6 +6,10 @@
 #include "Engine/Resources.hpp"
 #include "Character/RinCharacter.hpp"
 #include "Helper/House.hpp"
+#include "Enemy/CrabEnemy.hpp"
+#include "Enemy/JellyFishEnemy.hpp"
+#include "Enemy/SharkEnemy.hpp"
+
 #include "Helper/NPC.hpp"
 
 bool OceanScene::IsTileWalkable(int tileType) const {
@@ -68,6 +72,22 @@ void OceanScene::Initialize() {
         "intro");
     EffectGroup->AddNewObject(npcTalker);
     */
+    auto* crab_enemy = new CrabEnemy(
+        512, 928,
+        "enemy/crab",
+        "intro");
+    EffectGroup->AddNewObject(crab_enemy);
+    auto* jellyfish_enemy = new JellyFishEnemy(
+        576, 928,
+        "enemy/jellyfish_frame",
+        "intro");
+    EffectGroup->AddNewObject(jellyfish_enemy);
+
+    auto* sharky_enemy = new SharkEnemy(
+        640, 928,
+        "enemy/sharky_frame",
+        "intro");
+    EffectGroup->AddNewObject(sharky_enemy);
 
     auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
     rin->SetPlayScene(this);

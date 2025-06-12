@@ -3,6 +3,7 @@
 //
 #include "SaharaScene.hpp"
 #include "Engine/AudioHelper.hpp"
+#include "Enemy/ScorpionEnemy.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Engine/Group.hpp"
 #include "Engine/LOG.hpp"
@@ -72,6 +73,11 @@ void SaharaScene::Initialize() {
         "intro");
     EffectGroup->AddNewObject(npcTalker);
     */
+    auto* scorpion_enemy = new ScorpionEnemy(
+            512, 300,
+            "enemy/scorpion",
+            "intro");
+    EffectGroup->AddNewObject(scorpion_enemy);
 
     auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
     rin->SetPlayScene(this);

@@ -166,6 +166,18 @@ add_executable(2025_I2P2_TowerDefense
         Scene/GameData.hpp
         Scene/PrincessScene.cpp
         Scene/PrincessScene.hpp
+        Enemy/ScorpionEnemy.cpp
+        Enemy/ScorpionEnemy.hpp
+        Enemy/OrcEnemy.cpp
+        Enemy/OrcEnemy.hpp
+        Enemy/LizardEnemy.cpp
+        Enemy/LizardEnemy.hpp
+        Enemy/CrabEnemy.cpp
+        Enemy/CrabEnemy.hpp
+        Enemy/JellyfishEnemy.cpp
+        Enemy/JellyFishEnemy.hpp
+        Enemy/SharkEnemy.cpp
+        Enemy/SharkEnemy.hpp
 
 )
 
