@@ -24,13 +24,14 @@ namespace Engine {
 
 
 
-class PlayScene final : public Engine::IScene  {
-    ALLEGRO_SAMPLE_ID bgmId;
-    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> deathBGMInstance;
+class PlayScene : public Engine::IScene  {
+
 
 // test to push
 
 protected:
+    ALLEGRO_SAMPLE_ID bgmId;
+    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> deathBGMInstance;
     int lives;
     int money;
     int SpeedMult;
@@ -50,7 +51,7 @@ public:
         BUILD_TURRET,
         SHOVEL
     };
-    bool IsTileWalkable(int tileType) const;
+
 
     PlayMode Mode = PlayMode::NONE;
     Engine::Sprite* shovelPreview = nullptr;
@@ -65,7 +66,9 @@ public:
         TILE_FENCE_LEFT,
         TILE_BOOK,
         TILE_INVENTORY
+
     };
+    virtual bool IsTileWalkable(int tileType) const = 0;
 
     bool keyUpDown    = false;
     bool keyDownDown  = false;
@@ -112,7 +115,7 @@ public:
     std::vector<std::vector<TileType>> mapState;
     //bool IsTileWalkable(int tileType) const = 0;
 
-    void ReadMap();
+    virtual void ReadMap() = 0;
     void ReadEnemyWave();
     Turret *preview;
     std::vector<std::vector<Turret*>> mapTurret;
@@ -120,7 +123,7 @@ public:
     std::list<int> keyStrokes;
     static Engine::Point GetClientSize();
     explicit PlayScene() = default;
-    void Initialize() ;
+    virtual void Initialize() = 0;
     void Terminate();
     void Update(float deltaTime) ;
     void Draw() const ;
