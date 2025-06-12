@@ -33,18 +33,23 @@ class PlayScene : public Engine::IScene  {
 protected:
     ALLEGRO_SAMPLE_ID bgmId;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> deathBGMInstance;
-    int lives;
-    int money;
+
+    int lives = 50;
+    int money = 0;
     int SpeedMult;
-    int knowledge;
-    int strength;
-    int speed;
+    int knowledge = 0;
+    int strength = 100;
+    int speed = 100;
+    bool invincible = false;
+    double invincibleStartTime = 0;
     Engine::Label* cheatLabel = nullptr;
     float cheatTimer = 0.0f;
     bool cheatActive = false;
     Engine::Label* refundLabel = nullptr;
     float refundTimer = 0.0f;
     bool refundActive = false;
+    Engine::Label* InvincibleLabel = nullptr;
+
 
     Engine::Image* rin_prof = nullptr;
 
@@ -127,7 +132,7 @@ public:
     Engine::Label *UIMoney;
     Engine::Label *UIKnowledge;
     Engine::Label *UISpeed;
-    Engine::Label *UIstrength;
+    Engine::Label *UIStrength;
     Engine::Label *UILives;
     Engine::Image *imgTarget;
     Engine::Sprite *dangerIndicator;
@@ -157,11 +162,16 @@ public:
     void OnKeyDown(int keyCode);
     void OnKeyUp(int keyCode);
     void Hit();
+
+
     int GetMoney() const;
     void EarnMoney(int money);
     void GainKnowledge();
     void LoseStrength();
     void LoseSpeed();
+    void BuyHP();
+
+
     void ConstructUI();
     void UIBtnClicked(int id);
     bool CheckSpaceValid(int x, int y);
