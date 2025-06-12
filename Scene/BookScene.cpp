@@ -31,7 +31,8 @@ void BookScene::Initialize() {
     float wpic = 1900.0f;
     float hpic = 1300.0f;
     AddNewObject(new Engine::Image("play/bookstore.png", 0.0f, 0.0f, wpic, hpic));
-
+    float startX = halfW - 600;
+    float startY = halfH - 100;
 
 
     Engine::ImageButton *btn;
@@ -64,57 +65,50 @@ void BookScene::Initialize() {
 
     // Create the first line label
     float lineHeight = 70;
-    float startX = halfW - 600;
-    float startY = halfH - 100;
     // Black screen
-    auto black = new Engine::Image("play/black.png", 0, 0, w, h);
-    black->Visible = true;
-    AddNewObject(black);
-    blackScreen.reset(black);
+    blackScreen = new Engine::Image("play/black.png", 0, 0, w, h);
+    blackScreen->Visible = true;
+    AddNewObject(blackScreen);
 
+    // Page dimensions
     float pageWidth = w * 0.8f;
     float pageHeight = h * 0.8f;
-    //page 1
-    auto p1 = new Engine::Image("play/page 1.png", (w - pageWidth) / 2, (h - pageHeight) / 2, pageWidth, pageHeight);
-    p1->Visible = false;
-    AddNewObject(p1);
-    page1.reset(p1);
+
+    // Page 1
+    page1 = new Engine::Image("play/page 1.png", (w - pageWidth) / 2, (h - pageHeight) / 2, pageWidth, pageHeight);
+    page1->Visible = false;
+    AddNewObject(page1);
 
     // Page 2
-    auto p2 = new Engine::Image("play/page 2.png", (w - pageWidth) / 2, (h - pageHeight) / 2, pageWidth, pageHeight);
-    p2->Visible = false;
-    AddNewObject(p2);
-    page2.reset(p2);
+    page2 = new Engine::Image("play/page 2.png", (w - pageWidth) / 2, (h - pageHeight) / 2, pageWidth, pageHeight);
+    page2->Visible = false;
+    AddNewObject(page2);
 
     // Page 3
-    auto p3 = new Engine::Image("play/page 3.png", (w - pageWidth) / 2, (h - pageHeight) / 2, pageWidth, pageHeight);
-    p3->Visible = false;
-    AddNewObject(p3);
-    page3.reset(p3);
+    page3 = new Engine::Image("play/page 3.png", (w - pageWidth) / 2, (h - pageHeight) / 2, pageWidth, pageHeight);
+    page3->Visible = false;
+    AddNewObject(page3);
 
     // Dialogue box
-    auto dialogueBox = new Engine::Image("play/dialogue.png", halfW - 600, h - 210, 1250, 150);
-    dialogueBox->Visible = false;
-    AddNewObject(dialogueBox);
-    dialogueBoxImage.reset(dialogueBox);
+    dialogueBoxImage = new Engine::Image("play/dialogue.png", halfW - 600, h - 210, 1250, 150);
+    dialogueBoxImage->Visible = false;
+    AddNewObject(dialogueBoxImage);
 
     // Rin normal
-    auto rinNormal = new Engine::Image("play/rin normal.png", halfW - 950, h - 480, 720, 480);
-    rinNormal->Visible = false;
-    AddNewObject(rinNormal);
-    rin_normal.reset(rinNormal);
+    rin_normal = new Engine::Image("play/rin normal.png", halfW - 950, h - 480, 720, 480);
+    rin_normal->Visible = false;
+    AddNewObject(rin_normal);
 
     // Rin worried
-    auto rinWorry = new Engine::Image("play/rin worried.png", halfW - 950, h - 480, 720, 480);
-    rinWorry->Visible = false;
-    AddNewObject(rinWorry);
-    rin_worry.reset(rinWorry);
+    rin_worry = new Engine::Image("play/rin worried.png", halfW - 950, h - 480, 720, 480);
+    rin_worry->Visible = false;
+    AddNewObject(rin_worry);
 
-    // Rin closed
-    auto rinClose = new Engine::Image("play/rin close.png", halfW - 950, h - 480, 720, 480);
-    rinClose->Visible = false;
-    AddNewObject(rinClose);
-    rin_close.reset(rinClose);
+    // Rin close
+    rin_close = new Engine::Image("play/rin close.png", halfW - 950, h - 480, 720, 480);
+    rin_close->Visible = false;
+    AddNewObject(rin_close);
+
 
 
     dialogueLabel = new Engine::Label(dialogueLines[0], "To The Point.ttf", 70, startX, startY, 255, 255, 255, 255, 0.0, 0.5);

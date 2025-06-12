@@ -71,10 +71,13 @@ bool PlayScene::IsTileWalkable(int tileType) const {
 
 void PlayScene::Initialize() {
    // buat initialize stage pas masuk level
+    std::cout << "[DEBUG] Entering PlayScene::Initialize()\n";
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
     int halfH = h / 2;    // ini kayak setup awal: load map, load musuh, set UI,sm start bgms
+    float startX = halfW - 600;
+    float startY = halfH - 100;
 
     keyUpDown = false;
     keyDownDown = false;
@@ -99,41 +102,45 @@ void PlayScene::Initialize() {
     // Should support buttons.
     AddNewControlObject(UIGroup = new Group());
 
+    dialogueBoxImage = new Engine::Image("play/dialogue.png", halfW - 600, h - 210, 1140, 150);
+    dialogueBoxImage->Visible = false;
+    UIGroup->AddNewObject(dialogueBoxImage);
 
-    //rin normal
-    auto rinNormal = new Engine::Image("play/rin normal.png", halfW - 950, h - 480, 720, 480);
-    rinNormal->Visible = false;
-    AddNewObject(rinNormal);
-    rin_normal.reset(rinNormal);
+    // Rin normal
+    rin_normal = new Engine::Image("play/rin normal.png", halfW - 950, h - 480, 720, 480);
+    rin_normal->Visible = false;
+    AddNewObject(rin_normal);
 
     // Rin worried
-    auto rinWorry = new Engine::Image("play/rin worried.png", halfW - 950, h - 480, 720, 480);
-    rinWorry->Visible = false;
-    AddNewObject(rinWorry);
-    rin_worry.reset(rinWorry);
+    rin_worry = new Engine::Image("play/rin worried.png", halfW - 950, h - 480, 720, 480);
+    rin_worry->Visible = false;
+    AddNewObject(rin_worry);
 
     // Rin close
-    auto rinClose = new Engine::Image("play/rin close.png", halfW - 950, h - 480, 720, 480);
-    rinClose->Visible = false;
-    AddNewObject(rinClose);
-    rin_close.reset(rinClose);
+    rin_close = new Engine::Image("play/rin close.png", halfW - 950, h - 480, 720, 480);
+    rin_close->Visible = false;
+    AddNewObject(rin_close);
 
-    // toma happy
-    auto tomaHappy = new Engine::Image("play/toma happy.png", halfW - 950, h - 480, 720, 480);
-    tomaHappy->Visible = false;
-    AddNewObject(tomaHappy);
-    toma_happy.reset(tomaHappy);
+    // Toma happy
+    toma_happy = new Engine::Image("play/toma happy.png", halfW - 950, h - 480, 720, 480);
+    toma_happy->Visible = false;
+    AddNewObject(toma_happy);
 
-    // toma shock
-    auto tomaShock = new Engine::Image("play/toma shock.png", halfW - 950, h - 480, 720, 480);
-    tomaShock->Visible = false;
-    AddNewObject(tomaShock);
-    toma_shock.reset(tomaShock);
-    // toma shock
-    auto tomaWorry = new Engine::Image("play/toma worry.png", halfW - 950, h - 480, 720, 480);
-    tomaWorry->Visible = false;
-    AddNewObject(tomaWorry);
-    toma_worry.reset(tomaWorry);
+    // Toma shock
+    toma_shock = new Engine::Image("play/toma shock.png", halfW - 950, h - 480, 720, 480);
+    toma_shock->Visible = false;
+    AddNewObject(toma_shock);
+
+    // Toma worry
+    toma_worry = new Engine::Image("play/toma worry.png", halfW - 950, h - 480, 720, 480);
+    toma_worry->Visible = false;
+    AddNewObject(toma_worry);
+
+
+    if (!dialogueLines.empty()) {
+        dialogueLabel = new Engine::Label(dialogueLines[0], "To The Point.ttf", 70, startX, startY, 255, 255, 255, 255, 0.0, 0.5);
+        UIGroup->AddNewObject(dialogueLabel);
+    }
 
 
     // Create house
@@ -178,6 +185,7 @@ void PlayScene::Initialize() {
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
     // Start BGM.
     bgmId = AudioHelper::PlayBGM("village-explore.mp3");
+    std::cout << "[DEBUG] Finished PlayScene::Initialize()\n";
 }
 
 
@@ -831,7 +839,6 @@ void PlayScene::ShowDialogue(const std::vector<std::string>& lines) {
     int halfW = screenSize.x / 2;
     int startX = halfW - 600;
     int startY = screenSize.y - 140;
-    int screenW = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int screenH = Engine::GameEngine::GetInstance().GetScreenSize().y;
 
     dialogueLines = lines;
@@ -840,15 +847,15 @@ void PlayScene::ShowDialogue(const std::vector<std::string>& lines) {
 
     // Create dialogue box image if not already created
     if (!dialogueBoxImage) {
-        dialogueBoxImage = std::make_unique<Engine::Image>(
-            "play/dialogue.png", halfW - 600, screenSize.y - 210, 1250, 150);
-        UIGroup->AddNewObject(dialogueBoxImage.get());
+        dialogueBoxImage = new Engine::Image("play/dialogue.png", halfW - 600, screenSize.y - 210, 1140, 150);
+        UIGroup->AddNewObject(dialogueBoxImage);
     }
     dialogueBoxImage->Visible = true;
 
+
     // Create dialogue label if not already created
     if (!dialogueLabel) {
-        dialogueLabel = new Engine::Label("", "To The Point.ttf", 70, startX, startY, 255, 255, 255, 255);
+        dialogueLabel = new Engine::Label("", "To The Point.ttf", 70, startX-15, startY, 255, 255, 255, 255);
         dialogueLabel->Anchor = Engine::Point(0.0, 0.5);
         UIGroup->AddNewObject(dialogueLabel);
     }
@@ -861,7 +868,7 @@ void PlayScene::ShowDialogue(const std::vector<std::string>& lines) {
         dialogueLabel->Text = ""; // Force refresh
         dialogueLabel->Text = dialogueLines[0];
         dialogueLabel->Visible = true;
-        dialogueLabel->Position.x = halfW - 400;
+        dialogueLabel->Position.x = halfW - 450;
         dialogueLabel->Position.y = screenH - 150;
 
         currentDialogueIndex = 1;
@@ -876,10 +883,10 @@ void PlayScene::AdvanceDialogue() {
         std::cout << "Advancing to line: " << dialogueLines[currentDialogueIndex] << std::endl;
 
         // Force refresh text
-        dialogueLabel->Text = "";
-        dialogueLabel->Text = dialogueLines[currentDialogueIndex];
+        if (dialogueLabel)dialogueLabel->Text = "";
+        if (dialogueLabel)dialogueLabel->Text = dialogueLines[currentDialogueIndex];
         // Optionally force position and visibility again
-        dialogueLabel->Visible = true;
+        if (dialogueLabel)dialogueLabel->Visible = true;
 
         if (rin_normal) rin_normal->Visible = false;
         if (rin_worry) rin_worry->Visible = false;
@@ -893,7 +900,7 @@ void PlayScene::AdvanceDialogue() {
         if (currentDialogueIndex == 4 || currentDialogueIndex == 5 || currentDialogueIndex == 8 || currentDialogueIndex == 9 || currentDialogueIndex == 10 || currentDialogueIndex == 11 || currentDialogueIndex == 12) {
             if (toma_worry) toma_worry->Visible = true;
         } // toma happy
-        else if (currentDialogueIndex == 3 || currentDialogueIndex == 6 || currentDialogueIndex == 17 || currentDialogueIndex == 21 || currentDialogueIndex == 23 || currentDialogueIndex == 24) {
+        else if (currentDialogueIndex == 3 || currentDialogueIndex == 6 || currentDialogueIndex == 17 || currentDialogueIndex == 21 || currentDialogueIndex == 23 || currentDialogueIndex == 24 || currentDialogueIndex == 16) {
             if (toma_happy) toma_happy->Visible = true;
         } //toma shock
         else if (currentDialogueIndex == 0 || currentDialogueIndex == 1 || currentDialogueIndex == 2 || currentDialogueIndex == 13 || currentDialogueIndex == 15)

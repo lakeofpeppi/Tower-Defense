@@ -21,12 +21,16 @@ class BookScene final : public Engine::IScene {
 private:
 
     std::vector<std::string> dialogueLines;
-    std::shared_ptr<Engine::Image> dialogueBoxImage;
-    std::shared_ptr<Engine::Image> rin_normal;
-    std::shared_ptr<Engine::Image> rin_worry;
-    std::shared_ptr<Engine::Image> rin_close;
-    std::shared_ptr<Engine::Image> blackScreen;
-    std::shared_ptr<Engine::Image> page1, page2, page3;
+
+    Engine::Image* dialogueBoxImage = nullptr;
+    Engine::Image* rin_normal = nullptr;
+    Engine::Image* rin_worry = nullptr;
+    Engine::Image* rin_close = nullptr;
+    Engine::Image* blackScreen = nullptr;
+    Engine::Image* page1 = nullptr;
+    Engine::Image* page2 = nullptr;
+    Engine::Image* page3 = nullptr;
+
 
 
     int currentLine = -1;

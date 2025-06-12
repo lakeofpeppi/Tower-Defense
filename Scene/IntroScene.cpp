@@ -58,28 +58,26 @@ void IntroScene::Initialize() {
     float startX = halfW - 600;
     float startY = halfH - 100;
     // Black screen
-    auto black = new Engine::Image("play/black.png", 0, 0, w, h);
-    black->Visible = false;
-    AddNewObject(black);
-    blackScreen.reset(black);
+    // Black screen
+    blackScreen = new Engine::Image("play/black.png", 0, 0, w, h);
+    blackScreen->Visible = false;
+    AddNewObject(blackScreen);  // Scene will manage deletion
 
     // Dialogue box
-    auto dialogueBox = new Engine::Image("play/dialogue.png", halfW - 600, h - 210, 1250, 150);
-    dialogueBox->Visible = false;
-    AddNewObject(dialogueBox);
-    dialogueBoxImage.reset(dialogueBox);
+    dialogueBoxImage = new Engine::Image("play/dialogue.png", halfW - 600, h - 210, 1250, 150);
+    dialogueBoxImage->Visible = false;
+    AddNewObject(dialogueBoxImage);
 
     // Rin normal
-    auto rinNormal = new Engine::Image("play/rin normal.png", halfW - 950, h - 480, 720, 480);
-    rinNormal->Visible = false;
-    AddNewObject(rinNormal);
-    rin_normal.reset(rinNormal);
+    rin_normal = new Engine::Image("play/rin normal.png", halfW - 950, h - 480, 720, 480);
+    rin_normal->Visible = false;
+    AddNewObject(rin_normal);
 
     // Rin worried
-    auto rinWorry = new Engine::Image("play/rin worried.png", halfW - 950, h - 480, 720, 480);
-    rinWorry->Visible = false;
-    AddNewObject(rinWorry);
-    rin_worry.reset(rinWorry);
+    rin_worry = new Engine::Image("play/rin worried.png", halfW - 950, h - 480, 720, 480);
+    rin_worry->Visible = false;
+    AddNewObject(rin_worry);
+
 
 
     dialogueLabel = new Engine::Label(dialogueLines[0], "To The Point.ttf", 70, startX, startY, 255, 255, 255, 255, 0.0, 0.5);

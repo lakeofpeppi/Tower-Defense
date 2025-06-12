@@ -28,6 +28,7 @@ class PlayScene final : public Engine::IScene  {
     ALLEGRO_SAMPLE_ID bgmId;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> deathBGMInstance;
 
+
 // test to push
 
 protected:
@@ -40,6 +41,18 @@ protected:
     Engine::Label* refundLabel = nullptr;
     float refundTimer = 0.0f;
     bool refundActive = false;
+    Engine::Label* dialogueLabel = nullptr;
+    std::vector<std::string> dialogueLines;
+
+    Engine::Image* rin_normal = nullptr;
+    Engine::Image* rin_worry = nullptr;
+    Engine::Image* rin_close = nullptr;
+    Engine::Image* toma_happy = nullptr;
+    Engine::Image* toma_shock = nullptr;
+    Engine::Image* toma_worry = nullptr;
+    Engine::Image* dialogueBoxImage = nullptr;
+
+
 
 
 
@@ -83,18 +96,8 @@ public:
     void ShowDialogue(const std::vector<std::string>& lines);
     void AdvanceDialogue();
 
-    std::shared_ptr<Engine::Image> rin_normal;
-    std::shared_ptr<Engine::Image> rin_worry;
-    std::shared_ptr<Engine::Image> rin_close;
-    std::shared_ptr<Engine::Image> toma_happy;
-    std::shared_ptr<Engine::Image> toma_shock;
-    std::shared_ptr<Engine::Image> toma_worry;
-    std::shared_ptr<Engine::Image> blackScreen;
-    std::unique_ptr<Engine::Image> dialogueBoxImage;
 
-    Engine::Label* dialogueLabel = nullptr;
     bool dialogueActive = false;
-    std::vector<std::string> dialogueLines;
     int currentDialogueIndex = 0;
 
 

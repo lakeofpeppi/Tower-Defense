@@ -9,6 +9,8 @@
 #include "Engine/Resources.hpp"
 #include "Engine/Sprite.hpp"
 #include<iostream>
+#include <cmath>
+
 #include <allegro5/allegro.h>
 //#include "PlayScene.hpp"
 

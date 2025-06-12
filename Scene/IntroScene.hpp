@@ -15,11 +15,12 @@ class IntroScene final : public Engine::IScene {
 private:
 
     std::vector<std::string> dialogueLines;
-    std::shared_ptr<Engine::Image> dialogueBoxImage;
-    std::shared_ptr<Engine::Image> rin_normal;
-    std::shared_ptr<Engine::Image> rin_worry;
-    std::shared_ptr<Engine::Image> rin_close;
-    std::shared_ptr<Engine::Image> blackScreen;
+    Engine::Image* dialogueBoxImage = nullptr;
+    Engine::Image* rin_normal = nullptr;
+    Engine::Image* rin_worry = nullptr;
+    Engine::Image* rin_close = nullptr;
+    Engine::Image* blackScreen = nullptr;
+
 
     int currentLine = 0;
     Engine::Label* dialogueLabel = nullptr;
