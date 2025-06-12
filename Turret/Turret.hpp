@@ -1,3 +1,4 @@
+
 #ifndef TURRET_HPP
 #define TURRET_HPP
 #include <allegro5/base.h>

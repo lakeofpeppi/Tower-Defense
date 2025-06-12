@@ -1,4 +1,4 @@
-#include <allegro5/base.h>
+ #include <allegro5/base.h>
 #include <cmath>
 #include <string>
 

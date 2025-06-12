@@ -162,10 +162,10 @@ void IntroScene::NextOnClick(int stage) {
         }
 
     } else {
-        PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("play"));
+        PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("village"));
         if (scene) {
             scene->MapId = stage;
-            Engine::GameEngine::GetInstance().ChangeScene("play");
+            Engine::GameEngine::GetInstance().ChangeScene("village");
         }
     }
 }
