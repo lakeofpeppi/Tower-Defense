@@ -38,7 +38,7 @@ void VillageScene::Initialize() {
     ticks = 0;
     deathCountDown = -1;
     lives = 10;
-    money = 150;
+    money = 0;
     SpeedMult = 1;
     // Add groups from bottom to top.
     AddNewObject(TileMapGroup = new Engine::Group());
@@ -103,7 +103,7 @@ void VillageScene::Initialize() {
     auto* Book = new House(
         288, 512,  // Example position
         "play/house_book.png",  // Image of the house
-        "ocean"         // The scene it should go to when touched
+        "book"         // The scene it should go to when touched
     );
 
 
