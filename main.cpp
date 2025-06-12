@@ -13,6 +13,7 @@
 #include "Scene/IntroScene.hpp"
 #include "Scene/VillageScene.hpp"
 #include "Scene/BookScene.hpp"
+#include "Scene/OceanScene.hpp"
 
 
 
@@ -26,7 +27,7 @@ int main(int argc, char **argv) {
     game.AddNewScene("stage-select", new StageSelectScene());
 	//game.AddNewScene("play", new PlayScene());
 	game.AddNewScene("village", new VillageScene());
-
+	game.AddNewScene("ocean", new OceanScene());
 	game.AddNewScene("lose", new LoseScene());
 	game.AddNewScene("win", new WinScene());
 	game.AddNewScene("settings", new SettingsScene());

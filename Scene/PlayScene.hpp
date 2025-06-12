@@ -5,7 +5,7 @@
 #include <memory>
 #include <utility>
 #include <vector>
-#include "BasePlayScene.hpp"
+//#include "BasePlayScene.hpp"
 
 #include "Engine/IScene.hpp"
 #include "Engine/Point.hpp"
@@ -61,6 +61,7 @@ public:
     Engine::Sprite* shovelPreview = nullptr;
     enum TileType {
         TILE_GRASS,
+        TILE_WATER,
         TILE_FLOOR,
         TILE_OCCUPIED,
         TILE_TREE,
@@ -139,7 +140,7 @@ public:
     explicit PlayScene() = default;
     virtual void Initialize() = 0;
     void Terminate();
-    void Update(float deltaTime) ;
+    virtual void Update(float deltaTime) ;
     void Draw() const ;
     void OnMouseDown(int button, int mx, int my) ;
     void OnMouseMove(int mx, int my);
@@ -153,6 +154,8 @@ public:
     void UIBtnClicked(int id);
     bool CheckSpaceValid(int x, int y);
     //void AddMultipleFlashes(int count, float interval);
+    virtual TileType GetDefaultWalkableTile() const;
+    virtual void Transition() = 0;
 
     std::vector<std::vector<int>> CalculateBFSDistance();
     // void ModifyReadMapTiles();

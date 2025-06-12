@@ -195,6 +195,10 @@ bool PlayScene::IsTileWalkable(int tileType) const {
     */
 //}
 
+PlayScene::TileType PlayScene::GetDefaultWalkableTile() const {
+    return TILE_GRASS;
+}
+
 
 void PlayScene::Terminate() {
     // dipanggil pas scene selesai, kayak exit stage
@@ -452,7 +456,7 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
         }
         if (target) {
             TowerGroup->RemoveObject(target->GetObjectIterator());
-            mapState[y][x] = TILE_GRASS;
+            mapState[y][x] = GetDefaultWalkableTile();
             int refund = 25;
             EarnMoney(refund);
             refundLabel = new Engine::Label("+$" + std::to_string(refund), "pirulen.ttf", 24, mx, my, 0, 255, 0);
@@ -732,7 +736,7 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
     std::queue<Engine::Point> que;
     // Push end point.
     // BFS from end point.
-    if (mapState[MapHeight - 1][MapWidth - 1] != TILE_GRASS)
+    if (mapState[MapHeight - 1][MapWidth - 1] != GetDefaultWalkableTile())
         return map;
     que.push(Engine::Point(MapWidth - 1, MapHeight - 1));
     map[MapHeight - 1][MapWidth - 1] = 0;
@@ -751,7 +755,7 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
             if (next_x < 0 || next_x >= MapWidth || next_y < 0 || next_y >= MapHeight)
                 continue;
             // availability check, kalo gakosong skip, kalo walls skip
-            if (mapState[next_y][next_x] != TILE_GRASS || map[next_y][next_x] != -1)
+            if (mapState[next_y][next_x] != GetDefaultWalkableTile() || map[next_y][next_x] != -1)
                 continue;
 
             // distance formula= first until last diitung

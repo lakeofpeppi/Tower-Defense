@@ -14,6 +14,9 @@
 bool VillageScene::IsTileWalkable(int tileType) const {
     return tileType == TILE_GRASS; // only grass is walkable
 }
+PlayScene::TileType VillageScene::GetDefaultWalkableTile() const {
+    return TILE_GRASS;
+}
 
 void VillageScene::Initialize() {
    // buat initialize stage pas masuk level
@@ -100,7 +103,7 @@ void VillageScene::Initialize() {
     auto* Book = new House(
         288, 512,  // Example position
         "play/house_book.png",  // Image of the house
-        "book"         // The scene it should go to when touched
+        "ocean"         // The scene it should go to when touched
     );
 
 
@@ -212,6 +215,9 @@ void VillageScene::ReadMap() {
         }
     }
 }
+
+
+
 void VillageScene::OnKeyDown(int keyCode) {
     //handle shortcut turret Q/W/E/R
 // juga logic cheat code masuk disini (bisa spawn plane + 10k)
@@ -387,4 +393,30 @@ void VillageScene::HideDialogue() {
     dialogueActive = false;
     if (dialogueBoxImage) dialogueBoxImage->Visible = false;
     if (dialogueLabel) dialogueLabel->Visible = false;
+}
+
+void VillageScene::Update(float deltaTime) {
+    PlayScene::Update(deltaTime);
+    Transition();
+}
+
+void VillageScene::Transition() {
+    if (_didTransition) return;
+
+    // find our RinCharacter in the scene
+    RinCharacter* rin = nullptr;
+    for (auto* obj : EffectGroup->GetObjects()) {
+        if ((rin = dynamic_cast<RinCharacter*>(obj))) break;
+    }
+    if (!rin) return;
+
+    // grid‐coords:
+    int gx = static_cast<int>(rin->Position.x) / BlockSize;
+    int gy = static_cast<int>(rin->Position.y) / BlockSize;
+
+    // if she's on bottom‐right, switch scenes once
+    if (gx == MapWidth - 1 && gy == MapHeight - 1) {
+        _didTransition = true;
+        Engine::GameEngine::GetInstance().ChangeScene("ocean");
+    }
 }
