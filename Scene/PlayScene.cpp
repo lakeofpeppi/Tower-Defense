@@ -32,6 +32,7 @@
 #include "Character/RinCharacter.hpp"
 #include "Helper/House.hpp"
 #include "Helper/NPC.hpp"
+#include "Helper/Fence.hpp"
 
 // TODO HACKATHON-4 (1/3): Trace how the game handles keyboard input.
 // TODO HACKATHON-4 (2/3): Find the cheat code sequence in this file.
@@ -108,7 +109,9 @@ void PlayScene::Initialize() {
         "book"         // The scene it should go to when touched
     );
 
+
     EffectGroup->AddNewObject(Book);
+
 
     auto* npcTalker = new NPC(
         512, 928,

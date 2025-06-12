@@ -24,7 +24,7 @@ namespace Engine {
 
 
 
-class PlayScene final : public BasePlayScene  {
+class PlayScene final : public Engine::IScene  {
     ALLEGRO_SAMPLE_ID bgmId;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> deathBGMInstance;
 
@@ -50,7 +50,7 @@ public:
         BUILD_TURRET,
         SHOVEL
     };
-    bool IsTileWalkable(int tileType) const override;
+    bool IsTileWalkable(int tileType) const;
 
     PlayMode Mode = PlayMode::NONE;
     Engine::Sprite* shovelPreview = nullptr;
@@ -106,28 +106,32 @@ public:
     Engine::Sprite *dangerIndicator;
     //shovel handling
 
-    Turret *preview;
-    std::vector<std::vector<TileType>> mapState;
-    std::vector<std::vector<Turret*>> mapTurret;
+
+
     std::vector<std::vector<int>> mapDistance;
+    std::vector<std::vector<TileType>> mapState;
+    //bool IsTileWalkable(int tileType) const = 0;
+
+    void ReadMap();
+    void ReadEnemyWave();
+    Turret *preview;
+    std::vector<std::vector<Turret*>> mapTurret;
     std::list<std::pair<int, float>> enemyWaveData;
     std::list<int> keyStrokes;
     static Engine::Point GetClientSize();
     explicit PlayScene() = default;
-    void Initialize() override;
-    void Terminate() override;
-    void Update(float deltaTime) override;
-    void Draw() const override;
-    void OnMouseDown(int button, int mx, int my) override;
-    void OnMouseMove(int mx, int my) override;
-    void OnMouseUp(int button, int mx, int my) override;
-    void OnKeyDown(int keyCode) override;
-    void OnKeyUp(int keyCode) override;
+    void Initialize() ;
+    void Terminate();
+    void Update(float deltaTime) ;
+    void Draw() const ;
+    void OnMouseDown(int button, int mx, int my) ;
+    void OnMouseMove(int mx, int my);
+    void OnMouseUp(int button, int mx, int my) ;
+    void OnKeyDown(int keyCode);
+    void OnKeyUp(int keyCode);
     void Hit();
     int GetMoney() const;
     void EarnMoney(int money);
-    void ReadMap() override;
-    void ReadEnemyWave() override;
     void ConstructUI();
     void UIBtnClicked(int id);
     bool CheckSpaceValid(int x, int y);

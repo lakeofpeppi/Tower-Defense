@@ -27,7 +27,7 @@ RinCharacter::RinCharacter(float x, float y) : Engine::Sprite(
       //SetSmooth(false);  // keep it pixel-perfect
   }
 //PlayScene::BlockSize, PlayScene::BlockSize --> original w and h
-void RinCharacter::SetPlayScene(BasePlayScene* playScene) {
+void RinCharacter::SetPlayScene(PlayScene* playScene) {
     this->playScene = playScene;
 }
 
