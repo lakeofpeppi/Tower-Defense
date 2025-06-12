@@ -65,13 +65,14 @@ public:
         TILE_FLOOR,
         TILE_OCCUPIED,
         TILE_TREE,
+        TILE_SAND,
         TILE_FENCE,
         TILE_FENCE_DOWN,
         TILE_FENCE_RIGHT,
         TILE_FENCE_LEFT,
         TILE_BOOK,
-        TILE_INVENTORY
-
+        TILE_INVENTORY,
+        TILE_SOIL
     };
     virtual bool IsTileWalkable(int tileType) const = 0;
 

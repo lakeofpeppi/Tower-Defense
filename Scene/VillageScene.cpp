@@ -421,6 +421,6 @@ void VillageScene::Transition() {
     // if she's on bottom‐right, switch scenes once
     if (gx == MapWidth - 1 && gy == MapHeight - 1) {
         _didTransition = true;
-        Engine::GameEngine::GetInstance().ChangeScene("ocean");
+        Engine::GameEngine::GetInstance().ChangeScene("forest");
     }
 }
