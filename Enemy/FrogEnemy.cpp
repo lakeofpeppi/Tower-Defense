@@ -6,6 +6,7 @@
 #include "Enemy/FrogEnemy.hpp"
 #include "Engine/Resources.hpp"
 #include "Engine/GameEngine.hpp"
+#include "Character/RinCharacter.hpp"
 #include "Scene/VillageScene.hpp" // FULL include allowed here
 
 FrogEnemy::FrogEnemy(float x, float y, std::string baseImagePath, std::string targetSceneName)
