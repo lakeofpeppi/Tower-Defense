@@ -67,7 +67,7 @@ void StageSelectScene::PlayOnClick(int stage) {
 }
 
 void StageSelectScene::ScoreboardOnClick() {
-    Engine::GameEngine::GetInstance().ChangeScene("scoreboard-scene");
+    Engine::GameEngine::GetInstance().ChangeScene("orc");
 }
 void StageSelectScene::Ending() {
     Engine::GameEngine::GetInstance().ChangeScene("princess");

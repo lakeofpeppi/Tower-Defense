@@ -180,6 +180,16 @@ void SaharaScene::Initialize() {
     // Start BGM.
     //bgmId = AudioHelper::PlayBGM("desert-explore.mp3");
 }
+std::string SaharaScene::GetMapImagePath() const {
+    return "play/sahara_map.png";
+}
+void SaharaScene::CloseMap() {
+    PlayScene::CloseMap();  // Optional: call base logic
+
+    // Add village-specific logic here if needed
+    std::cout << "[VillageScene] Closed village map.\n";
+}
+
 void SaharaScene::ReadMap() {
     // load file map.txt jd mapState
     // ngegambar tile floor / dirt ke TileMapGroup

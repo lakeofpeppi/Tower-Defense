@@ -192,6 +192,16 @@ void OceanScene::Initialize() {
     // Start BGM.
     bgmId = AudioHelper::PlayBGM("ocean-explore.wav");
 }
+std::string OceanScene::GetMapImagePath() const {
+    return "play/ocean_map.png";
+}
+void OceanScene::CloseMap() {
+    PlayScene::CloseMap();  // Optional: call base logic
+
+    // Add village-specific logic here if needed
+    std::cout << "[VillageScene] Closed village map.\n";
+}
+
 void OceanScene::ReadMap() {
     // load file map.txt jd mapState
     // ngegambar tile floor / dirt ke TileMapGroup

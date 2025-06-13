@@ -24,6 +24,7 @@ PlayScene::TileType VillageScene::GetDefaultWalkableTile() const {
 void VillageScene::Initialize() {
    // buat initialize stage pas masuk level
     // ini kayak setup awal: load map, load musuh, set UI,sm start bgms
+
     std::cout << "[DEBUG] Entering PlayScene::Initialize()\n";
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
@@ -160,6 +161,16 @@ void VillageScene::Initialize() {
     // Start BGM.
     //bgmId = AudioHelper::PlayBGM("village-explore.mp3");
 }
+std::string VillageScene::GetMapImagePath() const {
+    return "play/village_map.png";
+}
+void VillageScene::CloseMap() {
+    PlayScene::CloseMap();  // Optional: call base logic
+
+    // Add village-specific logic here if needed
+    std::cout << "[VillageScene] Closed village map.\n";
+}
+
 void VillageScene::Terminate() {
     if (footstepsPlaying && footstepsInstance) {
         al_stop_sample_instance(footstepsInstance.get());
@@ -427,7 +438,7 @@ void VillageScene::AdvanceDialogue() {
             if (rin_close) rin_close->Visible = true;
         }else if (currentDialogueIndex == 22)
         {
-            AudioHelper::PlaySample("coins.mp3");
+            AudioHelper::PlaySample("collect.mp3");
         }
 
         currentDialogueIndex++;

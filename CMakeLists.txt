@@ -186,6 +186,8 @@ add_executable(2025_I2P2_TowerDefense
         Scene/NormalScene.hpp
         Helper/Creature.cpp
         Helper/Creature.hpp
+        Scene/BattleOrc.cpp
+        Scene/BattleOrc.hpp
 
 )
 

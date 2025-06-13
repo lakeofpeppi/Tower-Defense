@@ -21,6 +21,7 @@
 #include "Scene/NormalScene.hpp"
 #include "Scene/GoodScene.hpp"
 #include "Scene/BadScene.hpp"
+#include "Scene/BattleOrc.hpp"
 
 
 
@@ -47,6 +48,7 @@ int main(int argc, char **argv) {
 	game.AddNewScene("bad", new BadScene());
 	game.AddNewScene("good", new GoodScene());
 	game.AddNewScene("normal", new NormalScene());
+	game.AddNewScene("orc", new BattleOrc());
 
     // TODO HACKATHON-1 (1/1): Change the start scene (DONE)
 	game.Start("start", 60, 1792, 1216);

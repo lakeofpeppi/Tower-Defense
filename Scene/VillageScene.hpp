@@ -33,6 +33,10 @@ public:
     bool footstepsPlaying = false;
     std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> footstepsInstance;
     bool IsPlayerInBounds();
+    std::string GetMapImagePath() const override;
+    void CloseMap() override;
+
+
 
 
 

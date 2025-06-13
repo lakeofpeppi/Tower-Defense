@@ -59,7 +59,12 @@ protected:
     double null_emotionStartTime = 0;
     Engine::Label* null_emotionLabel = nullptr;
 
-    Engine::Image* rin_prof = nullptr;
+
+
+    std::list<std::pair<bool, Engine::IObject*>>::iterator mapOverlayIterator;
+    std::list<std::pair<bool, Engine::IControl*>>::iterator closeMapCtrlIterator;
+    std::list<std::pair<bool, Engine::IObject*>>::iterator closeMapObjIterator;
+
 
 
 
@@ -145,15 +150,25 @@ public:
     Engine::Image *imgTarget;
     Engine::Sprite *dangerIndicator;
     Engine::Image *blackScreen = nullptr;
-    Engine::ImageButton* saveBtn;
-    Engine::ImageButton* titleBtn;
-    Engine::ImageButton* settingsBtn;
-    Engine::ImageButton* backBtn;
+    Engine::Image* mapOverlay = nullptr;
+    Engine::Image* rin_prof = nullptr;
+    bool mapVisible = false;
 
-    Engine::Label* saveLabel;
-    Engine::Label* titleLabel;
-    Engine::Label* settingsLabel;
-    Engine::Label* backLabel;
+
+    Engine::ImageButton* closeMapBtn = nullptr;
+    Engine::Label* closeMapLabel = nullptr;
+
+
+
+    Engine::ImageButton* saveBtn = nullptr;
+    Engine::ImageButton* titleBtn = nullptr;
+    Engine::ImageButton* settingsBtn = nullptr;
+    Engine::ImageButton* backBtn = nullptr;
+
+    Engine::Label* saveLabel = nullptr;
+    Engine::Label* titleLabel = nullptr;
+    Engine::Label* settingsLabel = nullptr;
+    Engine::Label* backLabel = nullptr;
 
 
 
@@ -188,6 +203,12 @@ public:
     void ReturnToTitleOnClick();
     void SettingsOnClick();
     void BackOnClick();
+    void LoadProgress();
+    virtual void MapOnClick();
+    virtual void CloseMap();
+
+    virtual std::string GetMapImagePath() const;
+
 
 
 

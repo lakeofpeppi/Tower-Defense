@@ -13,5 +13,8 @@ public:
     //void Transition() override;
     void Transition() override;
     void Update(float deltaTime) override;
+    std::string GetMapImagePath() const override;
+    void CloseMap() override;
+
 };
 #endif

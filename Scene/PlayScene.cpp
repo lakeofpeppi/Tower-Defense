@@ -19,6 +19,8 @@
 #include "Engine/Resources.hpp"
 #include "PlayScene.hpp"
 #include "UI/Component/ImageButton.hpp"
+#include "GameData.hpp"
+#include <filesystem>
 
 
 #include "GameData.hpp"
@@ -729,6 +731,11 @@ void PlayScene::ConstructUI() {
     UIGroup->AddNewControlObject(btn);
 
 
+
+    blackScreen = new Engine::Image("play/floor.png", 400, 200, 672, 816);
+    blackScreen->Visible = false;
+    UIGroup->AddNewObject(blackScreen); // MUST be before other UI elements
+
     //MENU
     Engine::ImageButton* menuButton = new Engine::ImageButton(
     "stage-select/dirt.png",           // Default image
@@ -742,11 +749,19 @@ void PlayScene::ConstructUI() {
     UIGroup->AddNewObject(new Engine::Label("MENU", "pirulen.ttf", 32,
      1632, 930, 255, 255, 255, 255, 0.5f, 0.5f));
 
+    Engine::ImageButton* mapButton = new Engine::ImageButton(
+        "stage-select/dirt.png", "stage-select/floor.png",
+        1486, 970, 292, 60 // Same X, increased Y
+    );
+    mapButton->SetOnClickCallback(std::bind(&PlayScene::MapOnClick, this)); // Make sure MapOnClick() exists
+    UIGroup->AddNewControlObject(mapButton);
+
+    UIGroup->AddNewObject(new Engine::Label("MAP", "pirulen.ttf", 32,
+        1632, 1000, 255, 255, 255, 255, 0.5f, 0.5f)); // Adjusted label position
 
 
-    blackScreen = new Engine::Image("play/black.png", 400, 200, 672, 816);
-    blackScreen->Visible = false;
-    AddNewObject(blackScreen);  // Scene will manage deletion
+
+
 
     //buttons inside blackscreen
     // Save Progress button
@@ -797,10 +812,10 @@ void PlayScene::ConstructUI() {
     dangerIndicator->Tint.a = 0;
     UIGroup->AddNewObject(dangerIndicator);
 
+
     rin_prof = new Engine::Image("play/rin prof.png", 1452, 40, 360, 240);
     rin_prof->Visible = true;
     AddNewObject(rin_prof);
-
 }
 
 
@@ -948,39 +963,130 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
     return map;
 }
 void PlayScene::MenuOnClick() {
-    blackScreen->Visible = true;
-    saveBtn->Visible = true;
-    saveLabel->Visible = true;
-    titleBtn->Visible = true;
-    titleLabel->Visible = true;
-    settingsBtn->Visible = true;
-    settingsLabel->Visible = true;
-    backBtn->Visible = true;
-    backLabel->Visible = true;
+    std::cout << "[DEBUG] Menu button clicked\n";
+
+    if (saveBtn)saveBtn->Visible = true;
+    if (saveLabel)saveLabel->Visible = true;
+    if (titleBtn)titleBtn->Visible = true;
+    if (titleBtn)titleLabel->Visible = true;
+    if (settingsBtn)settingsBtn->Visible = true;
+    if (settingsLabel)settingsLabel->Visible = true;
+    if (backBtn)backBtn->Visible = true;
+    if (backLabel)backLabel->Visible = true;
+    if (blackScreen) blackScreen->Visible = true;
 }
 
 void PlayScene::SaveProgressOnClick() {
-    // TODO: Save logic
-    std::cout << "Saving progress...\n";
+    std::ofstream fout("Resource/gamedata.txt");
+    if (!fout.is_open()) {
+        std::cerr << "Error opening gamedata.txt for writing!\n";
+        return;
+    }
+
+    fout << "[Saved] Lives: " << GameData::lives
+         << ", Money: " << GameData::money
+         << ", Knowledge: " << GameData::knowledge
+         << ", Strength: " << GameData::strength
+         << ", Speed: " << GameData::speed << "\n";
+
+    std::cout << "[Saved] Lives: " << GameData::lives
+              << ", Money: " << GameData::money
+              << ", Knowledge: " << GameData::knowledge
+              << ", Strength: " << GameData::strength
+              << ", Speed: " << GameData::speed << "\n";
 }
 
+void PlayScene::LoadProgress() {
+    std::ifstream fin("Resource/gamedata.txt");
+    if (!fin.is_open()) {
+        std::cerr << "[ERROR] Could not open gamedata.txt!\n";
+        return;
+    }
+
+    fin >> GameData::lives >> GameData::money >> GameData::knowledge >> GameData::strength >> GameData::speed;
+
+    std::cout << "[Loaded] Lives: " << GameData::lives
+              << ", Money: " << GameData::money
+              << ", Knowledge: " << GameData::knowledge
+              << ", Strength: " << GameData::strength
+              << ", Speed: " << GameData::speed << "\n";
+}
+
+
+
 void PlayScene::ReturnToTitleOnClick() {
-    Engine::GameEngine::GetInstance().ChangeScene("title");
+    Engine::GameEngine::GetInstance().ChangeScene("start");
 }
 
 void PlayScene::SettingsOnClick() {
     // TODO: Implement or transition to SettingsScene
     std::cout << "Opening settings...\n";
+    Engine::GameEngine::GetInstance().ChangeScene("settings");
+}
+void PlayScene::MapOnClick() {
+    if (mapVisible) return;
+    std::string mapImagePath = GetMapImagePath();
+
+    // Map image at (300, 100) with size 1024x1024
+    int mapX = 300;
+    int mapY = 100;
+    int mapW = 1024;
+    int mapH = 1024;
+
+    mapOverlay = new Engine::Image(mapImagePath, mapX, mapY, mapW, mapH);
+    UIGroup->AddNewObject(mapOverlay);
+
+    // Close button size
+    int btnW = 120;
+    int btnH = 50;
+
+    // Place button near bottom-left corner of the map
+    int btnX = mapX + 20;                        // 20px padding from left
+    int btnY = mapY + mapH - btnH - 20;          // 20px padding from bottom
+
+    closeMapBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", btnX, btnY, btnW, btnH);
+    closeMapBtn->SetOnClickCallback(std::bind(&PlayScene::CloseMap, this));
+    closeMapBtn->Visible = true;
+    UIGroup->AddNewControlObject(closeMapBtn);
+
+    // Label centered on button
+    closeMapLabel = new Engine::Label("Close", "pirulen.ttf", 20,
+        btnX + btnW / 2, btnY + btnH / 2,         // center position
+        255, 255, 255, 255, 0.5f, 0.5f);          // white, centered
+    closeMapLabel->Visible = true;
+    UIGroup->AddNewObject(closeMapLabel);
+
+    mapVisible = true;
 }
 
+
+std::string PlayScene::GetMapImagePath() const {
+    return "play/map_default.png"; // fallback image if not overridden
+}
+void PlayScene::CloseMap() {
+    if (!mapVisible) return;
+
+    if (mapOverlay)
+        mapOverlay->Visible = false;
+
+    if (closeMapBtn)
+        closeMapBtn->Visible = false;
+
+    if (closeMapLabel)
+        closeMapLabel->Visible = false;
+
+    mapVisible = false;
+}
+
+
 void PlayScene::BackOnClick() {
-    blackScreen->Visible = false;
-    saveBtn->Visible = false;
-    saveLabel->Visible = false;
-    titleBtn->Visible = false;
-    titleLabel->Visible = false;
-    settingsBtn->Visible = false;
-    settingsLabel->Visible = false;
-    backBtn->Visible = false;
-    backLabel->Visible = false;
+    if (blackScreen)blackScreen->Visible = false;
+    if (saveBtn)saveBtn->Visible = false;
+    if (saveLabel)saveLabel->Visible = false;
+    if (titleBtn)titleBtn->Visible = false;
+    if (titleLabel)titleLabel->Visible = false;
+    if (settingsBtn)settingsBtn->Visible = false;
+    if (settingsLabel)settingsLabel->Visible = false;
+    if (backBtn)backBtn->Visible = false;
+    if (backLabel)backLabel->Visible = false;
 }

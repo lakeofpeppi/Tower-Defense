@@ -8,6 +8,10 @@ public:
     static int knowledge;
     static int strength;
     static int speed;
+    static int CurrentMapId;
+    static int orcHP;
+    static int orcStrength;
+    static int scorpionHP;
 
     static void Reset() {
         lives = 50;
@@ -15,6 +19,7 @@ public:
         knowledge = 0;
         strength = 100;
         speed = 100;
+        CurrentMapId = 1;
     }
 };
 

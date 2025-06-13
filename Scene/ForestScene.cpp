@@ -203,6 +203,16 @@ void ForestScene::Initialize() {
     // Start BGM.
     bgmId = AudioHelper::PlayBGM("forest-explore.wav");
 }
+std::string ForestScene::GetMapImagePath() const {
+    return "play/forest_map.png";
+}
+void ForestScene::CloseMap() {
+    PlayScene::CloseMap();  // Optional: call base logic
+
+    // Add village-specific logic here if needed
+    std::cout << "[VillageScene] Closed village map.\n";
+}
+
 void ForestScene::ReadMap() {
     // load file map.txt jd mapState
     // ngegambar tile floor / dirt ke TileMapGroup
