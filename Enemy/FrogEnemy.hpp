@@ -8,7 +8,7 @@
 #include "Engine/Sprite.hpp"
 #include <string>
 
-class LizardEnemy : public Engine::Sprite {
+class FrogEnemy : public Engine::Sprite {
 public:
     bool hasSpoken = false;
     std::string targetSceneName;
@@ -17,7 +17,7 @@ public:
     int animationFrame = 0;
     std::string baseImagePath;
 
-    LizardEnemy(float x, float y, std::string baseImagePath, std::string targetSceneName);
+    FrogEnemy(float x, float y, std::string baseImagePath, std::string targetSceneName);
 
     void Update(float deltaTime) override;
     void OnTouch(); // Just the declaration

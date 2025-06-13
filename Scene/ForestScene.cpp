@@ -13,7 +13,8 @@
 #include "Character/RinCharacter.hpp"
 #include "Helper/House.hpp"
 #include "Enemy/OrcEnemy.hpp"
-#include "Enemy/LizardEnemy.hpp"
+#include "Enemy/FrogEnemy.hpp"
+#include "Helper/Creature.hpp"
 
 
 bool ForestScene::IsTileWalkable(int tileType) const {
@@ -78,22 +79,115 @@ void ForestScene::Initialize() {
         "intro");
     EffectGroup->AddNewObject(npcTalker);
     */
+    int x_r = 1480;          // right side of the screen (adjust to your map)
+    int y_start_r = 100;     // top
+    int y_end_r = 1000;       // bottom
+    int x_l = 55;          // right side of the screen (adjust to your map)
+    int y_start_l = 290;     // top
+    int y_end_l = 1256;
+    int spacing_tree = 100;     // vertical gap between trees
+    int scale_tree = 256;
+    int y_top = 55;               // y-position for the top row
+    int x_start_top = 300;        // leave a little margin on the left
+    int x_end_top = 1400;
+    for (int x = x_start_top; x <= x_end_top; x += spacing_tree) {
+        auto* topBush = new Creature(x, y_top, "enemy/bushes", 1, 5.0f, scale_tree, scale_tree);
+        EffectGroup->AddNewObject(topBush);
+    }
+    for (int y = y_start_l; y <= y_end_l; y += spacing_tree) {
+        auto* tree = new Creature(x_l, y, "enemy/bushes", 1, 5.0f, scale_tree, scale_tree);
+        EffectGroup->AddNewObject(tree);
+    }
+    for (int y = y_start_r; y <= y_end_r; y += spacing_tree) {
+        auto* tree = new Creature(x_r, y, "enemy/bushes", 1, 5.0f, scale_tree, scale_tree);
+        EffectGroup->AddNewObject(tree);
+    }
+
+    //auto* mountain = new Creature(700, 128, "enemy/mountain_green", 1, 5.0f, 320, 320);
+    //EffectGroup->AddNewObject(mountain);
+    float ox = 1200;
+    float oy = 400;
+    int spacing = 100;
+    int bush_scale = 150;
+
+
     auto* orc_enemy = new OrcEnemy(
-            512, 300,
-            "enemy/orc",
-            "intro");
+                    ox, oy,
+                    "enemy/orc",
+                    "intro");
     EffectGroup->AddNewObject(orc_enemy);
 
-    auto* lizard_enemy = new LizardEnemy(
-             1184, 928,
-            "enemy/lizard",
-            "intro");
-    EffectGroup->AddNewObject(lizard_enemy);
+    std::vector<std::pair<int, int>> bush_offsets = {
+        {-2, -1}, { -1, -1.5}, { -1, -2},{ 0, -2}, {1,-2},
+        {-2,  0},
+        {-2,  1},           { 1,  1},
+        { -2,  2},{ 0,  2},{ 1,  2},
+        { -2,  3},  { 0,  3},{ 1,  3},
+    };
 
+    for (const auto& [dx, dy] : bush_offsets) {
+        auto* redBush = new Creature(ox + dx * spacing, oy + dy * spacing, "enemy/bushes_red", 1, 5.0f, bush_scale, bush_scale);
+        EffectGroup->AddNewObject(redBush);
+    }
+
+
+
+    float jx = 350.f;
+    float jy = 750.f;
+
+
+    // Offsets surrounding the frog (excluding the center {0, 0})
+    std::vector<std::pair<float, float>> bush_yellow = {
+        {-1, -1}, { 0, -1}, { 1, -1},
+        {-1,  0},    {0,0}  ,     { 1,  0},
+        {-1,  1}, { 0,  1}, { 1,  1},
+    };
+
+    // Correct loop with the correct vector
+    for (auto [dx, dy] : bush_yellow) {
+        float bx = jx + dx * spacing;
+        float by = jy + dy * spacing;
+
+        auto* yellowBush = new Creature(
+            bx, by,
+            "enemy/lava",       // path to your bush sprite
+            1, 5.0f,
+            bush_scale, bush_scale
+        );
+        EffectGroup->AddNewObject(yellowBush);
+    }
+
+    auto* frog_enemy = new FrogEnemy(
+             jx, jy,
+            "enemy/frog",
+            "intro");
+    EffectGroup->AddNewObject(frog_enemy);
+    /*
+    auto* frog_disappear = new FrogEnemy(
+             300, 800,
+            "enemy/frog",
+            "intro");
+    EffectGroup->AddNewObject(frog_disappear);
+*/
     auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
     rin->SetPlayScene(this);
     EffectGroup->AddNewObject(rin);
-
+    auto* tree = new Creature(135, 1060, "enemy/treee", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree);
+    auto* tree2 = new Creature(384, 1060, "enemy/treeee", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree2);
+    auto* tree3 = new Creature(512, 1060, "enemy/treeeee", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree3);
+    auto* tree4 = new Creature(768, 1060, "enemy/treeeeee", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree4);
+    auto* bush = new Creature(900, 200, "enemy/bush", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(bush);
+    auto* bush1 = new Creature(128, 1256, "enemy/pinklava", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(bush1);
+    auto* bush2 = new Creature(256, 1256, "enemy/pinklava", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(bush2);
+    auto* lava = new Creature(945, 200, "enemy/lava", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(lava);
 
     ReadMap();
     ReadEnemyWave();

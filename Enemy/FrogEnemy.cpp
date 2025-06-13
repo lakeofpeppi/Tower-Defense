@@ -3,26 +3,26 @@
 //
 
 
-#include "Enemy/LizardEnemy.hpp"
+#include "Enemy/FrogEnemy.hpp"
 #include "Engine/Resources.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Scene/VillageScene.hpp" // FULL include allowed here
 
-LizardEnemy::LizardEnemy(float x, float y, std::string baseImagePath, std::string targetSceneName)
+FrogEnemy::FrogEnemy(float x, float y, std::string baseImagePath, std::string targetSceneName)
     : Engine::Sprite(baseImagePath + "_1.png", x, y, 128, 128, 0.5, 0.5),
       targetSceneName(targetSceneName), baseImagePath(baseImagePath) {}
 
-void LizardEnemy::Update(float deltaTime) {
+void FrogEnemy::Update(float deltaTime) {
     animationTimer += deltaTime;
     if (animationTimer >= animationInterval) {
         animationTimer = 0.0f;
-        animationFrame = (animationFrame + 1) % 8;
+        animationFrame = (animationFrame + 1) % 4;
         std::string filename = baseImagePath + "_" + std::to_string(animationFrame + 1) + ".png";
         SetBitmap(Engine::Resources::GetInstance().GetBitmap(filename));
     }
 }
 
-void LizardEnemy::OnTouch() {
+void FrogEnemy::OnTouch() {
     if (hasSpoken) return;
     VillageScene* villageScene = dynamic_cast<VillageScene*>(Engine::GameEngine::GetInstance().GetScene("village"));
     if (villageScene) {
