@@ -39,21 +39,39 @@ void PrincessScene::Initialize() {
 
     // Fill dialogue lines
     dialogueLines = {
-        "Outlander... you have travelled without halt for three days.", //0
-        "Your steps are steady, but your strength wanes.", //1
-        "Even the stars seem to drift slower, waiting for you to pause.", //2
-        "Ahead lies a village, perhaps it is best to rest before continuing your journey.",//3
-        "You’re right... but this village is so barren.",//4
-        " Is there even a soul residing here?", //--->make the position of this one on the very bottom //5
-        "Midorimura... Green Village,", //6
-        "they once called it. But names lie, don’t they, Outlander?", //7
-        "Despite its name, the sun hasn’t shone here in years.", //8
-        "The fields lie barren, crops long withered.", //9
-        "The riverbed that once sang now sleeps", //10
-        "dry and cracked like old parchment.", //11
-        "yeah...", // 12
-        "Oh look a villager!",//make this postion on the bottom //13
-        "You slowly approached the villager" //14
+      dialogueLines = {
+    "           At the end of the path is a small, quiet wooden house,            ", //0 ->enter
+    "          You've finally arrived at the final destination outlander,         ", //1 -> enter
+    "              Finish this mission quickly to gain your rewards.              ", //2 ->black
+    "                        Tired, you opened the door                           ", //3 -. black
+    "                        your mission is almost over                          ", //4 -> black
+    "                                                                             ", //5 -> black
+    "                 Inside, sits a girl, cold and beautiful.                    ", //6 -> black
+    "(She must be the princess)                            ", //7 -> narrate
+    "                        Have you come to save me?                            ", //8 ->sayki far
+    "Yes. The villagers", //9 -> rin normal
+    "           Tell me, Outlander… what makes you think I need saving?           ", //10 -> sayuki normal
+    "(her face...., what a large scar)", //11 -> rin normal
+    "       Because of the color of my hair, they told me I'm a heaven sent       ", //12 ->sayuki close
+    "      They burned my house and killed my parents to 'cleanse' my origins     ", //13 -> house fire
+    "        I didn’t understand. I just remember the silence that followed       ", //14 -> house fire
+    "             They called me divine. Holy. Said I could save them             ", //15 -> worship
+    "                  So, they locked me away… and made me pray.                 ", //16 -> pray shrine
+    "                Pray for sunlight. For rain. For crops to grow               ", //17 -> pray shrine
+    "                 And when nothing changed....they punished me                ", //18 -> abuse
+    "           They starved me, hit me, told me that I was failing them.         ", //19 -> sayuki scars
+    "                      That their pain was my fault                           ", //20 -> sauki scars
+    "       And then… one day… it worked. Rain fell. The earth bloomed again      ", //21 -> rain
+    "      So I prayed more. And more. And somehow… my wishes kept coming true    ", //22 -> rain
+    "                           Until one day it didn’t.                          ", //23 -> rain
+    "  They grew angry again. I saw it in their eyes. I knew what would come next ", //24 ->angry
+    "       So I made one last wish. Not for them. Not for rain. Just for me      ", //25 -> pray
+    "      I wished…To be hidden. To be free. To be rescued from the villagers    ", //26 -> pray
+    "            I’ve been safe here. Eating herbs. Sleeping in silence.          ", //27 -> sayuki normal
+    "                 I don’t want to go back. And yet… here you are              ", //28 -> sayuki close
+    "                   So tell me… what will you do to me now?                   ", //29 -> sayuki worry
+          }
+
     };
 
     // Create the first line label
@@ -64,7 +82,35 @@ void PrincessScene::Initialize() {
     // Black screen
     blackScreen = new Engine::Image("play/black.png", 0, 0, w, h);
     blackScreen->Visible = false;
-    AddNewObject(blackScreen);  // Scene will manage deletion
+    AddNewObject(blackScreen);
+
+    AngryScreen = new Engine::Image("play/angry.png", 0, 0, w, h);
+    AngryScreen->Visible = false;
+    AddNewObject(AngryScreen);
+
+    RoomScreen = new Engine::Image("play/princess room.jpg", 0, 0, w, h);
+    RoomScreen->Visible = false;
+    AddNewObject(RoomScreen);
+
+    FireScreen = new Engine::Image("play/house fire.jpg", 0, 0, w, h);
+    FireScreen->Visible = false;
+    AddNewObject(FireScreen);
+
+    RainScreen = new Engine::Image("play/rain.jpg", 0, 0, w, h);
+    RainScreen->Visible = false;
+    AddNewObject(RainScreen);
+
+    AbuseScreen = new Engine::Image("play/abuse.png", 0, 0, w, h);
+    AbuseScreen->Visible = false;
+    AddNewObject(AbuseScreen);
+
+    PrayScreen = new Engine::Image("play/pray.png", 0, 0, w, h);
+    PrayScreen->Visible = false;
+    AddNewObject(PrayScreen);
+
+    WorshipScreen = new Engine::Image("play/worship.png", 0, 0, w, h);
+    WorshipScreen->Visible = false;
+    AddNewObject(WorshipScreen);
 
     // Dialogue box
     dialogueBoxImage = new Engine::Image("play/dialogue.png", halfW - 600, h - 210, 1250, 150);
@@ -72,18 +118,32 @@ void PrincessScene::Initialize() {
     AddNewObject(dialogueBoxImage);
 
     // Rin normal
-    rin_normal = new Engine::Image("play/rin normal.png", halfW - 950, h - 480, 720, 480);
+    sayuki_normal = new Engine::Image("play/sayuki normal.png", halfW -300 , h - 800, 1050, 700);
+    sayuki_normal->Visible = false;
+    AddNewObject(sayuki_normal);
+
+    // Rin worried
+    sayuki_worry = new Engine::Image("play/sayuki worried.png", halfW -300 , h - 800, 1050, 700);
+    sayuki_worry->Visible = false;
+    AddNewObject(sayuki_worry);
+
+    sayuki_close = new Engine::Image("play/sayuki close.png", halfW -300 , h - 800, 1050, 700);
+    sayuki_close->Visible = false;
+    AddNewObject(sayuki_close);
+
+    sayuki_far= new Engine::Image("play/sayuki far.png", halfW -300 , h - 800, 1050, 700);
+    sayuki_far->Visible = false;
+    AddNewObject(sayuki_far);
+
+    sayuki_scars= new Engine::Image("play/sayuki scars.png", halfW -300 , h - 800, 1050, 700);
+    sayuki_scars->Visible = false;
+    AddNewObject(sayuki_scars);
+
+    rin_normal= new Engine::Image("play/rin normal.png", halfW - 950, h - 480, 720, 480);
     rin_normal->Visible = false;
     AddNewObject(rin_normal);
 
-    // Rin worried
-    rin_worry = new Engine::Image("play/rin worried.png", halfW - 950, h - 480, 720, 480);
-    rin_worry->Visible = false;
-    AddNewObject(rin_worry);
-
-
-
-    dialogueLabel = new Engine::Label(dialogueLines[0], "To The Point.ttf", 70, startX, startY, 255, 255, 255, 255, 0.0, 0.5);
+    dialogueLabel = new Engine::Label(dialogueLines[0], "To The Point.ttf", 70, halfW-550, h-150, 255, 255, 255, 255, 0.0, 0.5);
     AddNewObject(dialogueLabel);
 
     int btnX = 1792 - 400 - 20; // Right edge - button width - padding
@@ -129,39 +189,116 @@ void PrincessScene::NextOnClick(int stage) {
         if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
         if (dialogueLabel)dialogueLabel->Position.y = halfH - 100;
         if (dialogueBoxImage)dialogueBoxImage->Visible = false;
-        if (rin_normal)rin_normal->Visible = false;
-        if (rin_worry)rin_worry->Visible = false;
-
-        // Hide black screen by default
+        //sayuki
+        if (sayuki_close)sayuki_close->Visible = false;
+        if (sayuki_far)sayuki_far->Visible = false;
+        if (sayuki_scars)sayuki_scars->Visible = false;
+        if (sayuki_worry)sayuki_worry->Visible = false;
+        if (sayuki_normal) sayuki_normal->Visible = false;
+        //rin
+        if (rin_normal)rin_normal-> Visible= false;
+        //bg
+        if (RoomScreen)RoomScreen-> Visible= false;
+        if (FireScreen)FireScreen-> Visible= false;
+        if (RainScreen)RainScreen-> Visible= false;
+        if (AbuseScreen) AbuseScreen -> Visible= false;
+        if (PrayScreen) PrayScreen-> Visible= false;
+        if (WorshipScreen) WorshipScreen-> Visible= false;
+        if (AngryScreen) AngryScreen -> Visible= false;
+        // black screen
         if (blackScreen) blackScreen->Visible = false;
 
-        // Special cases: Show dialogue box + appropriate Rin expression
-        if (currentLine == 4 || currentLine == 5 || currentLine == 12 || currentLine == 13) {
-            if (dialogueLabel)dialogueLabel->Position.x = halfW - 300;
+        // ROOM
+        if (currentLine == 7 || currentLine == 8 || currentLine == 9 || currentLine == 10 || currentLine == 11 || currentLine == 12 || currentLine == 19 || currentLine == 20 || currentLine ==27 || currentLine == 28 || currentLine == 29 || currentLine == 25 || currentLine == 26) {
+            if (RoomScreen)RoomScreen-> Visible = true;
+            if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
             if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
-            if (dialogueBoxImage)dialogueBoxImage->Visible = true;
 
-            if (currentLine == 4 || currentLine == 5) {
-                if (rin_worry)rin_worry->Visible = true;
-            } else if (currentLine == 12 || currentLine == 13) {
-                if (rin_normal)rin_normal->Visible = true;
+            if (currentLine == 8 || currentLine == 7 || currentLine == 9)
+            {
+                if (sayuki_far)sayuki_far->Visible = true;
+                if (currentLine == 9 || currentLine == 7)
+                {
+                    if (rin_normal)rin_normal-> Visible = true;
+                    if (dialogueBoxImage)dialogueBoxImage->Visible = true;
+                    if (dialogueLabel)dialogueLabel->Position.x = halfW - 300;
+                    if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
+
+                }
+            }else if (currentLine == 10 || currentLine == 11 || currentLine == 27)
+            {
+                if (sayuki_normal)sayuki_normal->Visible = true;
+                if (currentLine == 11)
+                {
+                    if (rin_normal)rin_normal-> Visible = true;
+                    if (dialogueLabel)dialogueLabel->Position.x = halfW - 300;
+                    if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
+                    if (dialogueBoxImage)dialogueBoxImage->Visible = true;
+                }
+            }else if (currentLine == 12 || currentLine == 28)
+            {
+                if (sayuki_close) sayuki_close->Visible = true;
+            }
+            // else if (currentLine == 19 || currentLine == 20)
+            // {
+            //     if (sayuki_scars) sayuki_scars->Visible = true;
+            // }
+            else if (currentLine == 25 || currentLine == 26 || currentLine == 29)
+            {
+                if (sayuki_worry)sayuki_worry->Visible = true;
             }
         }
 
+        //House
+        if (currentLine == 13 || currentLine == 14)
+        {
+            if (FireScreen)FireScreen-> Visible = true;
+            if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
+            if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
+        }
+        if (currentLine == 15)
+        {
+            if (WorshipScreen)WorshipScreen-> Visible = true;
+            if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
+            if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
+        }
+        if (currentLine == 16 || currentLine == 17)
+        {
+            if (PrayScreen)PrayScreen-> Visible = true;
+            if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
+            if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
+        }
+        if (currentLine == 18 || currentLine == 19 || currentLine == 20)
+        {
+            if (AbuseScreen) AbuseScreen -> Visible = true;
+            if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
+            if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
+        }
+        if (currentLine == 21 || currentLine == 22 || currentLine == 23)
+        {
+            if (RainScreen)RainScreen-> Visible = true;
+            if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
+            if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
+        }
+        if (currentLine == 24)
+        {
+            if (AngryScreen) AngryScreen -> Visible = true;
+            if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
+            if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
+        }
         // Show black screen on "You slowly approached the villager"
-        if (currentLine == 14) {
+        if (currentLine == 2 || currentLine == 3 || currentLine == 4 || currentLine == 5 || currentLine == 6) {
             if (blackScreen) blackScreen->Visible = true;
 
-            if (dialogueBoxImage)dialogueBoxImage->Visible = false;
-            if (rin_normal)rin_normal->Visible = false;
-            if (rin_worry)rin_worry->Visible = false;
 
-            // Position dialogue label at bottom center
-            if (dialogueLabel)dialogueLabel->Position.x = halfW - 250;
-            if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;  // near bottom with some padding
+            // // Position dialogue label at bottom center
+            // if (dialogueLabel)dialogueLabel->Position.x = halfW - 250;
+            // if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;  // near bottom with some padding
 
             // Optionally, make sure the label is visible if you hid it earlier
             if (dialogueLabel)dialogueLabel->Visible = true;
+            if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
+            if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
         }
 
     } else {

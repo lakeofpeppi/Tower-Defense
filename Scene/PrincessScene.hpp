@@ -23,10 +23,20 @@ private:
 
     std::vector<std::string> dialogueLines;
     Engine::Image* dialogueBoxImage = nullptr;
+    Engine::Image* sayuki_normal = nullptr;
+    Engine::Image* sayuki_scars = nullptr;
+    Engine::Image* sayuki_far = nullptr;
+    Engine::Image* sayuki_worry = nullptr;
     Engine::Image* rin_normal = nullptr;
-    Engine::Image* rin_worry = nullptr;
-    Engine::Image* rin_close = nullptr;
+    Engine::Image* sayuki_close = nullptr;
     Engine::Image* blackScreen = nullptr;
+    Engine::Image* RoomScreen = nullptr;
+    Engine::Image* FireScreen = nullptr;
+    Engine::Image* RainScreen = nullptr;
+    Engine::Image* AbuseScreen = nullptr;
+    Engine::Image* PrayScreen = nullptr;
+    Engine::Image* WorshipScreen = nullptr;
+    Engine::Image* AngryScreen = nullptr;
 
 
     int currentLine = 0;
