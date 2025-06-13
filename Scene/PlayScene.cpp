@@ -18,6 +18,8 @@
 #include "Engine/LOG.hpp"
 #include "Engine/Resources.hpp"
 #include "PlayScene.hpp"
+#include "UI/Component/ImageButton.hpp"
+
 
 #include "GameData.hpp"
 #include "IntroScene.hpp"
@@ -726,6 +728,68 @@ void PlayScene::ConstructUI() {
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 6));
     UIGroup->AddNewControlObject(btn);
 
+
+    //MENU
+    Engine::ImageButton* menuButton = new Engine::ImageButton(
+    "stage-select/dirt.png",           // Default image
+    "stage-select/floor.png",          // Hover image
+    1486, 900,                         // X, Y position (adjust if needed)
+    292, 60                            // Width, Height
+     );
+    menuButton->SetOnClickCallback(std::bind(&PlayScene::MenuOnClick, this));
+    UIGroup->AddNewControlObject(menuButton);
+
+    UIGroup->AddNewObject(new Engine::Label("MENU", "pirulen.ttf", 32,
+     1632, 930, 255, 255, 255, 255, 0.5f, 0.5f));
+
+
+
+    blackScreen = new Engine::Image("play/black.png", 400, 200, 672, 816);
+    blackScreen->Visible = false;
+    AddNewObject(blackScreen);  // Scene will manage deletion
+
+    //buttons inside blackscreen
+    // Save Progress button
+    saveBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", 520, 300, 400, 60);
+    saveBtn->Visible = false;
+    saveBtn->SetOnClickCallback(std::bind(&PlayScene::SaveProgressOnClick, this));
+    UIGroup->AddNewControlObject(saveBtn);
+
+    saveLabel = new Engine::Label("Save Progress", "pirulen.ttf", 28, 720, 330, 255, 255, 255, 255, 0.5f, 0.5f);
+    saveLabel->Visible = false;
+    UIGroup->AddNewObject(saveLabel);
+
+    // Return to Title button
+    titleBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", 520, 400, 400, 60);
+    titleBtn->Visible = false;
+    titleBtn->SetOnClickCallback(std::bind(&PlayScene::ReturnToTitleOnClick, this));
+    UIGroup->AddNewControlObject(titleBtn);
+
+    titleLabel = new Engine::Label("Return to Title", "pirulen.ttf", 28, 720, 430, 255, 255, 255, 255, 0.5f, 0.5f);
+    titleLabel->Visible = false;
+    UIGroup->AddNewObject(titleLabel);
+
+    // Settings button
+    settingsBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", 520, 500, 400, 60);
+    settingsBtn->Visible = false;
+    settingsBtn->SetOnClickCallback(std::bind(&PlayScene::SettingsOnClick, this));
+    UIGroup->AddNewControlObject(settingsBtn);
+
+    settingsLabel = new Engine::Label("Settings", "pirulen.ttf", 28, 720, 530, 255, 255, 255, 255, 0.5f, 0.5f);
+    settingsLabel->Visible = false;
+    UIGroup->AddNewObject(settingsLabel);
+
+    // Back button
+    backBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", 420, 920, 160, 50);
+    backBtn->Visible = false;
+    backBtn->SetOnClickCallback(std::bind(&PlayScene::BackOnClick, this));
+    UIGroup->AddNewControlObject(backBtn);
+
+    backLabel = new Engine::Label("Back", "pirulen.ttf", 24, 500, 945, 255, 255, 255, 255, 0.5f, 0.5f);
+    backLabel->Visible = false;
+    UIGroup->AddNewObject(backLabel);
+
+
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int shift = 135 + 25;
@@ -882,4 +946,41 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
         }
     }
     return map;
+}
+void PlayScene::MenuOnClick() {
+    blackScreen->Visible = true;
+    saveBtn->Visible = true;
+    saveLabel->Visible = true;
+    titleBtn->Visible = true;
+    titleLabel->Visible = true;
+    settingsBtn->Visible = true;
+    settingsLabel->Visible = true;
+    backBtn->Visible = true;
+    backLabel->Visible = true;
+}
+
+void PlayScene::SaveProgressOnClick() {
+    // TODO: Save logic
+    std::cout << "Saving progress...\n";
+}
+
+void PlayScene::ReturnToTitleOnClick() {
+    Engine::GameEngine::GetInstance().ChangeScene("title");
+}
+
+void PlayScene::SettingsOnClick() {
+    // TODO: Implement or transition to SettingsScene
+    std::cout << "Opening settings...\n";
+}
+
+void PlayScene::BackOnClick() {
+    blackScreen->Visible = false;
+    saveBtn->Visible = false;
+    saveLabel->Visible = false;
+    titleBtn->Visible = false;
+    titleLabel->Visible = false;
+    settingsBtn->Visible = false;
+    settingsLabel->Visible = false;
+    backBtn->Visible = false;
+    backLabel->Visible = false;
 }

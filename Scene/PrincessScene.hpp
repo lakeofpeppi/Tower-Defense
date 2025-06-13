@@ -37,6 +37,14 @@ private:
     Engine::Image* PrayScreen = nullptr;
     Engine::Image* WorshipScreen = nullptr;
     Engine::Image* AngryScreen = nullptr;
+    Engine::ImageButton* good = nullptr;
+    Engine::ImageButton* bad = nullptr;
+    Engine::ImageButton* normal = nullptr;
+    Engine::Label* labelGood = nullptr;
+    Engine::Label* labelBad = nullptr;
+    Engine::Label* labelNormal = nullptr;
+
+
 
 
     int currentLine = 0;
@@ -48,6 +56,9 @@ public:
     void Initialize() override;
     void Terminate() override;
     void BackOnClick(int stage);
+    void NormalOnClick();
+    void GoodOnClick();
+    void BadOnClick();
     void NextOnClick(int stage);
     void BGMSlideOnValueChanged(float value);
     void SFXSlideOnValueChanged(float value);

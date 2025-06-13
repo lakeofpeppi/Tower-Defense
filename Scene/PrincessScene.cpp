@@ -18,6 +18,8 @@
 #include <iostream>
 #include <ostream>
 #include "PrincessScene.hpp"
+#include "Scene/BadScene.hpp"
+
 
 #include "PlayScene.hpp"
 
@@ -28,11 +30,14 @@ void PrincessScene::Initialize() {
     int halfH = h / 2;
 
     Engine::ImageButton *btn;
+    // Engine::ImageButton *good;
+    // Engine::ImageButton *bad;
+    // Engine::ImageButton *normal;
 
 
     int wpic = 1900;
     int hpic = 1300;
-    AddNewObject(new Engine::Image("play/enter house.jpg", 0, 0, wpic, hpic));
+    AddNewObject(new Engine::Image("play/enter.png", 0, 0, wpic, hpic));
     //AddNewObject(new Engine::Image("play/rin dialogue expressions.png", 0, 620, 2700, 600));
     //house fire.jpg
     //princess room.jpg
@@ -40,15 +45,15 @@ void PrincessScene::Initialize() {
     // Fill dialogue lines
     dialogueLines = {
       dialogueLines = {
-    "           At the end of the path is a small, quiet wooden house,            ", //0 ->enter
-    "          You've finally arrived at the final destination outlander,         ", //1 -> enter
-    "              Finish this mission quickly to gain your rewards.              ", //2 ->black
-    "                        Tired, you opened the door                           ", //3 -. black
-    "                        your mission is almost over                          ", //4 -> black
+    "              At the end of the path is a small, quiet wooden house,            ", //0 ->enter
+    "              You've finally arrived at the final destination outlander,         ", //1 -> enter
+    "                 Finish this mission quickly to gain your rewards.              ", //2 ->black
+    "                               Tired, you opened the door                           ", //3 -. black
+    "                               your mission is almost over                          ", //4 -> black
     "                                                                             ", //5 -> black
-    "                 Inside, sits a girl, cold and beautiful.                    ", //6 -> black
+    "                         Inside, sits a girl, cold and beautiful.                    ", //6 -> black
     "(She must be the princess)                            ", //7 -> narrate
-    "                        Have you come to save me?                            ", //8 ->sayki far
+    "                               Have you come to save me?                            ", //8 ->sayki far
     "Yes. The villagers", //9 -> rin normal
     "           Tell me, Outlander… what makes you think I need saving?           ", //10 -> sayuki normal
     "(her face...., what a large scar)", //11 -> rin normal
@@ -60,16 +65,17 @@ void PrincessScene::Initialize() {
     "                Pray for sunlight. For rain. For crops to grow               ", //17 -> pray shrine
     "                 And when nothing changed....they punished me                ", //18 -> abuse
     "           They starved me, hit me, told me that I was failing them.         ", //19 -> sayuki scars
-    "                      That their pain was my fault                           ", //20 -> sauki scars
+    "                         That their pain was my fault                           ", //20 -> sauki scars
     "       And then… one day… it worked. Rain fell. The earth bloomed again      ", //21 -> rain
     "      So I prayed more. And more. And somehow… my wishes kept coming true    ", //22 -> rain
-    "                           Until one day it didn’t.                          ", //23 -> rain
+    "                            Until one day it didn’t.                          ", //23 -> rain
     "  They grew angry again. I saw it in their eyes. I knew what would come next ", //24 ->angry
     "       So I made one last wish. Not for them. Not for rain. Just for me      ", //25 -> pray
     "      I wished…To be hidden. To be free. To be rescued from the villagers    ", //26 -> pray
     "            I’ve been safe here. Eating herbs. Sleeping in silence.          ", //27 -> sayuki normal
     "                 I don’t want to go back. And yet… here you are              ", //28 -> sayuki close
     "                   So tell me… what will you do to me now?                   ", //29 -> sayuki worry
+          " ", // 30
           }
 
     };
@@ -88,7 +94,7 @@ void PrincessScene::Initialize() {
     AngryScreen->Visible = false;
     AddNewObject(AngryScreen);
 
-    RoomScreen = new Engine::Image("play/princess room.jpg", 0, 0, w, h);
+    RoomScreen = new Engine::Image("play/princess room.jpg", 0, 0, w + 100, h + 100);
     RoomScreen->Visible = false;
     AddNewObject(RoomScreen);
 
@@ -112,32 +118,34 @@ void PrincessScene::Initialize() {
     WorshipScreen->Visible = false;
     AddNewObject(WorshipScreen);
 
-    // Dialogue box
-    dialogueBoxImage = new Engine::Image("play/dialogue.png", halfW - 600, h - 210, 1250, 150);
-    dialogueBoxImage->Visible = false;
-    AddNewObject(dialogueBoxImage);
+
 
     // Rin normal
-    sayuki_normal = new Engine::Image("play/sayuki normal.png", halfW -300 , h - 800, 1050, 700);
+    sayuki_normal = new Engine::Image("play/sayuki normal.png", halfW -300 , h - 800, 1200, 800);
     sayuki_normal->Visible = false;
     AddNewObject(sayuki_normal);
 
     // Rin worried
-    sayuki_worry = new Engine::Image("play/sayuki worried.png", halfW -300 , h - 800, 1050, 700);
+    sayuki_worry = new Engine::Image("play/sayuki worried.png", halfW -300 , h - 800, 1200, 800);
     sayuki_worry->Visible = false;
     AddNewObject(sayuki_worry);
 
-    sayuki_close = new Engine::Image("play/sayuki close.png", halfW -300 , h - 800, 1050, 700);
+    sayuki_close = new Engine::Image("play/sayuki close.png", halfW -300 , h - 800, 1200, 800);
     sayuki_close->Visible = false;
     AddNewObject(sayuki_close);
 
-    sayuki_far= new Engine::Image("play/sayuki far.png", halfW -300 , h - 800, 1050, 700);
+    sayuki_far= new Engine::Image("play/sayuki far.png", halfW -300 , h - 800, 1200, 800);
     sayuki_far->Visible = false;
     AddNewObject(sayuki_far);
 
-    sayuki_scars= new Engine::Image("play/sayuki scars.png", halfW -300 , h - 800, 1050, 700);
+    sayuki_scars= new Engine::Image("play/sayuki scars.png", halfW -300 , h - 800, 1200, 800);
     sayuki_scars->Visible = false;
     AddNewObject(sayuki_scars);
+
+    // Dialogue box
+    dialogueBoxImage = new Engine::Image("play/dialogue.png", halfW - 600, h - 210, 1250, 150);
+    dialogueBoxImage->Visible = false;
+    AddNewObject(dialogueBoxImage);
 
     rin_normal= new Engine::Image("play/rin normal.png", halfW - 950, h - 480, 720, 480);
     rin_normal->Visible = false;
@@ -146,24 +154,60 @@ void PrincessScene::Initialize() {
     dialogueLabel = new Engine::Label(dialogueLines[0], "To The Point.ttf", 70, halfW-550, h-150, 255, 255, 255, 255, 0.0, 0.5);
     AddNewObject(dialogueLabel);
 
+
+
     int btnX = 1792 - 400 - 20; // Right edge - button width - padding
     int btnY = 1216 - 100 - 20; // Bottom edge - button height - padding
 
+    //next
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW + 680, halfH + 500, 200, 80);
     btn->SetOnClickCallback(std::bind(&PrincessScene::NextOnClick, this, 1));
     AddNewControlObject(btn);
 
-
-
-
     // Center the label on the button
     AddNewObject(new Engine::Label("next", "To The Point.ttf", 80,
-        btnX + 300,         // btnX + width/2
-        btnY + 50,          // btnY + height/2
-        255, 255, 255, 255,       // black color
-        0.5, 0.5));         // centered alignment
+                                   btnX + 300, // btnX + width/2
+                                   btnY + 50, // btnY + height/2
+                                   255, 255, 255, 255, // black color
+                                   0.5, 0.5)); // centered alignment
 
-    bgmInstance = AudioHelper::PlaySample("princess-meet.mp3", true, AudioHelper::BGMVolume);
+
+    int buttonWidth = 200;
+    int buttonHeight = 80;
+    int spacing = 40;
+    int centerX = 896 - buttonWidth / 2;
+
+    int btnY1 = 300;                    // good
+    int btnY2 = btnY1 + buttonHeight + spacing;  // bad
+    int btnY3 = btnY2 + buttonHeight + spacing;  // normal
+
+    // GOOD button
+    good = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", centerX - 50, btnY1, buttonWidth + 100, buttonHeight);
+    good -> Visible = false;
+    good->SetOnClickCallback(std::bind(&PrincessScene::GoodOnClick, this));
+    AddNewControlObject(good);
+    labelGood = new Engine::Label("Stay with her", "To The Point.ttf", 80, centerX + buttonWidth / 2, btnY1 + buttonHeight / 2, 255, 255, 255, 255, 0.5, 0.5);
+    labelGood->Visible = false;
+    AddNewObject(labelGood);
+    // BAD button
+    bad = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", centerX - 50, btnY2, buttonWidth + 100, buttonHeight);
+    bad -> Visible = false;
+    bad->SetOnClickCallback(std::bind(&PrincessScene::BadOnClick, this));
+    AddNewControlObject(bad);
+    labelBad = new Engine::Label("Take her back", "To The Point.ttf", 80, centerX + buttonWidth / 2, btnY2 + buttonHeight / 2, 255, 255, 255, 255, 0.5, 0.5);
+    labelBad->Visible = false;
+    AddNewObject(labelBad);
+    // NORMAL button
+    normal = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", centerX - 50, btnY3, buttonWidth + 100, buttonHeight);
+    normal -> Visible = false;
+    normal->SetOnClickCallback(std::bind(&PrincessScene::NormalOnClick, this));
+    AddNewControlObject(normal);
+    labelNormal = new Engine::Label("Leave her be", "To The Point.ttf", 80, centerX + buttonWidth / 2, btnY3 + buttonHeight / 2, 255, 255, 255, 255, 0.5, 0.5);
+    labelNormal->Visible = false;
+    AddNewObject(labelNormal);
+
+
+    bgmInstance = AudioHelper::PlaySample("princess-backstory.mp3", true, AudioHelper::BGMVolume);
 }
 void PrincessScene::Terminate() {
     if (bgmInstance) {
@@ -207,6 +251,20 @@ void PrincessScene::NextOnClick(int stage) {
         if (AngryScreen) AngryScreen -> Visible= false;
         // black screen
         if (blackScreen) blackScreen->Visible = false;
+        if (good) good->Visible= false;
+        if (bad) bad->Visible= false;
+        if (normal) normal->Visible= false;
+        if (normal) normal->Visible= false;
+        if (labelBad) labelBad->Visible= false;
+        if (labelGood) labelGood->Visible= false;
+
+
+        if (currentLine == 1)
+        {
+            if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
+            if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
+
+        }
 
         // ROOM
         if (currentLine == 7 || currentLine == 8 || currentLine == 9 || currentLine == 10 || currentLine == 11 || currentLine == 12 || currentLine == 19 || currentLine == 20 || currentLine ==27 || currentLine == 28 || currentLine == 29 || currentLine == 25 || currentLine == 26) {
@@ -300,17 +358,58 @@ void PrincessScene::NextOnClick(int stage) {
             if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
             if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
         }
+        if (currentLine == 30) {
+                if (sayuki_worry) sayuki_worry->Visible = true;
+                if (RoomScreen) RoomScreen->Visible = true;
+
+                if (good) good->Visible = true;
+                if (labelGood) labelGood->Visible = true;
+
+                if (bad) bad->Visible = true;
+                if (labelBad) labelBad->Visible = true;
+
+                if (normal) normal->Visible = true;
+                if (labelNormal) labelNormal->Visible = true;
+
+        }
+
 
     } else {
-        PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("village"));
-        if (scene) {
-            scene->MapId = stage;
-            Engine::GameEngine::GetInstance().ChangeScene("village");
-        }
+        // PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("village"));
+        // if (scene) {
+        //     scene->MapId = stage;
+        //     Engine::GameEngine::GetInstance().ChangeScene("village");
+        // }
     }
 }
 
-
+void PrincessScene::GoodOnClick()
+{
+    Engine::GameEngine::GetInstance().ChangeScene("good");
+    // PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("good"));
+    // if (scene) {
+    //     scene->MapId = stage;
+    //     Engine::GameEngine::GetInstance().ChangeScene("good");
+    // }
+}
+void PrincessScene::BadOnClick()
+{
+    Engine::GameEngine::GetInstance().ChangeScene("bad");
+    // PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("bad"));
+    // if (scene) {
+    //     scene->MapId = stage;
+    //     Engine::GameEngine::GetInstance().ChangeScene("bad");
+    // }
+}
+void PrincessScene::NormalOnClick()
+{
+    Engine::GameEngine::GetInstance().ChangeScene("normal");
+    // PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("normal"));
+    // if (scene) {
+    //     scene->MapId = stage;
+    //     Engine::GameEngine::GetInstance().ChangeScene("normal");
+    // }
+}
 
 void PrincessScene::BGMSlideOnValueChanged(float value) {
     AudioHelper::ChangeSampleVolume(bgmInstance, value);

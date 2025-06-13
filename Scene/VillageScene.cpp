@@ -238,8 +238,11 @@ void VillageScene::OnKeyDown(int keyCode) {
 
     if (keyCode == ALLEGRO_KEY_SPACE && dialogueActive) {
         std::cout << "SPACE PRESSED & dialogueActive is TRUE\n";
+
         AdvanceDialogue();
+        AudioHelper::PlaySample("press.mp3");
         return;
+
     }
     IScene::OnKeyDown(keyCode);
     if (keyCode == ALLEGRO_KEY_W || keyCode == 84 || keyCode == ALLEGRO_KEY_UP) keyUpDown = true;

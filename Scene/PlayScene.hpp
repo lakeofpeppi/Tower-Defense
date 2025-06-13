@@ -9,6 +9,7 @@
 
 #include "Engine/IScene.hpp"
 #include "Engine/Point.hpp"
+#include "UI/Component/ImageButton.hpp"
 
 
 
@@ -143,6 +144,19 @@ public:
     Engine::Label *UILives;
     Engine::Image *imgTarget;
     Engine::Sprite *dangerIndicator;
+    Engine::Image *blackScreen = nullptr;
+    Engine::ImageButton* saveBtn;
+    Engine::ImageButton* titleBtn;
+    Engine::ImageButton* settingsBtn;
+    Engine::ImageButton* backBtn;
+
+    Engine::Label* saveLabel;
+    Engine::Label* titleLabel;
+    Engine::Label* settingsLabel;
+    Engine::Label* backLabel;
+
+
+
     //shovel handling
 
 
@@ -168,7 +182,13 @@ public:
     void OnMouseUp(int button, int mx, int my) ;
     void OnKeyDown(int keyCode);
     void OnKeyUp(int keyCode);
+    void MenuOnClick();
     void Hit();
+    void SaveProgressOnClick();
+    void ReturnToTitleOnClick();
+    void SettingsOnClick();
+    void BackOnClick();
+
 
 
     int GetMoney() const;

@@ -178,6 +178,12 @@ add_executable(2025_I2P2_TowerDefense
         Enemy/JellyFishEnemy.hpp
         Enemy/SharkEnemy.cpp
         Enemy/SharkEnemy.hpp
+        Scene/GoodScene.cpp
+        Scene/GoodScene.hpp
+        Scene/BadScene.cpp
+        Scene/BadScene.hpp
+        Scene/NormalScene.cpp
+        Scene/NormalScene.hpp
 
 )
 

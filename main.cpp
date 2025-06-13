@@ -18,6 +18,9 @@
 
 #include "Scene/SaharaScene.hpp"
 #include "Scene/PrincessScene.hpp"
+#include "Scene/NormalScene.hpp"
+#include "Scene/GoodScene.hpp"
+#include "Scene/BadScene.hpp"
 
 
 
@@ -41,6 +44,9 @@ int main(int argc, char **argv) {
 	game.AddNewScene("intro", new IntroScene());
 	game.AddNewScene("book", new BookScene());
 	game.AddNewScene("princess", new PrincessScene());
+	game.AddNewScene("bad", new BadScene());
+	game.AddNewScene("good", new GoodScene());
+	game.AddNewScene("normal", new NormalScene());
 
     // TODO HACKATHON-1 (1/1): Change the start scene (DONE)
 	game.Start("start", 60, 1792, 1216);
