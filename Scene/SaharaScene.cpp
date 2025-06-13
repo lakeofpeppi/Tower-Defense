@@ -9,6 +9,7 @@
 #include "Engine/LOG.hpp"
 #include "Engine/Resources.hpp"
 #include "Character/RinCharacter.hpp"
+#include "Helper/Creature.hpp"
 #include "Helper/House.hpp"
 
 bool SaharaScene::IsTileWalkable(int tileType) const {
@@ -73,15 +74,96 @@ void SaharaScene::Initialize() {
         "intro");
     EffectGroup->AddNewObject(npcTalker);
     */
+    auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
+    rin->SetPlayScene(this);
+    EffectGroup->AddNewObject(rin);
+    int x_r = 1450;          // right side of the screen (adjust to your map)
+    int y_start_r = 510;     // top
+    int y_end_r = 1000;       // bottom
+    int x_l = 28;          // right side of the screen (adjust to your map)
+    int y_start_l = 300;     // top
+    int y_end_l = 1000;
+    int spacing_tree = 100;     // vertical gap between trees
+    int scale_tree = 300;
+    for (int y = y_start_l; y <= y_end_l; y += spacing_tree) {
+        auto* tree = new Creature(x_l, y, "enemy/tree_sahara", 1, 5.0f, scale_tree, scale_tree);
+        EffectGroup->AddNewObject(tree);
+    }
+    auto* tree1 = new Creature(130, 1000, "enemy/tree_sahara", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree1);
+    auto* tree = new Creature(256, 1000, "enemy/tree_sahara", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree);
+    auto* tree2 = new Creature(340, 1064, "enemy/tree_sahara", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree2);
+    auto* tree3 = new Creature(399, 1032, "enemy/tree_sahara", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree3);
+    auto* tree4 = new Creature(480, 1000, "enemy/tree_sahara", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree4);
+    auto* tree5 = new Creature(536, 1064, "enemy/tree_sahara", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree5);
+    auto* tree6 = new Creature(598, 1032, "enemy/tree_sahara", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree6);
+
+    auto* stalagmite = new Creature(110, 1110, "enemy/stalagmite", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(stalagmite);
+    auto* stalagmite1 = new Creature(700, 1078, "enemy/stalagmite", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(stalagmite1);
+
+    auto* mountain = new Creature(1128, 128, "enemy/mountain", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(mountain);
+    auto* mountain1 = new Creature(1000, 160, "enemy/mountain", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(mountain1);
+    auto* mountain2 = new Creature(1290, 200, "enemy/mountain", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(mountain2);
+    auto* mountain3 = new Creature(1000, 240, "enemy/mountain", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(mountain3);
+    /* auto* mountainred = new Creature(1200, 240, "enemy/mountainred", 1, 5.0f, 200, 200);
+    EffectGroup->AddNewObject(mountainred);
+    auto* mountain4 = new Creature(1200, 280, "enemy/mountain", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(mountain4);
+    auto* mountain5 = new Creature(1300, 320, "enemy/mountain", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(mountain5);*/
+    auto* stalagmite4 = new Creature(1000, 400, "enemy/stalagmite", 1, 5.0f, 380, 380);
+    EffectGroup->AddNewObject(stalagmite4);
+    auto* stalagmite2 = new Creature(1128, 340, "enemy/stalagmite", 1, 5.0f, 380, 380);
+    EffectGroup->AddNewObject(stalagmite2);
+    auto* stalagmite3 = new Creature(1300, 350, "enemy/stalagmite", 1, 5.0f, 380, 380);
+    EffectGroup->AddNewObject(stalagmite3);
+
+
+    for (int y = y_start_r; y <= y_end_r; y += spacing_tree) {
+        auto* tree = new Creature(x_r, y, "enemy/tree_sahara", 1, 5.0f, scale_tree, scale_tree);
+        EffectGroup->AddNewObject(tree);
+    }
+
+
+
+
+    float sx = 512;
+    float sy = 300;
+    int spacing = 100;
+    int scale = 270;
+
+    // 3x3 grid offsets, excluding (0,0) where scorpion is
+    std::vector<std::pair<int, int>> offsets = {
+        {-2, -1}, { 0, -2}, { 2, -1},
+        {-2,  0},           { 2,  0},
+        {-2,  1},           { 2,  1},
+    };
+
+    for (const auto& [dx, dy] : offsets) {
+        auto* stalagmite = new Creature(sx + dx * spacing, sy + dy * spacing, "enemy/stalagmite", 1, 5.0f, scale, scale);
+        EffectGroup->AddNewObject(stalagmite);
+    }
+
+
     auto* scorpion_enemy = new ScorpionEnemy(
             512, 300,
             "enemy/scorpion",
             "intro");
     EffectGroup->AddNewObject(scorpion_enemy);
 
-    auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
-    rin->SetPlayScene(this);
-    EffectGroup->AddNewObject(rin);
+
 
 
     ReadMap();
@@ -96,7 +178,7 @@ void SaharaScene::Initialize() {
     deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
     // Start BGM.
-    bgmId = AudioHelper::PlayBGM("desert-explore.mp3");
+    //bgmId = AudioHelper::PlayBGM("desert-explore.mp3");
 }
 void SaharaScene::ReadMap() {
     // load file map.txt jd mapState

@@ -170,14 +170,16 @@ add_executable(2025_I2P2_TowerDefense
         Enemy/ScorpionEnemy.hpp
         Enemy/OrcEnemy.cpp
         Enemy/OrcEnemy.hpp
-        Enemy/LizardEnemy.cpp
-        Enemy/LizardEnemy.hpp
+        Enemy/FrogEnemy.cpp
+        Enemy/FrogEnemy.hpp
         Enemy/CrabEnemy.cpp
         Enemy/CrabEnemy.hpp
         Enemy/JellyfishEnemy.cpp
         Enemy/JellyFishEnemy.hpp
         Enemy/SharkEnemy.cpp
         Enemy/SharkEnemy.hpp
+        Helper/Creature.cpp
+        Helper/Creature.hpp
 
 )
 

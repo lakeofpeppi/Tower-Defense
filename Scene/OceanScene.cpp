@@ -9,6 +9,7 @@
 #include "Enemy/CrabEnemy.hpp"
 #include "Enemy/JellyFishEnemy.hpp"
 #include "Enemy/SharkEnemy.hpp"
+#include "Helper/Creature.hpp"
 
 #include "Helper/NPC.hpp"
 
@@ -49,50 +50,133 @@ void OceanScene::Initialize() {
     // Should support buttons.
     AddNewControlObject(UIGroup = new Engine::Group());
 
-
-    // Create house
-    /*
-    auto* Inventory = new House(
-        1184, 928,
-        "play/house_inventory.png",
-        "intro");
-    EffectGroup->AddNewObject(Inventory);
-
-    auto* Book = new House(
-        288, 512,  // Example position
-        "play/house_book.png",  // Image of the house
-        "book"         // The scene it should go to when touched
-    );
-    EffectGroup->AddNewObject(Book);
-
-
-    auto* npcTalker = new NPC(
-        512, 928,
-        "npc/npc_idle",
-        "intro");
-    EffectGroup->AddNewObject(npcTalker);
-    */
-    auto* crab_enemy = new CrabEnemy(
-        512, 928,
-        "enemy/crab",
-        "intro");
-    EffectGroup->AddNewObject(crab_enemy);
-    auto* jellyfish_enemy = new JellyFishEnemy(
-        576, 928,
-        "enemy/jellyfish_frame",
-        "intro");
-    EffectGroup->AddNewObject(jellyfish_enemy);
-
-    auto* sharky_enemy = new SharkEnemy(
-        640, 928,
-        "enemy/sharky_frame",
-        "intro");
-    EffectGroup->AddNewObject(sharky_enemy);
-
     auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
     rin->SetPlayScene(this);
     EffectGroup->AddNewObject(rin);
 
+    auto* yellow4 = new Creature(200, 500, "enemy/anemon_yellow", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(yellow4);
+    auto* yellow5 = new Creature(300, 590, "enemy/anemon_yellow", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(yellow5);
+    auto* yellow6 = new Creature(400, 500, "enemy/anemon_yellow", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(yellow6);
+    auto* yellow7 = new Creature(500, 590, "enemy/anemon_yellow", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(yellow7);
+    auto* yellow = new Creature(200, 700, "enemy/anemon_yellow", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(yellow);
+    auto* yellow1 = new Creature(300, 790, "enemy/anemon_yellow", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(yellow1);
+    auto* yellow2 = new Creature(400, 700, "enemy/anemon_yellow", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(yellow2);
+    auto* yellow3 = new Creature(500, 790, "enemy/anemon_yellow", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(yellow3);
+
+    auto* clam = new Creature(228, 1064, "enemy/clam_frame", 3, 0.7f);
+    EffectGroup->AddNewObject(clam);
+
+    auto* anemon = new Creature(330, 1064, "enemy/pink_anemon", 3, 0.7f);
+    EffectGroup->AddNewObject(anemon);
+    auto* anemon1 = new Creature(400, 1090, "enemy/pink_anemon", 3, 0.7f);
+    EffectGroup->AddNewObject(anemon1);
+    auto* anemon2 = new Creature(470, 1032, "enemy/pink_anemon", 3, 0.7f);
+    EffectGroup->AddNewObject(anemon2);
+
+    int x_r = 1450;          // right side of the screen (adjust to your map)
+    int y_start_r = 100;     // top
+    int y_end_r = 1000;       // bottom
+    int x_l = 55;          // right side of the screen (adjust to your map)
+    int y_start_l = 290;     // top
+    int y_end_l = 1256;
+    int spacing_tree = 100;     // vertical gap between trees
+    int scale_tree = 180;
+    int x_start = 1120;         // far left
+    int x_end = 1600;        // far right (adjust to map width)
+    int y_bottom = 1150;
+
+    for (int y = y_start_l; y <= y_end_l; y += spacing_tree) {
+        auto* tree = new Creature(x_l, y, "enemy/rock_left", 1, 5.0f, scale_tree, scale_tree);
+        EffectGroup->AddNewObject(tree);
+    }
+    for (int y = y_start_r; y <= y_end_r; y += spacing_tree) {
+        auto* tree = new Creature(x_r, y, "enemy/rock_left", 1, 5.0f, scale_tree, scale_tree);
+        EffectGroup->AddNewObject(tree);
+    }
+
+    for (int x = x_start; x <= x_end; x += spacing_tree) {
+        auto* seaweed_yellow = new Creature(x, y_bottom, "enemy/anemon_yellow", 1, 5.0f, scale_tree, scale_tree);
+        EffectGroup->AddNewObject(seaweed_yellow);
+    }
+
+
+
+
+
+    float ox = 1100;
+    float oy = 400;
+    int spacing = 100;
+    int bush_scale = 150;
+
+
+    auto* jellyfish_enemy = new JellyFishEnemy(
+        ox, oy,
+        "enemy/jellyfish_frame",
+        "intro");
+    EffectGroup->AddNewObject(jellyfish_enemy);
+
+    std::vector<std::pair<int, int>> seaweed_offsets = {
+        {-1, -1},                   { 1, -1},{ 2, -1},
+          {-1,  0},              { 1,  0}, { 2,  0},
+          {-1,  1}, { 0,  1}, { 1,  1},{ 2,  1},
+        {-1,  2}, { 0,  2}, { 1,  2},{ 2,  2},
+            {-1,  3}, { 0,  3}, { 1,  3},{ 2,  3},
+    };
+
+    for (const auto& [dx, dy] : seaweed_offsets) {
+        auto* redBush = new Creature(ox + dx * spacing, oy + dy * spacing, "enemy/seaweed", 1, 5.0f, bush_scale, bush_scale);
+        EffectGroup->AddNewObject(redBush);
+    }
+    /*std::vector<std::pair<int, int>> seaweed_border = {
+        {-2, -2}, {-1, -2}, {0, -2}, {1, -2}, {2, -2}, {3, -2},
+        {-2, -1}, {0, -1}, {3, -1},
+        {-2,  0}, {0,  0}, {3,  0},
+        {-2,  1}, {3,  1},
+        {-2,  2}, {3,  2},
+        {-2,  3}, {3,  3},
+        {-1,  4}, {0,  4}, {1,  4}, {2,  4}, {3,  4},
+    };
+
+    for (const auto& [dx, dy] : seaweed_border) {
+        auto* seaweed_yellow = new Creature(ox + dx * spacing, oy + dy * spacing, "enemy/anemon_yellow", 1, 5.0f, bush_scale, bush_scale);
+        EffectGroup->AddNewObject(seaweed_yellow);
+    }
+    */
+    float jx = 750;
+    float jy = 1064;
+
+    auto* crab_enemy = new CrabEnemy(
+      jx, jy,
+      "enemy/crab",
+      "intro");
+    EffectGroup->AddNewObject(crab_enemy);
+
+
+    /*std::vector<std::pair<int, int>> seaweed_yellow_offsets = {
+        {-1, -2},         {0, -2},      { 1, -2},
+        {-1, -1},         {0, -1},      { 1, -1},
+          {-1,  0},
+          {-1,  1}, { 0,  1}, { 1,  1},
+        {-1,  2}, { 0,  2}, { 1,  2},
+
+    };
+    */
+    std::vector<std::pair<int, int>> seaweed_yellow_offsets = {
+         {-2,  1},  {-1,  1}, { 0,  1}, { 1,  1}, { 2,  1},{ 3,  1},
+    };
+
+    for (const auto& [dx, dy] : seaweed_yellow_offsets) {
+        auto* seaweed_yellow = new Creature(jx + dx * spacing, jy + dy * spacing, "enemy/seaweed", 1, 5.0f, bush_scale, bush_scale);
+        EffectGroup->AddNewObject(seaweed_yellow);
+    }
 
     ReadMap();
     ReadEnemyWave();

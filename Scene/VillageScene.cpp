@@ -7,6 +7,7 @@
 #include "Character/RinCharacter.hpp"
 #include "Helper/House.hpp"
 #include "Helper/NPC.hpp"
+#include "Helper/Creature.hpp"
 #include "UI/Component/Label.hpp"
 #include <allegro5/allegro.h>
 
@@ -91,27 +92,40 @@ void VillageScene::Initialize() {
         dialogueLabel = new Engine::Label(dialogueLines[0], "To The Point.ttf", 70, startX, startY, 255, 255, 255, 255, 0.0, 0.5);
         UIGroup->AddNewObject(dialogueLabel);
     }
+    auto* gubuk = new Creature(400, 180, "enemy/gubukkkk", 1, 5.0f, 280, 280);
+    EffectGroup->AddNewObject(gubuk);
+    auto* gubukk = new Creature(650, 180, "enemy/gubukk", 1, 5.0f, 280, 280);
+    EffectGroup->AddNewObject(gubukk);
+    auto* gubukkk = new Creature(900, 180, "enemy/gubukkk", 1, 5.0f, 280, 280);
+    EffectGroup->AddNewObject(gubukkk);
 
 
     // Create house
+    auto* pohon1 = new Creature(1000, 650, "enemy/pohon", 1, 5.0f, 280, 280);
+    EffectGroup->AddNewObject(pohon1);
+    auto* pohon2 = new Creature(1150, 675, "enemy/pohin", 1, 5.0f, 280, 280);
+    EffectGroup->AddNewObject(pohon2);
+    auto* pohon3 = new Creature(1300, 700, "enemy/pohonn", 1, 5.0f, 280, 280);
+    EffectGroup->AddNewObject(pohon3);
+
+
+    auto* Book = new House(
+        1128, 180,  // Example position
+        "play/house_book.png",  // Image of the house
+        "book"         // The scene it should go to when touched
+    );
+    EffectGroup->AddNewObject(Book);
+
     auto* Inventory = new House(
-        1184, 928,
+        1330, 180,
         "play/house_inventory.png",
         "intro");
     EffectGroup->AddNewObject(Inventory);
 
-    auto* Book = new House(
-        288, 512,  // Example position
-        "play/house_book.png",  // Image of the house
-        "book"         // The scene it should go to when touched
-    );
-
-
-    EffectGroup->AddNewObject(Book);
 
 
     auto* npcTalker = new NPC(
-        512, 300,
+        1330, 500,
         "npc/toma",
         "intro");
     EffectGroup->AddNewObject(npcTalker);
@@ -120,7 +134,18 @@ void VillageScene::Initialize() {
     rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
     rin->SetPlayScene(this);
     EffectGroup->AddNewObject(rin);
-
+    auto* pohon4 = new Creature(800, 950, "enemy/pohinnn", 1, 5.0f, 280, 280);
+    EffectGroup->AddNewObject(pohon4);
+    auto* pohon5 = new Creature(950, 975, "enemy/pohinnnn", 1, 5.0f, 280, 280);
+    EffectGroup->AddNewObject(pohon5);
+    auto* pohon6 = new Creature(1100, 1000, "enemy/pohinn", 1, 5.0f, 280, 280);
+    EffectGroup->AddNewObject(pohon6);
+    auto* gubukkkkk = new Creature(220, 540, "enemy/gubukkkkkk", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(gubukkkkk);
+    auto* gubukkkk = new Creature(240, 750, "enemy/gubukkkk", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(gubukkkk);
+    auto* gubukkkkkk = new Creature(270, 790, "enemy/gubukkkkk", 1, 5.0f, 500, 500);
+    EffectGroup->AddNewObject(gubukkkkkk);
     ReadMap();
     ReadEnemyWave();
     mapDistance = CalculateBFSDistance();
@@ -230,10 +255,12 @@ void VillageScene::OnKeyDown(int keyCode) {
 // juga logic cheat code masuk disini (bisa spawn plane + 10k)
     std::cout << "Pressed: " << keyCode << std::endl;
 
+/*
     if (!footstepsPlaying) {
         footstepsInstance = AudioHelper::PlaySample("footsteps.mp3", true); // looped
         footstepsPlaying = true;
     }
+    */
 
 
     if (keyCode == ALLEGRO_KEY_SPACE && dialogueActive) {
