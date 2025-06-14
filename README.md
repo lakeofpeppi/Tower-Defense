@@ -76,6 +76,7 @@ Players embark on a quest to save Princess Sayuki, navigating through hand-drawn
 ![Sahara Scene](gameplay/sahara.png)  
 ![Ocean Scene](gameplay/ocean.png)  
 ![Battle Scene](gameplay/battle.png)
+![Princess Scene](gameplay/princessscene.png)
 
 ---
 
