@@ -61,6 +61,14 @@ void StartScene::PlayOnClick(int stage) {
 void StartScene::StageOnClick(int stage) {
     AudioHelper::PlaySample("press.mp3");
     Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+    PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("village"));
+    if (scene) {
+        scene->MapId = stage;
+        scene->LoadProgress();
+        Engine::GameEngine::GetInstance().ChangeScene("village");
+    };
+
+
 }
 void StartScene::SettingsOnClick(int stage) {
     AudioHelper::PlaySample("press.mp3");
