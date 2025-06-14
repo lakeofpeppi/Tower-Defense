@@ -6,8 +6,11 @@
 #define FORESTSCENE_HPP
 
 #include "PlayScene.hpp"
+#include "Character/RinCharacter.hpp"
 class ForestScene : public PlayScene {
     bool _didTransition = false;
+    RinCharacter* rin = nullptr;
+
 public:
 
     void Initialize() override;

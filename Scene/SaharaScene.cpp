@@ -2,6 +2,8 @@
 // Created by Angelie Melisa on 2025/6/12.
 //
 #include "SaharaScene.hpp"
+
+#include "GameData.hpp"
 #include "Engine/AudioHelper.hpp"
 #include "Enemy/ScorpionEnemy.hpp"
 #include "Engine/GameEngine.hpp"
@@ -48,35 +50,8 @@ void SaharaScene::Initialize() {
     AddNewObject(EnemyGroup = new Engine::Group());
     AddNewObject(BulletGroup = new Engine::Group());
     AddNewObject(EffectGroup = new Engine::Group());
-    // Should support buttons.
     AddNewControlObject(UIGroup = new Engine::Group());
 
-
-    // Create house
-    /*
-    auto* Inventory = new House(
-        1184, 928,
-        "play/house_inventory.png",
-        "intro");
-    EffectGroup->AddNewObject(Inventory);
-
-    auto* Book = new House(
-        288, 512,  // Example position
-        "play/house_book.png",  // Image of the house
-        "book"         // The scene it should go to when touched
-    );
-    EffectGroup->AddNewObject(Book);
-
-
-    auto* npcTalker = new NPC(
-        512, 928,
-        "npc/npc_idle",
-        "intro");
-    EffectGroup->AddNewObject(npcTalker);
-    */
-    auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
-    rin->SetPlayScene(this);
-    EffectGroup->AddNewObject(rin);
     int x_r = 1450;          // right side of the screen (adjust to your map)
     int y_start_r = 510;     // top
     int y_end_r = 1000;       // bottom
@@ -89,6 +64,56 @@ void SaharaScene::Initialize() {
         auto* tree = new Creature(x_l, y, "enemy/tree_sahara", 1, 5.0f, scale_tree, scale_tree);
         EffectGroup->AddNewObject(tree);
     }
+    auto* mountain = new Creature(1128, 128, "enemy/mountain", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(mountain);
+    auto* mountain1 = new Creature(1000, 160, "enemy/mountain", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(mountain1);
+    auto* mountain2 = new Creature(1290, 200, "enemy/mountain", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(mountain2);
+    auto* mountain3 = new Creature(1000, 240, "enemy/mountain", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(mountain3);
+    auto* stalagmite4 = new Creature(1000, 400, "enemy/stalagmite", 1, 5.0f, 380, 380);
+    EffectGroup->AddNewObject(stalagmite4);
+    auto* stalagmite2 = new Creature(1128, 340, "enemy/stalagmite", 1, 5.0f, 380, 380);
+    EffectGroup->AddNewObject(stalagmite2);
+    auto* stalagmite3 = new Creature(1300, 350, "enemy/stalagmite", 1, 5.0f, 380, 380);
+    EffectGroup->AddNewObject(stalagmite3);
+
+
+    for (int y = y_start_r; y <= y_end_r; y += spacing_tree) {
+        auto* tree = new Creature(x_r, y, "enemy/tree_sahara", 1, 5.0f, scale_tree, scale_tree);
+        EffectGroup->AddNewObject(tree);
+    }
+
+    float sx = 512;
+    float sy = 300;
+    int spacing = 100;
+    int scale = 270;
+
+    // 3x3 grid offsets, excluding (0,0) where scorpion is
+    std::vector<std::pair<int, int>> offsets = {
+        {-2, -1}, { 0, -2}, { 2, -1},
+        {-2,  0},           { 2,  0},
+        {-2,  1},           { 2,  1},
+    };
+
+    for (const auto& [dx, dy] : offsets) {
+        auto* stalagmite = new Creature(sx + dx * spacing, sy + dy * spacing, "enemy/stalagmite", 1, 5.0f, scale, scale);
+        EffectGroup->AddNewObject(stalagmite);
+    }
+
+    if (GameData::scorpionHP > 0)
+    {
+        auto* scorpion_enemy = new ScorpionEnemy(
+            512, 300,
+            "enemy/scorpion",
+            "scorpion");
+        EffectGroup->AddNewObject(scorpion_enemy);
+    }
+    auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
+    rin->SetPlayScene(this);
+    EffectGroup->AddNewObject(rin);
+
     auto* tree1 = new Creature(130, 1000, "enemy/tree_sahara", 1, 5.0f, 320, 320);
     EffectGroup->AddNewObject(tree1);
     auto* tree = new Creature(256, 1000, "enemy/tree_sahara", 1, 5.0f, 320, 320);
@@ -108,61 +133,6 @@ void SaharaScene::Initialize() {
     EffectGroup->AddNewObject(stalagmite);
     auto* stalagmite1 = new Creature(700, 1078, "enemy/stalagmite", 1, 5.0f, 320, 320);
     EffectGroup->AddNewObject(stalagmite1);
-
-    auto* mountain = new Creature(1128, 128, "enemy/mountain", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(mountain);
-    auto* mountain1 = new Creature(1000, 160, "enemy/mountain", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(mountain1);
-    auto* mountain2 = new Creature(1290, 200, "enemy/mountain", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(mountain2);
-    auto* mountain3 = new Creature(1000, 240, "enemy/mountain", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(mountain3);
-    /* auto* mountainred = new Creature(1200, 240, "enemy/mountainred", 1, 5.0f, 200, 200);
-    EffectGroup->AddNewObject(mountainred);
-    auto* mountain4 = new Creature(1200, 280, "enemy/mountain", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(mountain4);
-    auto* mountain5 = new Creature(1300, 320, "enemy/mountain", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(mountain5);*/
-    auto* stalagmite4 = new Creature(1000, 400, "enemy/stalagmite", 1, 5.0f, 380, 380);
-    EffectGroup->AddNewObject(stalagmite4);
-    auto* stalagmite2 = new Creature(1128, 340, "enemy/stalagmite", 1, 5.0f, 380, 380);
-    EffectGroup->AddNewObject(stalagmite2);
-    auto* stalagmite3 = new Creature(1300, 350, "enemy/stalagmite", 1, 5.0f, 380, 380);
-    EffectGroup->AddNewObject(stalagmite3);
-
-
-    for (int y = y_start_r; y <= y_end_r; y += spacing_tree) {
-        auto* tree = new Creature(x_r, y, "enemy/tree_sahara", 1, 5.0f, scale_tree, scale_tree);
-        EffectGroup->AddNewObject(tree);
-    }
-
-
-
-
-    float sx = 512;
-    float sy = 300;
-    int spacing = 100;
-    int scale = 270;
-
-    // 3x3 grid offsets, excluding (0,0) where scorpion is
-    std::vector<std::pair<int, int>> offsets = {
-        {-2, -1}, { 0, -2}, { 2, -1},
-        {-2,  0},           { 2,  0},
-        {-2,  1},           { 2,  1},
-    };
-
-    for (const auto& [dx, dy] : offsets) {
-        auto* stalagmite = new Creature(sx + dx * spacing, sy + dy * spacing, "enemy/stalagmite", 1, 5.0f, scale, scale);
-        EffectGroup->AddNewObject(stalagmite);
-    }
-
-
-    auto* scorpion_enemy = new ScorpionEnemy(
-            512, 300,
-            "enemy/scorpion",
-            "intro");
-    EffectGroup->AddNewObject(scorpion_enemy);
-
 
 
 

@@ -55,6 +55,13 @@ private:
     bool enemyAttackScheduled = false;
     double enemyAttackStartTime = 0;
     Engine::Label* turnIndicatorLabel = nullptr;
+    bool orcDefeatedShown = false;
+    double defeatMessageStartTime = 0;
+    Engine::Label* defeatLabel = nullptr;
+    bool inputDisabled = false;
+
+
+
 
 
 

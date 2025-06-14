@@ -40,7 +40,7 @@ void BattleOrc::Initialize() {
 
     int wpic = 1900;
     int hpic = 1300;
-    AddNewObject(new Engine::Image("play/darkforest.jpg", 0, 0, wpic, hpic));
+    AddNewObject(new Engine::Image("play/bg_forrestBattle.png", 0, 0, wpic, hpic));
     //AddNewObject(new Engine::Image("play/rin dialogue expressions.png", 0, 620, 2700, 600));
 
     // Create the first line label
@@ -49,9 +49,11 @@ void BattleOrc::Initialize() {
     float startY = halfH - 100;
     // Black screen
     // Black screen
+
     blackScreen = new Engine::Sprite("play/black.png", 1792 / 2.0f, 1216 / 2.0f, 1712, 1136);
     blackScreen->Tint = al_map_rgba(255, 255, 255, 128); // 50% opacity
     AddNewObject(blackScreen);
+
 
 
 
@@ -139,7 +141,8 @@ void BattleOrc::Initialize() {
     bgmInstance = AudioHelper::PlaySample("fight.ogg", true, AudioHelper::BGMVolume);
 }
 void BattleOrc::OnClickAttack() {
-    AudioHelper::PlaySample("slash.mp3");
+    if (inputDisabled) return;
+    AudioHelper::PlaySample("slash.ogg");
     GameData::orcHP -= GameData::strength;
     orcHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::orcHP);
     if (!enemyAttackScheduled) {
@@ -154,7 +157,8 @@ void BattleOrc::OnClickAttack() {
 }
 
 void BattleOrc::OnClickHeal() {
-    AudioHelper::PlaySample("collect.mp3");
+    if (inputDisabled) return;
+    //AudioHelper::PlaySample("collect.mp3");
     GameData::lives += 20; // No upper cap
     playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
     if (!enemyAttackScheduled) {
@@ -168,7 +172,8 @@ void BattleOrc::OnClickHeal() {
 }
 
 void BattleOrc::OnClickDefend() {
-    AudioHelper::PlaySample("press.mp3");
+    if (inputDisabled) return;
+    //AudioHelper::PlaySample("press.mp3");
     isDefending = true;
     // You would use this flag in the enemy's attack logic like so:
     // int damage = isDefending ? GameData::orcStrength / 2 : GameData::orcStrength;
@@ -185,7 +190,8 @@ void BattleOrc::OnClickDefend() {
 
 
 void BattleOrc::OnClickSkill() {
-    AudioHelper::PlaySample("slash.mp3");
+    if (inputDisabled) return;
+    AudioHelper::PlaySample("slash.ogg");
     GameData::orcHP -= (GameData::strength + 50);
     GameData::lives -= 5;
 
@@ -218,10 +224,13 @@ void BattleOrc::Terminate() {
     IScene::Terminate();
 }
 void BattleOrc::EnemyTurn() {
+
     int damage = isDefending ? GameData::orcStrength / 2 : GameData::orcStrength;
     GameData::lives -= damage;
     playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
     isDefending = false;
+    std::cout << "[DEBUG] EnemyTurn called. Damage: " << damage << ", lives left: " << GameData::lives << "\n";
+
 }
 
 void BattleOrc::BackOnClick(int stage) {
@@ -244,17 +253,50 @@ void BattleOrc::Update(float deltaTime) {
     Engine::IScene::Update(deltaTime);
 
     if (enemyAttackScheduled) {
+        std::cout << "[DEBUG] update(): enemyAttackScheduled=" << enemyAttackScheduled << "\n";
         double currentTime = al_get_time();
         if (currentTime - enemyAttackStartTime >= 2) {
-            AudioHelper::PlaySample("growl.mp3");
+            //AudioHelper::PlaySample("growl.mp3");
+            //AudioHelper::PlaySample("growl.ogg");
             EnemyTurn();
             enemyAttackScheduled = false;
             turnIndicatorLabel->Text = "YOUR TURN!";
             turnIndicatorLabel->Color = al_map_rgba(255, 255, 255, 255);
         }
     }
-    if (GameData::orcHP <= 0) {
+
+    // Check if orc was just defeated
+    // Check if orc was just defeated
+    if (GameData::orcHP <= 0 && !orcDefeatedShown) {
         GameData::orcHP = 0;
+        orcDefeatedShown = true;
+        inputDisabled = true; // Disable inputs
+        defeatMessageStartTime = al_get_time();
+
+        // Top label: YOU HAVE DEFEATED AN ORC
+        defeatLabel = new Engine::Label(
+            "YOU HAVE DEFEATED AN ORC",
+            "pirulen.ttf", 48,
+            1792 / 2, 1216 / 2 - 40,
+            255, 255, 255, 255, 0.5, 0.5
+        );
+        AddNewObject(defeatLabel);
+
+        // Bottom label: BONE SHOVEL OBTAINED!
+        AddNewObject(new Engine::Label(
+            "BONE SHOVEL OBTAINED!",
+            "pirulen.ttf", 36,
+            1792 / 2, 1216 / 2 + 40,
+            255, 255, 255, 255, 0.5, 0.5
+        ));
+
+        AudioHelper::StopSample(bgmInstance);
+        AudioHelper::PlaySample("win.wav");
+    }
+
+    // After 5 seconds, switch scene
+    if (orcDefeatedShown && al_get_time() - defeatMessageStartTime > 5.0) {
         Engine::GameEngine::GetInstance().ChangeScene("forest");
     }
+
 }

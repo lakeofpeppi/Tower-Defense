@@ -5,7 +5,9 @@
 #include "Enemy/OrcEnemy.hpp"
 #include "Engine/Resources.hpp"
 #include "Engine/GameEngine.hpp"
-#include "Scene/VillageScene.hpp" // FULL include allowed here
+#include "Scene/ForestScene.hpp" // FULL include allowed here
+#include <iostream>
+
 
 OrcEnemy::OrcEnemy(float x, float y, std::string baseImagePath, std::string targetSceneName)
     : Engine::Sprite(baseImagePath + "_1.png", x, y, 128, 128, 0.5, 0.5),
@@ -19,15 +21,11 @@ void OrcEnemy::Update(float deltaTime) {
         std::string filename = baseImagePath + "_" + std::to_string(animationFrame + 1) + ".png";
         SetBitmap(Engine::Resources::GetInstance().GetBitmap(filename));
     }
+
 }
 
 void OrcEnemy::OnTouch() {
-    if (hasSpoken) return;
-    VillageScene* villageScene = dynamic_cast<VillageScene*>(Engine::GameEngine::GetInstance().GetScene("village"));
-    if (villageScene) {
-        villageScene->ShowDialogue({
-            "...", //0 -> toma shock
-        });
-        hasSpoken = true;
-    }
+    std::cout << "[DEBUG] OrcEnemy touched. Changing scene to 'orc'." << std::endl;
+    Engine::GameEngine::GetInstance().ChangeScene("orc");
 }
+

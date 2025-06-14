@@ -207,7 +207,7 @@ void PrincessScene::Initialize() {
     AddNewObject(labelNormal);
 
 
-    bgmInstance = AudioHelper::PlaySample("princess-backstory.mp3", true, AudioHelper::BGMVolume);
+    //bgmInstance = AudioHelper::PlaySample("princess-backstory.mp3", true, AudioHelper::BGMVolume);
 }
 void PrincessScene::Terminate() {
     if (bgmInstance) {

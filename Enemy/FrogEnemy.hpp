@@ -16,7 +16,9 @@ public:
     float animationInterval = 0.3f;
     int animationFrame = 0;
     std::string baseImagePath;
-
+    bool isdisappearing = false;
+    int deathFrame = 0;
+    float deathAnimationInterval = 0.3f;
     FrogEnemy(float x, float y, std::string baseImagePath, std::string targetSceneName);
 
     void Update(float deltaTime) override;

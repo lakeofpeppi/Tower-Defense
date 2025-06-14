@@ -8,7 +8,7 @@
 #include "Engine/Resources.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Scene/VillageScene.hpp" // FULL include allowed here
-
+#include <iostream>
 ScorpionEnemy::ScorpionEnemy(float x, float y, std::string baseImagePath, std::string targetSceneName)
     : Engine::Sprite(baseImagePath + "_1.png", x, y, 128, 128, 0.5, 0.5),
       targetSceneName(targetSceneName), baseImagePath(baseImagePath) {}
@@ -24,12 +24,6 @@ void ScorpionEnemy::Update(float deltaTime) {
 }
 
 void ScorpionEnemy::OnTouch() {
-    if (hasSpoken) return;
-    VillageScene* villageScene = dynamic_cast<VillageScene*>(Engine::GameEngine::GetInstance().GetScene("village"));
-    if (villageScene) {
-        villageScene->ShowDialogue({
-            "...", //0 -> toma shock
-        });
-        hasSpoken = true;
-    }
+    std::cout << "[DEBUG] OrcEnemy touched. Changing scene to 'orc'." << std::endl;
+    Engine::GameEngine::GetInstance().ChangeScene("scorpion");
 }
