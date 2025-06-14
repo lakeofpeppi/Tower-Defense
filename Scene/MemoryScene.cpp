@@ -87,6 +87,46 @@ void MemoryScene::Initialize() {
     labelMemory2 = new Engine::Label("Memory 2", "pirulen.ttf", 32, centerX + buttonWidth / 2, halfH + spacing + buttonHeight + buttonHeight / 2, 255, 255, 255, 255, 0.5, 0.5);
     labelMemory2->Visible = false;
     AddNewObject(labelMemory2);
+
+    memoryPhoto1 = new Engine::Image("play/rin strength.png", 300, 150, 1200, 800);
+    memoryPhoto1->Visible = false;
+    AddNewObject(memoryPhoto1);
+
+    memoryPhoto2 = new Engine::Image("play/rin speed.png", 300, 150, 1200, 800);
+    memoryPhoto2->Visible = false;
+    AddNewObject(memoryPhoto2);
+
+
+    dialogue1 = new Engine::Label("", "To The Point.ttf", 60, screenW / 2, 980, 255, 255, 255, 255, 0.5, 0.5);
+    dialogue1->Visible = false;
+    AddNewObject(dialogue1);
+
+    dialogue2 = new Engine::Label("", "To The Point.ttf", 60, screenW / 2, 1040, 255, 255, 255, 255, 0.5, 0.5);
+    dialogue2->Visible = false;
+    AddNewObject(dialogue2);
+
+    int buttonY = screenH - 150;
+
+    int totalWidth = buttonWidth * 2 + spacing;
+    int giveUpX = halfW - totalWidth / 2;
+    int backX = giveUpX + buttonWidth + spacing;
+
+    giveUpButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", giveUpX, buttonY, buttonWidth, buttonHeight);
+    giveUpButton->Visible = false;
+    AddNewControlObject(giveUpButton);
+
+    labelGiveUp = new Engine::Label("Give Up", "pirulen.ttf", 32, giveUpX + buttonWidth / 2, buttonY + buttonHeight / 2, 255, 255, 255, 255, 0.5, 0.5);
+    labelGiveUp->Visible = false;
+    AddNewObject(labelGiveUp);
+
+    backButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", backX, buttonY, buttonWidth, buttonHeight);
+    backButton->SetOnClickCallback(std::bind(&MemoryScene::BackToMemorySelection, this));
+    backButton->Visible = false;
+    AddNewControlObject(backButton);
+
+    labelBack = new Engine::Label("Back", "pirulen.ttf", 32, backX + buttonWidth / 2, buttonY + buttonHeight / 2, 255, 255, 255, 255, 0.5, 0.5);
+    labelBack->Visible = false;
+    AddNewObject(labelBack);
 }
 
 void MemoryScene::NextOnClick(int stage) {
@@ -115,81 +155,41 @@ void MemoryScene::NextOnClick(int stage) {
     }
 }
 
-
-void MemoryScene::ShowMemory(std::string imagePath, std::string textLine1, std::string textLine2, std::function<void()> giveUpCallback) {
+void MemoryScene::ShowMemory(int memoryIndex, std::string textLine1, std::string textLine2, std::function<void()> giveUpCallback) {
     // Hide memory selection UI
     memory1Button->Visible = false;
     memory2Button->Visible = false;
     labelMemory1->Visible = false;
     labelMemory2->Visible = false;
 
-    memoryPhoto = new Engine::Image(imagePath, 300, 150, 1200, 800);
-    AddNewObject(memoryPhoto);
-    memoryPhoto->Visible = true;
+    // Hide all memory photos first
+    memoryPhoto1->Visible = false;
+    memoryPhoto2->Visible = false;
 
+    // Show the selected photo
+    if (memoryIndex == 1) memoryPhoto1->Visible = true;
+    if (memoryIndex == 2) memoryPhoto2->Visible = true;
 
-    int halfW = screenW / 2;
-
-    // Centered dialogue lines
-    dialogue1 = new Engine::Label(
-        textLine1, "To The Point.ttf", 60,
-        halfW, 980,
-        255, 255, 255, 255,
-        0.5, 0.5
-    );
-    AddNewObject(dialogue1);
+    // Update dialogue
     dialogue1->Visible = true;
+    dialogue1->Text = textLine1;
 
-    dialogue2 = new Engine::Label(
-        textLine2, "To The Point.ttf", 60,
-        halfW, 1040,
-        255, 255, 255, 255,
-        0.5, 0.5
-    );
-    AddNewObject(dialogue2);
     dialogue2->Visible = true;
+    dialogue2->Text = textLine2;
 
-    // Side-by-side buttons
-    int buttonY = screenH - 150;
-    int buttonWidth = 200;
-    int buttonHeight = 70;
-    int spacing = 50; // spacing between buttons
-    int totalWidth = buttonWidth * 2 + spacing;
+    giveUpButton->Visible = true;
+    labelGiveUp->Visible = true;
+    backButton->Visible = true;
+    labelBack->Visible = true;
 
-    int giveUpX = halfW - totalWidth / 2;
-    int backX = giveUpX + buttonWidth + spacing;
-
-    // Give Up Button
-    giveUpButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png",
-                                           giveUpX, buttonY, buttonWidth, buttonHeight);
     giveUpButton->SetOnClickCallback(giveUpCallback);
-    AddNewControlObject(giveUpButton);
-
-    // Give Up Label
-    labelGiveUp = new Engine::Label("Give Up", "pirulen.ttf", 32,
-                                    giveUpX + buttonWidth / 2, buttonY + buttonHeight / 2,
-                                    255, 255, 255, 255, 0.5, 0.5);
-    AddNewObject(labelGiveUp);
-
-    // Back Button
-    backButton = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png",
-                                         backX, buttonY, buttonWidth, buttonHeight);
-    backButton->SetOnClickCallback(std::bind(&MemoryScene::BackToMemorySelection, this));
-    AddNewControlObject(backButton);
-
-    // Back Label
-    labelBack = new Engine::Label("Back", "pirulen.ttf", 32,
-                                  backX + buttonWidth / 2, buttonY + buttonHeight / 2,
-                                  255, 255, 255, 255, 0.5, 0.5);
-    AddNewObject(labelBack);
-
-
 }
+
 
 
 void MemoryScene::Memory1OnClick() {
     ShowMemory(
-        "play/rin strength.png",
+        1,
         "Stranded in a forest, Rin must bring his injured sister home safely.",
         "By giving up this memory, you are giving up strength.",
         std::bind(&MemoryScene::GiveUpMemory1, this));
@@ -197,7 +197,7 @@ void MemoryScene::Memory1OnClick() {
 
 void MemoryScene::Memory2OnClick() {
     ShowMemory(
-        "play/rin speed.png",
+        2,
         "In the middle of the night, Rin's house was robbed and destroyed.",
         "By giving up this memory, you are giving up speed.",
         std::bind(&MemoryScene::GiveUpMemory2, this));
@@ -216,23 +216,21 @@ void MemoryScene::GiveUpMemory2() {
 }
 
 void MemoryScene::BackToMemorySelection() {
-    currentState = MemoryState::INTRO;
+    currentState = MemoryState::CHOOSE_MEMORY;
 
-    // Hide memory dialogue and photo if they exist
-    if (dialogue1) dialogue1->Visible = false;
-    if (dialogue2) dialogue2->Visible = false;
-    if (memoryPhoto) memoryPhoto->Visible = false;
 
-    // Hide memory UI
-    backButton->Visible = false;
-    labelBack->Visible = false;
+    dialogue1->Visible = false;
+    dialogue2->Visible = false;
+    memoryPhoto1->Visible = false;
+    memoryPhoto2->Visible = false;
+
     giveUpButton->Visible = false;
     labelGiveUp->Visible = false;
+    backButton->Visible = false;
+    labelBack->Visible = false;
 
-    // Restore memory selection buttons
     memory1Button->Visible = true;
     labelMemory1->Visible = true;
     memory2Button->Visible = true;
     labelMemory2->Visible = true;
 }
-

@@ -22,7 +22,8 @@ public:
     void BackToMemorySelection();
 
 private:
-    void ShowMemory(std::string imagePath, std::string text, std::string text2, std::function<void()> giveUpCallback);
+    void ShowMemory(int memoryIndex, std::string textLine1, std::string textLine2, std::function<void()> giveUpCallback);
+
 
     // Member variables
     Engine::Image* memory1Photo = nullptr;
@@ -42,7 +43,10 @@ private:
     Engine::Label* labelNext;
     Engine::Label* dialogue1 = nullptr;
     Engine::Label* dialogue2 = nullptr;
-    Engine::Image* memoryPhoto = nullptr;
+    Engine::Image* memoryPhoto1 = nullptr;
+    Engine::Image* memoryPhoto2 = nullptr;
+    Engine::ImageButton* memoryPhotoButton;
+
 
 
 
