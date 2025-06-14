@@ -28,3 +28,4 @@ void OrcEnemy::OnTouch() {
     std::cout << "[DEBUG] OrcEnemy touched. Changing scene to 'orc'." << std::endl;
     Engine::GameEngine::GetInstance().ChangeScene("orc");
 }
+

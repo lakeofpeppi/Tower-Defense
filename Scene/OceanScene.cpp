@@ -1,4 +1,5 @@
 #include "OceanScene.hpp"
+#include "Scene/BattleSea.hpp"
 #include "Engine/AudioHelper.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Engine/Group.hpp"
@@ -120,7 +121,7 @@ void OceanScene::Initialize() {
     auto* jellyfish_enemy = new JellyFishEnemy(
         ox, oy,
         "enemy/jellyfish_frame",
-        "intro");
+        "sea");
     EffectGroup->AddNewObject(jellyfish_enemy);
 
     std::vector<std::pair<int, int>> seaweed_offsets = {

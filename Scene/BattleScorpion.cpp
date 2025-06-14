@@ -44,7 +44,7 @@ void BattleScorpion::Initialize() {
 
     int wpic = 1900;
     int hpic = 1300;
-    AddNewObject(new Engine::Image("play/darkforest.jpg", 0, 0, wpic, hpic));
+    AddNewObject(new Engine::Image("play/bg_saharaBattle.png", 0, 0, wpic, hpic));
     //AddNewObject(new Engine::Image("play/rin dialogue expressions.png", 0, 620, 2700, 600));
 
     // Create the first line label
@@ -53,9 +53,11 @@ void BattleScorpion::Initialize() {
     float startY = halfH - 100;
     // Black screen
     // Black screen
+    /*
     blackScreen = new Engine::Sprite("play/black.png", 1792 / 2.0f, 1216 / 2.0f, 1712, 1136);
     blackScreen->Tint = al_map_rgba(255, 255, 255, 128); // 50% opacity
     AddNewObject(blackScreen);
+    */
 
 
 
@@ -64,7 +66,7 @@ void BattleScorpion::Initialize() {
     AddNewObject(rin_battle);
 
     // Rin worried
-    scorpion_battle = new Engine::Image("play/orc battle.png", halfW - 250, h - 1200, 1500, 1000);
+    scorpion_battle = new Engine::Image("play/scorpionBattle.png", halfW - 250, h - 1200, 1500, 1000);
     AddNewObject(scorpion_battle);
 
     ///ADA SEGMENTATION ERROR KL PAKE INI
@@ -139,12 +141,26 @@ void BattleScorpion::Initialize() {
 );
     AddNewObject(turnIndicatorLabel);
 
+    Engine::ImageButton* backBtn = new Engine::ImageButton(
+        "stage-select/dirt.png",  // Normal image
+        "stage-select/floor.png", // Hover image
+        20, 20,                   // X, Y position (top-left)
+        200, 60);                 // Width, Height
+    backBtn->SetOnClickCallback([]() {
+        Engine::GameEngine::GetInstance().ChangeScene("sahara");
+    });
+    AddNewControlObject(backBtn);
+    AddNewObject(new Engine::Label("BACK", "pirulen.ttf", 32,
+        20 + 100, 20 + 30,        // Centered in button
+        255, 255, 255, 255, 0.5, 0.5));
+
+
 
     bgmInstance = AudioHelper::PlaySample("fight.ogg", true, AudioHelper::BGMVolume);
 }
 void BattleScorpion::OnClickAttack() {
     if (inputDisabled) return;
-    AudioHelper::PlaySample("slash.mp3");
+    //AudioHelper::PlaySample("slash.mp3");
     GameData::scorpionHP -= GameData::strength;
     if (GameData::scorpionHP < 0) GameData::scorpionHP = 0;
     scorpionHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::scorpionHP);
@@ -162,7 +178,7 @@ void BattleScorpion::OnClickAttack() {
 
 void BattleScorpion::OnClickHeal() {
     if (inputDisabled) return;
-    AudioHelper::PlaySample("collect.mp3");
+    //AudioHelper::PlaySample("collect.mp3");
     GameData::lives += 20; // No upper cap
     playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
     if (!enemyAttackScheduled) {
@@ -177,7 +193,7 @@ void BattleScorpion::OnClickHeal() {
 
 void BattleScorpion::OnClickDefend() {
     if (inputDisabled) return;
-    AudioHelper::PlaySample("press.mp3");
+    //AudioHelper::PlaySample("press.mp3");
     isDefending = true;
     // You would use this flag in the enemy's attack logic like so:
     // int damage = isDefending ? GameData::orcStrength / 2 : GameData::orcStrength;
@@ -195,7 +211,7 @@ void BattleScorpion::OnClickDefend() {
 
 void BattleScorpion::OnClickSkill() {
     if (inputDisabled) return;
-    AudioHelper::PlaySample("slash.mp3");
+    //AudioHelper::PlaySample("slash.mp3");
     GameData::scorpionHP -= (GameData::strength + 50);
     if (GameData::scorpionHP < 0) GameData::scorpionHP = 0;
 
@@ -258,10 +274,20 @@ void BattleScorpion::SFXSlideOnValueChanged(float value) {
 void BattleScorpion::Update(float deltaTime) {
     Engine::IScene::Update(deltaTime);
 
+    // Prevent enemy actions if scorpion is already defeated
+    if (GameData::scorpionHP <= 0 && scorpionDefeatedShown) {
+        // Show defeat message and wait before transitioning scene
+        if (al_get_time() - defeatMessageStartTime > 5.0) {
+            GameData::returnX = 512;
+            GameData::returnY = 300;
+            Engine::GameEngine::GetInstance().ChangeScene("sahara");
+        }
+        return; // Prevent further updates like enemy attacking
+    }
+
     if (enemyAttackScheduled) {
         double currentTime = al_get_time();
         if (currentTime - enemyAttackStartTime >= 2) {
-            AudioHelper::PlaySample("growl.mp3");
             EnemyTurn();
             enemyAttackScheduled = false;
             turnIndicatorLabel->Text = "YOUR TURN!";
@@ -269,15 +295,12 @@ void BattleScorpion::Update(float deltaTime) {
         }
     }
 
-    // Check if orc was just defeated
-    // Check if orc was just defeated
     if (GameData::scorpionHP <= 0 && !scorpionDefeatedShown) {
         GameData::scorpionHP = 0;
         scorpionDefeatedShown = true;
         inputDisabled = true; // Disable inputs
         defeatMessageStartTime = al_get_time();
 
-        // Top label: YOU HAVE DEFEATED AN ORC
         defeatLabel = new Engine::Label(
             "YOU HAVE DEFEATED A SCORPION",
             "pirulen.ttf", 48,
@@ -286,7 +309,6 @@ void BattleScorpion::Update(float deltaTime) {
         );
         AddNewObject(defeatLabel);
 
-        // Bottom label: BONE SHOVEL OBTAINED!
         AddNewObject(new Engine::Label(
             "POISONOUS STING OBTAINED!",
             "pirulen.ttf", 36,
@@ -297,10 +319,4 @@ void BattleScorpion::Update(float deltaTime) {
         AudioHelper::StopSample(bgmInstance);
         AudioHelper::PlaySample("win.wav");
     }
-
-    // After 5 seconds, switch scene
-    if (scorpionDefeatedShown && al_get_time() - defeatMessageStartTime > 5.0) {
-        Engine::GameEngine::GetInstance().ChangeScene("sahara");
-    }
-
 }

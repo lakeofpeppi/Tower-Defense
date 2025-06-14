@@ -49,9 +49,11 @@ void BattleOrc::Initialize() {
     float startY = halfH - 100;
     // Black screen
     // Black screen
+
     blackScreen = new Engine::Sprite("play/black.png", 1792 / 2.0f, 1216 / 2.0f, 1712, 1136);
     blackScreen->Tint = al_map_rgba(255, 255, 255, 128); // 50% opacity
     AddNewObject(blackScreen);
+
 
 
 
@@ -135,8 +137,24 @@ void BattleOrc::Initialize() {
 );
     AddNewObject(turnIndicatorLabel);
 
+    // BACK button (top-left corner)
+    Engine::ImageButton* backBtn = new Engine::ImageButton(
+        "stage-select/dirt.png",  // Normal image
+        "stage-select/floor.png", // Hover image
+        20, 20,                   // X, Y position (top-left)
+        200, 60);                 // Width, Height
+    backBtn->SetOnClickCallback([]() {
+        Engine::GameEngine::GetInstance().ChangeScene("forest");
+    });
+    AddNewControlObject(backBtn);
+    AddNewObject(new Engine::Label("BACK", "pirulen.ttf", 32,
+        20 + 100, 20 + 30,        // Centered in button
+        255, 255, 255, 255, 0.5, 0.5));
+
 
     bgmInstance = AudioHelper::PlaySample("fight.ogg", true, AudioHelper::BGMVolume);
+
+
 }
 void BattleOrc::OnClickAttack() {
     if (inputDisabled) return;
@@ -213,11 +231,11 @@ void BattleOrc::Terminate() {
         al_destroy_event_queue(timerQueue);
         timerQueue = nullptr;
     }
-
     if (bgmInstance) {
         AudioHelper::StopSample(bgmInstance);
-        bgmInstance.reset();  // safer and clearer
     }
+
+
     IScene::Terminate();
 }
 void BattleOrc::EnemyTurn() {
@@ -226,6 +244,8 @@ void BattleOrc::EnemyTurn() {
     GameData::lives -= damage;
     playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
     isDefending = false;
+    std::cout << "[DEBUG] EnemyTurn called. Damage: " << damage << ", lives left: " << GameData::lives << "\n";
+
 }
 
 void BattleOrc::BackOnClick(int stage) {
@@ -247,7 +267,19 @@ void BattleOrc::SFXSlideOnValueChanged(float value) {
 void BattleOrc::Update(float deltaTime) {
     Engine::IScene::Update(deltaTime);
 
+    // Block all further battle processing if orc is defeated and message shown
+    if (orcDefeatedShown) {
+        // After 5 seconds, switch scene
+        if (al_get_time() - defeatMessageStartTime > 5.0) {
+            GameData::returnX = 1200;
+            GameData::returnY = 400;
+            Engine::GameEngine::GetInstance().ChangeScene("forest");
+        }
+        return; // <- EARLY RETURN to skip rest of Update()
+    }
+
     if (enemyAttackScheduled) {
+        std::cout << "[DEBUG] update(): enemyAttackScheduled=" << enemyAttackScheduled << "\n";
         double currentTime = al_get_time();
         if (currentTime - enemyAttackStartTime >= 2) {
             AudioHelper::PlaySample("growl.mp3");
@@ -258,15 +290,17 @@ void BattleOrc::Update(float deltaTime) {
         }
     }
 
-    // Check if orc was just defeated
-    // Check if orc was just defeated
+    // If orc was just defeated (one-time logic)
     if (GameData::orcHP <= 0 && !orcDefeatedShown) {
         GameData::orcHP = 0;
         orcDefeatedShown = true;
-        inputDisabled = true; // Disable inputs
-        defeatMessageStartTime = al_get_time();
+        inputDisabled = true;
 
-        // Top label: YOU HAVE DEFEATED AN ORC
+        defeatMessageStartTime = al_get_time();
+        if (bgmInstance) {
+            AudioHelper::StopSample(bgmInstance);
+        }
+
         defeatLabel = new Engine::Label(
             "YOU HAVE DEFEATED AN ORC",
             "pirulen.ttf", 48,
@@ -275,7 +309,6 @@ void BattleOrc::Update(float deltaTime) {
         );
         AddNewObject(defeatLabel);
 
-        // Bottom label: BONE SHOVEL OBTAINED!
         AddNewObject(new Engine::Label(
             "BONE SHOVEL OBTAINED!",
             "pirulen.ttf", 36,
@@ -283,13 +316,6 @@ void BattleOrc::Update(float deltaTime) {
             255, 255, 255, 255, 0.5, 0.5
         ));
 
-        AudioHelper::StopSample(bgmInstance);
         AudioHelper::PlaySample("win.wav");
     }
-
-    // After 5 seconds, switch scene
-    if (orcDefeatedShown && al_get_time() - defeatMessageStartTime > 5.0) {
-        Engine::GameEngine::GetInstance().ChangeScene("forest");
-    }
-
 }

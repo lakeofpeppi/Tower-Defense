@@ -21,7 +21,10 @@
 #include "UI/Component/ImageButton.hpp"
 #include "GameData.hpp"
 #include <filesystem>
-
+#include "Enemy/OrcEnemy.hpp"
+#include "Enemy/JellyFishEnemy.hpp"
+#include "Enemy/ScorpionEnemy.hpp"
+#include "Enemy/FrogEnemy.hpp"
 
 #include "GameData.hpp"
 #include "IntroScene.hpp"
@@ -70,136 +73,6 @@ const std::vector<int> PlayScene::code = {
 Engine::Point PlayScene::GetClientSize() {
     return Engine::Point(MapWidth * BlockSize, MapHeight * BlockSize);
 }
-/*
-bool PlayScene::IsTileWalkable(int tileType) const {
-    return tileType == TILE_GRASS; // only grass is walkable
-}
-*/
-
-
-//void PlayScene::Initialize() { /*
-   // buat initialize stage pas masuk level
-    // ini kayak setup awal: load map, load musuh, set UI,sm start bgms
-/*
-    std::cout << "[DEBUG] Entering PlayScene::Initialize()\n";
-    int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
-    int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
-    int halfW = w / 2;
-    int halfH = h / 2;    // ini kayak setup awal: load map, load musuh, set UI,sm start bgms
-    float startX = halfW - 600;
-    float startY = halfH - 100;
-
-    keyUpDown = false;
-    keyDownDown = false;
-    keyLeftDown = false;
-    keyRightDown = false;
-
-    mapState.clear();
-    keyStrokes.clear();
-    ticks = 0;
-    deathCountDown = -1;
-    lives = 10;
-    money = 150;
-    SpeedMult = 1;
-    // Add groups from bottom to top.
-    AddNewObject(TileMapGroup = new Group());
-    AddNewObject(GroundEffectGroup = new Group());
-    AddNewObject(DebugIndicatorGroup = new Group());
-    AddNewObject(TowerGroup = new Group());
-    AddNewObject(EnemyGroup = new Group());
-    AddNewObject(BulletGroup = new Group());
-    AddNewObject(EffectGroup = new Group());
-    // Should support buttons.
-    AddNewControlObject(UIGroup = new Group());
-
-    dialogueBoxImage = new Engine::Image("play/dialogue.png", halfW - 600, h - 210, 1140, 150);
-    dialogueBoxImage->Visible = false;
-    UIGroup->AddNewObject(dialogueBoxImage);
-
-    // Rin normal
-    rin_normal = new Engine::Image("play/rin normal.png", halfW - 950, h - 480, 720, 480);
-    rin_normal->Visible = false;
-    AddNewObject(rin_normal);
-
-    // Rin worried
-    rin_worry = new Engine::Image("play/rin worried.png", halfW - 950, h - 480, 720, 480);
-    rin_worry->Visible = false;
-    AddNewObject(rin_worry);
-
-    // Rin close
-    rin_close = new Engine::Image("play/rin close.png", halfW - 950, h - 480, 720, 480);
-    rin_close->Visible = false;
-    AddNewObject(rin_close);
-
-    // Toma happy
-    toma_happy = new Engine::Image("play/toma happy.png", halfW - 950, h - 480, 720, 480);
-    toma_happy->Visible = false;
-    AddNewObject(toma_happy);
-
-    // Toma shock
-    toma_shock = new Engine::Image("play/toma shock.png", halfW - 950, h - 480, 720, 480);
-    toma_shock->Visible = false;
-    AddNewObject(toma_shock);
-
-    // Toma worry
-    toma_worry = new Engine::Image("play/toma worry.png", halfW - 950, h - 480, 720, 480);
-    toma_worry->Visible = false;
-    AddNewObject(toma_worry);
-
-
-    if (!dialogueLines.empty()) {
-        dialogueLabel = new Engine::Label(dialogueLines[0], "To The Point.ttf", 70, startX, startY, 255, 255, 255, 255, 0.0, 0.5);
-        UIGroup->AddNewObject(dialogueLabel);
-    }
-
-
-    // Create house
-    auto* Inventory = new House(
-        1184, 928,
-        "play/house_inventory.png",
-        "intro");
-    EffectGroup->AddNewObject(Inventory);
-
-    auto* Book = new House(
-        288, 512,  // Example position
-        "play/house_book.png",  // Image of the house
-        "book"         // The scene it should go to when touched
-    );
-
-
-    EffectGroup->AddNewObject(Book);
-
-
-    auto* npcTalker = new NPC(
-        512, 928,
-        "npc/npc_idle",
-        "intro");
-    EffectGroup->AddNewObject(npcTalker);
-
-
-    auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
-    rin->SetPlayScene(this);
-    EffectGroup->AddNewObject(rin);
-
-
-    ReadMap();
-    ReadEnemyWave();
-    mapDistance = CalculateBFSDistance();
-    ConstructUI();
-    imgTarget = new Engine::Image("play/target.png", 0, 0);
-    imgTarget->Visible = false;
-    preview = nullptr;
-    UIGroup->AddNewObject(imgTarget);
-    // Preload Lose Scene
-    deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
-    Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
-    // Start BGM.
-    bgmId = AudioHelper::PlayBGM("village-explore.mp3");
-    std::cout << "[DEBUG] Finished PlayScene::Initialize()\n";
-}
-    //bgmId = AudioHelper::PlayBGM("village-explore.mp3");
-    */
-//}
 
 PlayScene::TileType PlayScene::GetDefaultWalkableTile() const {
     return TILE_GRASS;
@@ -290,106 +163,80 @@ void PlayScene::Update(float deltaTime) {
     }
     if (SpeedMult == 0)
         deathCountDown = -1;
-    for (int i = 0; i < SpeedMult; i++) {
-        IScene::Update(deltaTime);
 
 
-        RinCharacter* rin = nullptr;
+    RinCharacter* rin = nullptr;
+for (auto& obj : EffectGroup->GetObjects()) {
+    rin = dynamic_cast<RinCharacter*>(obj);
+    if (rin) break;
+}
+
+for (int i = 0; i < SpeedMult; i++) {
+    IScene::Update(deltaTime);
+
+    if (rin) {
         for (auto& obj : EffectGroup->GetObjects()) {
-            rin = dynamic_cast<RinCharacter*>(obj);
-            if (rin) break;
-        }        if (rin) {
-            for (auto& obj : EffectGroup->GetObjects()) {
-                auto* house = dynamic_cast<House*>(obj);
-                if (!house) continue;
+            float dx = obj->Position.x - rin->Position.x;
+            float dy = obj->Position.y - rin->Position.y;
+            float distance = std::sqrt(dx * dx + dy * dy);
 
-                float dx = house->Position.x - rin->Position.x;
-                float dy = house->Position.y - rin->Position.y;
-                float distance = std::sqrt(dx * dx + dy * dy);
-                if (distance < 64) { // 64 instead of BlockSize/2
+            if (auto* frog = dynamic_cast<FrogEnemy*>(obj)) {
+                if (distance < 128) {
+                    frog->OnTouch();
+                }
+            } else if (distance < 64) {
+                if (auto* npc = dynamic_cast<NPC*>(obj)) {
+                    npc->OnTouch();
+                } else if (auto* orc = dynamic_cast<OrcEnemy*>(obj)) {
+                    orc->OnTouch();
+                } else if (auto* scorpion = dynamic_cast<ScorpionEnemy*>(obj)) {
+                    scorpion->OnTouch();
+                } else if (auto* jelly = dynamic_cast<JellyFishEnemy*>(obj)) {
+                    //if (jelly->hasSpoken) continue;
+                    jelly->OnTouch();
+                } else if (auto* house = dynamic_cast<House*>(obj)) {
                     house->OnTouch();
                 }
             }
         }
-        //RinCharacter* rin = nullptr;
-        for (auto& obj : EffectGroup->GetObjects()) {
-            rin = dynamic_cast<RinCharacter*>(obj);
-            if (rin) break;
-        }
-
-        if (rin) {
-            for (auto& obj : EffectGroup->GetObjects()) {
-                auto* npc = dynamic_cast<NPC*>(obj);
-                if (!npc) continue;
-
-                float dx = npc->Position.x - rin->Position.x;
-                float dy = npc->Position.y - rin->Position.y;
-                float distance = std::sqrt(dx * dx + dy * dy);
-
-                // Use a threshold for proximity, e.g., 64
-                if (distance < 64) {
-                    npc->OnTouch();
-                }
-            }
-        }
-
-
-
-
-        // Check if we should create new enemy.
-        ticks += deltaTime;
-        if (enemyWaveData.empty()) {
-            if (EnemyGroup->GetObjects().empty()) {
-                // Free resources.
-                /*delete TileMapGroup;
-                delete GroundEffectGroup;
-                delete DebugIndicatorGroup;
-                delete TowerGroup;
-                delete EnemyGroup;
-                delete BulletGroup;
-                delete EffectGroup;
-                delete UIGroup;
-                delete imgTarget;
-                */
-                // Win.
-
-
-                //std::cout << "changing scene to win" << std::endl;
-                //auto* win = dynamic_cast<WinScene*>(Engine::GameEngine::GetInstance().GetScene("win"));
-                //if (win) win->SetFinalScore(money); // ini buat recording for scoreboard
-                //Engine::GameEngine::GetInstance().ChangeScene("win");
-                //return;
-            }
-            continue;
-        }
-        auto current = enemyWaveData.front();
-        if (ticks < current.second)
-            continue;
-        ticks -= current.second;
-        enemyWaveData.pop_front();
-        const Engine::Point SpawnCoordinate = Engine::Point(SpawnGridPoint.x * BlockSize + BlockSize / 2, SpawnGridPoint.y * BlockSize + BlockSize / 2);
-        Enemy *enemy;
-        switch (current.first) {
-            case 1:
-                EnemyGroup->AddNewObject(enemy = new SoldierEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
-                break;
-            // TODO HACKATHON-3 (2/3): Add your new enemy here. (DONE)
-            case 2:
-                EnemyGroup->AddNewObject(enemy = new PlaneEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
-                break;
-            case 3:
-                EnemyGroup->AddNewObject(enemy = new TankEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
-                break;
-            case 4:
-                EnemyGroup->AddNewObject(enemy = new AquaTankEnemy(SpawnCoordinate.x, SpawnCoordinate.y));
-                break;
-            default:
-                continue;
-        }
-        enemy->UpdatePath(mapDistance);
-        // Compensate the time lost.
-        enemy->Update(ticks);
     }
+
+    // Proceed with enemy spawning as usual...
+    ticks += deltaTime;
+    if (enemyWaveData.empty()) {
+        if (EnemyGroup->GetObjects().empty()) {
+            continue;
+        }
+        continue;
+    }
+    auto current = enemyWaveData.front();
+    if (ticks < current.second) continue;
+    ticks -= current.second;
+    enemyWaveData.pop_front();
+
+    const Engine::Point SpawnCoordinate = Engine::Point(SpawnGridPoint.x * BlockSize + BlockSize / 2, SpawnGridPoint.y * BlockSize + BlockSize / 2);
+    Enemy *enemy;
+    switch (current.first) {
+        case 1:
+            enemy = new SoldierEnemy(SpawnCoordinate.x, SpawnCoordinate.y);
+            break;
+        case 2:
+            enemy = new PlaneEnemy(SpawnCoordinate.x, SpawnCoordinate.y);
+            break;
+        case 3:
+            enemy = new TankEnemy(SpawnCoordinate.x, SpawnCoordinate.y);
+            break;
+        case 4:
+            enemy = new AquaTankEnemy(SpawnCoordinate.x, SpawnCoordinate.y);
+            break;
+        default:
+            continue;
+    }
+    EnemyGroup->AddNewObject(enemy);
+    enemy->UpdatePath(mapDistance);
+    enemy->Update(ticks);
+}
+
     if (preview) {
         preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
         // To keep responding when paused.
@@ -876,7 +723,7 @@ void PlayScene::UIBtnClicked(int id) {
             GameData::isNull= true;
             null_emotionStartTime = al_get_time();
             null_emotionLabel->Visible = true;
-            AudioHelper::PlaySample("collect.mp3");
+            //AudioHelper::PlaySample("collect.mp3");
         }
         return;
     }
@@ -893,7 +740,7 @@ void PlayScene::UIBtnClicked(int id) {
             GameData::isInvincible = true;
             invincibleStartTime = al_get_time();
             InvincibleLabel->Visible = true;
-            AudioHelper::PlaySample("collect.mp3");
+            //AudioHelper::PlaySample("collect.mp3");
 
         }
         return;
@@ -911,14 +758,14 @@ void PlayScene::UIBtnClicked(int id) {
             poisonStingStartTime = now;
             poisonStingLabel->Text = "POISON STING EQUIPPED!";
             poisonStingLabel->Visible = true;
-            AudioHelper::PlaySample("press.mp3");
+            //AudioHelper::PlaySample("press.mp3");
             std::cout << "Poison sting equipped" << std::endl;
         } else {
             GameData::poisonStingEquip = false;
             poisonStingLabel->Text = "POISON STING UNEQUIPPED!";
             poisonStingStartTime = now; // reset timer so the label shows for 3 sec
             poisonStingLabel->Visible = true;
-            AudioHelper::PlaySample("press.mp3");
+            //AudioHelper::PlaySample("press.mp3");
             std::cout << "Poison sting unequipped (manual)" << std::endl;
         }
     }

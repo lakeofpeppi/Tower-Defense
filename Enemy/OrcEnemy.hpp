@@ -8,6 +8,7 @@
 
 #pragma once
 #include "Engine/Sprite.hpp"
+//#include "Engine/GameEngine.hpp
 #include <string>
 
 class OrcEnemy : public Engine::Sprite {
@@ -21,7 +22,7 @@ public:
     OrcEnemy(float x, float y, std::string baseImagePath, std::string targetSceneName);
 
     void Update(float deltaTime) override;
-    void OnTouch(); // Just the declaration
+    void OnTouch();
 };
 
 #endif //ORCENEMY_HPP

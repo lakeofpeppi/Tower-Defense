@@ -17,12 +17,10 @@
 #include "UI/Component/Slider.hpp"
 #include "Scene/SettingsScene.hpp"
 #include "IntroScene.hpp"
-
 #include <iostream>
 #include <ostream>
 #include "BattleOrc.hpp"
 #include "GameData.hpp"
-
 #include "PlayScene.hpp"
 #include "Engine/Sprite.hpp"
 #include "Scene/BattleScorpion.hpp"
@@ -45,7 +43,7 @@ void BattleSea::Initialize() {
 
     int wpic = 1900;
     int hpic = 1300;
-    AddNewObject(new Engine::Image("play/darkforest.jpg", 0, 0, wpic, hpic));
+    AddNewObject(new Engine::Image("play/bg_seaBattle.png", 0, 0, wpic, hpic));
     //AddNewObject(new Engine::Image("play/rin dialogue expressions.png", 0, 620, 2700, 600));
 
     // Create the first line label
@@ -65,8 +63,10 @@ void BattleSea::Initialize() {
     AddNewObject(rin_battle);
 
     // Rin worried
-    sea_battle = new Engine::Image("play/orc battle.png", halfW - 250, h - 1200, 1500, 1000);
+    sea_battle = new Engine::Image("play/jellyfishBattle.png", halfW - 250, h - 1200, 1000, 1000);
     AddNewObject(sea_battle);
+    //if (!sea_battle->GetBitmap()) std::cout << "[WARN] sea_battle image failed to load!\n";
+
 
     ///ADA SEGMENTATION ERROR KL PAKE INI
     // UIGroup->AddNewObject(UILives = new Engine::Label(std::string("HP: ") + std::to_string(GameData::lives), "pirulen.ttf", 32, 1500, 300));
@@ -141,11 +141,22 @@ void BattleSea::Initialize() {
     AddNewObject(turnIndicatorLabel);
 
 
+    Engine::ImageButton* backBtn = new Engine::ImageButton(
+        "stage-select/dirt.png",  // Normal image
+        "stage-select/floor.png", // Hover image
+        20, 20,                   // X, Y position (top-left)
+        200, 60);                 // Width, Height
+    backBtn->SetOnClickCallback([]() {
+        Engine::GameEngine::GetInstance().ChangeScene("sea");
+    });
+    AddNewControlObject(backBtn);
+    AddNewObject(new Engine::Label("BACK", "pirulen.ttf", 32,
+        20 + 100, 20 + 30,        // Centered in button
+        255, 255, 255, 255, 0.5, 0.5));
     bgmInstance = AudioHelper::PlaySample("fight.ogg", true, AudioHelper::BGMVolume);
 }
 void BattleSea::OnClickAttack() {
     if (inputDisabled) return;
-    if (!GameData::poisonStingEquip) return; // Cannot attack if not equipped
 
     AudioHelper::PlaySample("slash.mp3");
     GameData::seaHP -= GameData::strength;
@@ -159,15 +170,8 @@ void BattleSea::OnClickAttack() {
 
     seaHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::seaHP);
     playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
-
-    // Only schedule enemy attack if not using poisonSting
-    if (!enemyAttackScheduled && !GameData::poisonStingEquip) {
-        enemyAttackScheduled = true;
-        enemyAttackStartTime = al_get_time();
-        turnIndicatorLabel->Text = "ENEMY TURN!";
-        turnIndicatorLabel->Color = al_map_rgba(255, 0, 0, 255);
-    }
 }
+
 
 
 void BattleSea::OnClickHeal() {
@@ -201,29 +205,26 @@ void BattleSea::OnClickDefend() {
 
 
 }
+
+
 void BattleSea::OnClickSkill() {
     if (inputDisabled) return;
-    if (!GameData::poisonStingEquip) return; // Cannot use skill if not equipped
+    if (!GameData::poisonStingEquip) return; // Skill requires poison sting
 
+    // Skill effect
     AudioHelper::PlaySample("slash.mp3");
     GameData::seaHP -= (GameData::strength + 50);
     if (GameData::seaHP < 0) GameData::seaHP = 0;
 
-    // Lose 5 HP unless null emotion is active
+    // HP cost (unless null emotion)
     if (!GameData::isNull) {
         GameData::lives -= 5;
         if (GameData::lives < 0) GameData::lives = 0;
     }
 
+    // Update UI
     seaHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::seaHP);
     playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
-
-    if (!enemyAttackScheduled && !GameData::poisonStingEquip) {
-        enemyAttackScheduled = true;
-        enemyAttackStartTime = al_get_time();
-        turnIndicatorLabel->Text = "ENEMY TURN!";
-        turnIndicatorLabel->Color = al_map_rgba(255, 0, 0, 255);
-    }
 }
 
 void BattleSea::Terminate() {
@@ -248,16 +249,16 @@ void BattleSea::EnemyTurn() {
     GameData::lives -= damage;
     playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
     isDefending = false;
+    std::cout << "[DEBUG] EnemyTurn called. Damage: " << damage << ", lives left: " << GameData::lives << "\n";
+
 }
 
-// void BattleScorpion::BackOnClick(int stage) {
-//
-// }
-// void BattleScorpion::NextOnClick(int stage) {
-//
-// }
+void BattleSea::BackOnClick(int stage) {
 
+}
+void BattleSea::NextOnClick(int stage) {
 
+}
 
 void BattleSea::BGMSlideOnValueChanged(float value) {
     AudioHelper::ChangeSampleVolume(bgmInstance, value);
@@ -270,6 +271,7 @@ void BattleSea::Update(float deltaTime) {
     Engine::IScene::Update(deltaTime);
 
     if (enemyAttackScheduled) {
+        std::cout << "[DEBUG] update(): enemyAttackScheduled=" << enemyAttackScheduled << "\n";
         double currentTime = al_get_time();
         if (currentTime - enemyAttackStartTime >= 2) {
             AudioHelper::PlaySample("growl.mp3");
@@ -297,6 +299,9 @@ void BattleSea::Update(float deltaTime) {
 
         AudioHelper::StopSample(bgmInstance);
         AudioHelper::PlaySample("win.wav");
+    }
+        if (seaDefeatedShown && al_get_time() - defeatMessageStartTime > 5.0) {
+            Engine::GameEngine::GetInstance().ChangeScene("princess");
     }
 
 

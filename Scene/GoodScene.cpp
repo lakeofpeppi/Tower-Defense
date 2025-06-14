@@ -106,7 +106,7 @@ void GoodScene::Initialize() {
 
 
 
-    bgmInstance = AudioHelper::PlaySample("princess-meet.mp3", true, AudioHelper::BGMVolume);
+    //bgmInstance = AudioHelper::PlaySample("princess-meet.mp3", true, AudioHelper::BGMVolume);
 }
 void GoodScene::Terminate() {
     if (bgmInstance) {

@@ -50,35 +50,8 @@ void SaharaScene::Initialize() {
     AddNewObject(EnemyGroup = new Engine::Group());
     AddNewObject(BulletGroup = new Engine::Group());
     AddNewObject(EffectGroup = new Engine::Group());
-    // Should support buttons.
     AddNewControlObject(UIGroup = new Engine::Group());
 
-
-    // Create house
-    /*
-    auto* Inventory = new House(
-        1184, 928,
-        "play/house_inventory.png",
-        "intro");
-    EffectGroup->AddNewObject(Inventory);
-
-    auto* Book = new House(
-        288, 512,  // Example position
-        "play/house_book.png",  // Image of the house
-        "book"         // The scene it should go to when touched
-    );
-    EffectGroup->AddNewObject(Book);
-
-
-    auto* npcTalker = new NPC(
-        512, 928,
-        "npc/npc_idle",
-        "intro");
-    EffectGroup->AddNewObject(npcTalker);
-    */
-    auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
-    rin->SetPlayScene(this);
-    EffectGroup->AddNewObject(rin);
     int x_r = 1450;          // right side of the screen (adjust to your map)
     int y_start_r = 510;     // top
     int y_end_r = 1000;       // bottom
@@ -91,26 +64,6 @@ void SaharaScene::Initialize() {
         auto* tree = new Creature(x_l, y, "enemy/tree_sahara", 1, 5.0f, scale_tree, scale_tree);
         EffectGroup->AddNewObject(tree);
     }
-    auto* tree1 = new Creature(130, 1000, "enemy/tree_sahara", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(tree1);
-    auto* tree = new Creature(256, 1000, "enemy/tree_sahara", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(tree);
-    auto* tree2 = new Creature(340, 1064, "enemy/tree_sahara", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(tree2);
-    auto* tree3 = new Creature(399, 1032, "enemy/tree_sahara", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(tree3);
-    auto* tree4 = new Creature(480, 1000, "enemy/tree_sahara", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(tree4);
-    auto* tree5 = new Creature(536, 1064, "enemy/tree_sahara", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(tree5);
-    auto* tree6 = new Creature(598, 1032, "enemy/tree_sahara", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(tree6);
-
-    auto* stalagmite = new Creature(110, 1110, "enemy/stalagmite", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(stalagmite);
-    auto* stalagmite1 = new Creature(700, 1078, "enemy/stalagmite", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(stalagmite1);
-
     auto* mountain = new Creature(1128, 128, "enemy/mountain", 1, 5.0f, 320, 320);
     EffectGroup->AddNewObject(mountain);
     auto* mountain1 = new Creature(1000, 160, "enemy/mountain", 1, 5.0f, 320, 320);
@@ -119,12 +72,6 @@ void SaharaScene::Initialize() {
     EffectGroup->AddNewObject(mountain2);
     auto* mountain3 = new Creature(1000, 240, "enemy/mountain", 1, 5.0f, 320, 320);
     EffectGroup->AddNewObject(mountain3);
-    /* auto* mountainred = new Creature(1200, 240, "enemy/mountainred", 1, 5.0f, 200, 200);
-    EffectGroup->AddNewObject(mountainred);
-    auto* mountain4 = new Creature(1200, 280, "enemy/mountain", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(mountain4);
-    auto* mountain5 = new Creature(1300, 320, "enemy/mountain", 1, 5.0f, 320, 320);
-    EffectGroup->AddNewObject(mountain5);*/
     auto* stalagmite4 = new Creature(1000, 400, "enemy/stalagmite", 1, 5.0f, 380, 380);
     EffectGroup->AddNewObject(stalagmite4);
     auto* stalagmite2 = new Creature(1128, 340, "enemy/stalagmite", 1, 5.0f, 380, 380);
@@ -137,9 +84,6 @@ void SaharaScene::Initialize() {
         auto* tree = new Creature(x_r, y, "enemy/tree_sahara", 1, 5.0f, scale_tree, scale_tree);
         EffectGroup->AddNewObject(tree);
     }
-
-
-
 
     float sx = 512;
     float sy = 300;
@@ -163,11 +107,32 @@ void SaharaScene::Initialize() {
         auto* scorpion_enemy = new ScorpionEnemy(
             512, 300,
             "enemy/scorpion",
-            "intro");
+            "scorpion");
         EffectGroup->AddNewObject(scorpion_enemy);
     }
+    auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
+    rin->SetPlayScene(this);
+    EffectGroup->AddNewObject(rin);
 
+    auto* tree1 = new Creature(130, 1000, "enemy/tree_sahara", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree1);
+    auto* tree = new Creature(256, 1000, "enemy/tree_sahara", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree);
+    auto* tree2 = new Creature(340, 1064, "enemy/tree_sahara", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree2);
+    auto* tree3 = new Creature(399, 1032, "enemy/tree_sahara", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree3);
+    auto* tree4 = new Creature(480, 1000, "enemy/tree_sahara", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree4);
+    auto* tree5 = new Creature(536, 1064, "enemy/tree_sahara", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree5);
+    auto* tree6 = new Creature(598, 1032, "enemy/tree_sahara", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(tree6);
 
+    auto* stalagmite = new Creature(110, 1110, "enemy/stalagmite", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(stalagmite);
+    auto* stalagmite1 = new Creature(700, 1078, "enemy/stalagmite", 1, 5.0f, 320, 320);
+    EffectGroup->AddNewObject(stalagmite1);
 
 
 

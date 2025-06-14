@@ -14,4 +14,4 @@ bool GameData::poisonStingEquip = false;
 bool GameData::isInvincible = false;
 bool GameData::isNull = false;
 int GameData::seaHP = 600;
-int GameData::seaStrength = 0;
+int GameData::seaStrength = 14;

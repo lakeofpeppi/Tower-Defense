@@ -192,6 +192,8 @@ add_executable(2025_I2P2_TowerDefense
         Scene/BattleScorpion.hpp
         Scene/BattleSea.cpp
         Scene/BattleSea.hpp
+        Helper/Frog.cpp
+        Helper/Frog.hpp
 
 )
 

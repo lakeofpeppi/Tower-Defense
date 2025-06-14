@@ -136,7 +136,7 @@ void BookScene::Initialize() {
         255, 255, 255, 255,       // black color
         0.5, 0.5));         // centered alignment
 
-   bgmInstance = AudioHelper::PlaySample("book.mp3", true, AudioHelper::BGMVolume);
+   //bgmInstance = AudioHelper::PlaySample("book.mp3", true, AudioHelper::BGMVolume);
 }
 void BookScene::Terminate() {
     if (bgmInstance) {

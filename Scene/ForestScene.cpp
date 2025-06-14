@@ -58,29 +58,6 @@ void ForestScene::Initialize() {
     // Should support buttons.
     AddNewControlObject(UIGroup = new Engine::Group());
 
-
-    // Create house
-    /*
-    auto* Inventory = new House(
-        1184, 928,
-        "play/house_inventory.png",
-        "intro");
-    EffectGroup->AddNewObject(Inventory);
-
-    auto* Book = new House(
-        288, 512,  // Example position
-        "play/house_book.png",  // Image of the house
-        "book"         // The scene it should go to when touched
-    );
-    EffectGroup->AddNewObject(Book);
-
-
-    auto* npcTalker = new NPC(
-        512, 928,
-        "npc/npc_idle",
-        "intro");
-    EffectGroup->AddNewObject(npcTalker);
-    */
     int x_r = 1480;          // right side of the screen (adjust to your map)
     int y_start_r = 100;     // top
     int y_end_r = 1000;       // bottom
@@ -168,6 +145,13 @@ void ForestScene::Initialize() {
             "enemy/frog",
             "intro");
     EffectGroup->AddNewObject(frog_enemy);
+
+    /*
+    if (frog_enemy->isdisappearing) {
+        auto* frog_die = new Creature(jx, jy, "enemy/clam_frame", 4, 50);
+        EffectGroup->AddNewObject(frog_die);
+    }
+    */
     /*
     auto* frog_disappear = new FrogEnemy(
              300, 800,

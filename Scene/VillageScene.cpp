@@ -278,7 +278,7 @@ void VillageScene::OnKeyDown(int keyCode) {
         std::cout << "SPACE PRESSED & dialogueActive is TRUE\n";
 
         AdvanceDialogue();
-        AudioHelper::PlaySample("press.mp3");
+      //  AudioHelper::PlaySample("press.mp3");
         return;
 
     }
@@ -438,7 +438,7 @@ void VillageScene::AdvanceDialogue() {
             if (rin_close) rin_close->Visible = true;
         }else if (currentDialogueIndex == 22)
         {
-            AudioHelper::PlaySample("collect.mp3");
+            //AudioHelper::PlaySample("collect.mp3");
         }
 
         currentDialogueIndex++;
