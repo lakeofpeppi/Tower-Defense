@@ -76,6 +76,9 @@ Players embark on a quest to save Princess Sayuki, navigating through hand-drawn
 ![Ocean Scene](gameplay/ocean.png)
 ![Battle Scene](gameplay/battle.png)
 
+### Gameplay Video
+[Watch on YouTube](https://www.youtube.com/watch?v=0TviIqtmWdY)
 
 
+Special thanks to Professor 郭柏志 for the valuable knowledge and support shared during and beyond I2P(II) lectures.
 
