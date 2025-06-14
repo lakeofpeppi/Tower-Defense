@@ -53,13 +53,16 @@ void StartScene::Terminate() {
     IScene::Terminate();
 }
 void StartScene::PlayOnClick(int stage) {
+    AudioHelper::PlaySample("press.mp3");
     GameData::Reset();
 
     Engine::GameEngine::GetInstance().ChangeScene("intro");
 }
 void StartScene::StageOnClick(int stage) {
+    AudioHelper::PlaySample("press.mp3");
     Engine::GameEngine::GetInstance().ChangeScene("stage-select");
 }
 void StartScene::SettingsOnClick(int stage) {
+    AudioHelper::PlaySample("press.mp3");
     Engine::GameEngine::GetInstance().ChangeScene("settings");
 }

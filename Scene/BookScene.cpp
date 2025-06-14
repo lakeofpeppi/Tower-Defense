@@ -150,6 +150,7 @@ void BookScene::BackOnClick(int stage) {
 
 }
 void BookScene::NextOnClick(int stage) {
+    AudioHelper::PlaySample("press.mp3");
     if (currentLine < (int)dialogueLines.size() - 1) {
         currentLine++;
         if (dialogueLabel)dialogueLabel->Text = dialogueLines[currentLine];

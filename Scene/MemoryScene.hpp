@@ -20,6 +20,7 @@ public:
     void GiveUpMemory1();
     void GiveUpMemory2();
     void BackToMemorySelection();
+    void Terminate();
 
 private:
     void ShowMemory(int memoryIndex, std::string textLine1, std::string textLine2, std::function<void()> giveUpCallback);
@@ -46,6 +47,7 @@ private:
     Engine::Image* memoryPhoto1 = nullptr;
     Engine::Image* memoryPhoto2 = nullptr;
     Engine::ImageButton* memoryPhotoButton;
+    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
 
 
 

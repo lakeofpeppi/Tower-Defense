@@ -147,7 +147,8 @@ void BattleSea::Initialize() {
         20, 20,                   // X, Y position (top-left)
         200, 60);                 // Width, Height
     backBtn->SetOnClickCallback([]() {
-        Engine::GameEngine::GetInstance().ChangeScene("sea");
+        AudioHelper::PlaySample("press.mp3");
+        Engine::GameEngine::GetInstance().ChangeScene("ocean");
     });
     AddNewControlObject(backBtn);
     AddNewObject(new Engine::Label("BACK", "pirulen.ttf", 32,
@@ -274,7 +275,7 @@ void BattleSea::Update(float deltaTime) {
         std::cout << "[DEBUG] update(): enemyAttackScheduled=" << enemyAttackScheduled << "\n";
         double currentTime = al_get_time();
         if (currentTime - enemyAttackStartTime >= 2) {
-            AudioHelper::PlaySample("growl.mp3");
+            //AudioHelper::PlaySample("growl.mp3");
             EnemyTurn();
             enemyAttackScheduled = false;
             turnIndicatorLabel->Text = "YOUR TURN!";

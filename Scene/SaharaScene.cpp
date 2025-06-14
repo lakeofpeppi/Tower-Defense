@@ -155,7 +155,7 @@ void SaharaScene::Initialize() {
     deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
     // Start BGM.
-    //bgmId = AudioHelper::PlayBGM("desert-explore.mp3");
+    bgmId = AudioHelper::PlayBGM("desert-explore.mp3");
 }
 std::string SaharaScene::GetMapImagePath() const {
     return "play/sahara_map.png";

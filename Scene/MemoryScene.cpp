@@ -127,9 +127,11 @@ void MemoryScene::Initialize() {
     labelBack = new Engine::Label("Back", "pirulen.ttf", 32, backX + buttonWidth / 2, buttonY + buttonHeight / 2, 255, 255, 255, 255, 0.5, 0.5);
     labelBack->Visible = false;
     AddNewObject(labelBack);
+    bgmInstance = AudioHelper::PlaySample("book.mp3", true, AudioHelper::BGMVolume);
 }
 
 void MemoryScene::NextOnClick(int stage) {
+    AudioHelper::PlaySample("press.mp3");
     if (currentState == MemoryState::INTRO) {
         dialogueLabels[currentLine]->Visible = false;
         currentLine++;
@@ -188,14 +190,22 @@ void MemoryScene::ShowMemory(int memoryIndex, std::string textLine1, std::string
 
 
 void MemoryScene::Memory1OnClick() {
+    AudioHelper::PlaySample("press.mp3");
     ShowMemory(
         1,
         "Stranded in a forest, Rin must bring his injured sister home safely.",
         "By giving up this memory, you are giving up strength.",
         std::bind(&MemoryScene::GiveUpMemory1, this));
 }
-
+void MemoryScene::Terminate() {
+    if (bgmInstance) {
+        AudioHelper::StopSample(bgmInstance);
+        bgmInstance.reset();  // safer and clearer
+    }
+    IScene::Terminate();
+}
 void MemoryScene::Memory2OnClick() {
+    AudioHelper::PlaySample("press.mp3");
     ShowMemory(
         2,
         "In the middle of the night, Rin's house was robbed and destroyed.",
@@ -204,18 +214,21 @@ void MemoryScene::Memory2OnClick() {
 }
 
 void MemoryScene::GiveUpMemory1() {
+    AudioHelper::PlaySample("press.mp3");
     GameData::strength -= 20;
     std::cout << "Giving up Memory 1 (Strength)" << std::endl;
     Engine::GameEngine::GetInstance().ChangeScene("ocean");
 }
 
 void MemoryScene::GiveUpMemory2() {
+    AudioHelper::PlaySample("press.mp3");
     GameData::speed -= 20;
     std::cout << "Giving up Memory 2 (Speed)" << std::endl;
     Engine::GameEngine::GetInstance().ChangeScene("ocean");
 }
 
 void MemoryScene::BackToMemorySelection() {
+    AudioHelper::PlaySample("press.mp3");
     currentState = MemoryState::CHOOSE_MEMORY;
 
 

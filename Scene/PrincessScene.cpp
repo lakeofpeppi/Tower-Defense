@@ -207,7 +207,7 @@ void PrincessScene::Initialize() {
     AddNewObject(labelNormal);
 
 
-    //bgmInstance = AudioHelper::PlaySample("princess-backstory.mp3", true, AudioHelper::BGMVolume);
+    bgmInstance = AudioHelper::PlaySample("princess-backstory.mp3", true, AudioHelper::BGMVolume);
 }
 void PrincessScene::Terminate() {
     if (bgmInstance) {
@@ -220,6 +220,7 @@ void PrincessScene::BackOnClick(int stage) {
 
 }
 void PrincessScene::NextOnClick(int stage) {
+    AudioHelper::PlaySample("press.mp3");
     if (currentLine + 1 < (int)dialogueLines.size()) {
         currentLine++;
         dialogueLabel->Text = dialogueLines[currentLine];

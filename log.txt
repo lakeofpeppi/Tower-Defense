@@ -12,6 +12,8 @@
 [INFO] Loaded Resource<image>: Resource/images/stage-select/underline.png scaled to 300x100
 [INFO] Game initialized
 [INFO] Game start event loop
+[INFO] Loaded Resource<audio>: Resource/audios/press.mp3
+[INFO] Created<sample_instance>: Resource/audios/press.mp3
 [INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 400x100
 [INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png
 [INFO] Loaded Resource<image>: Resource/images/stage-select/floor.png
@@ -20,154 +22,23 @@
 [INFO] Loaded Resource<audio>: Resource/audios/title.wav
 [INFO] Created<sample_instance>: Resource/audios/title.wav
 [INFO] Changed to stage-select scene
-[INFO] stopped audio (sample)
-[INFO] Loaded Resource<image>: Resource/images/play/black.png scaled to 1792x1216
-[INFO] Loaded Resource<image>: Resource/images/play/dialogue.png scaled to 1250x150
-[INFO] Loaded Resource<font>: Resource/fonts/To The Point.ttf with size 70
-[INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 200x80
-[INFO] Loaded Resource<font>: Resource/fonts/To The Point.ttf with size 80
-[INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 300x80
-[INFO] Loaded Resource<font>: Resource/fonts/pirulen.ttf with size 32
-[INFO] Loaded Resource<image>: Resource/images/play/rin strength.png scaled to 1200x800
-[INFO] Loaded Resource<image>: Resource/images/play/rin speed.png scaled to 1200x800
-[INFO] Loaded Resource<font>: Resource/fonts/To The Point.ttf with size 60
-[INFO] Changed to memory scene
-[INFO] Loaded Resource<image>: Resource/images/Character/down_1.png scaled to 128x128
-[INFO] Loaded Resource<image>: Resource/images/enemy/anemon_yellow_1.png scaled to 320x320
-[INFO] Loaded Resource<image>: Resource/images/enemy/clam_frame_1.png scaled to 128x128
-[INFO] Loaded Resource<image>: Resource/images/enemy/pink_anemon_1.png scaled to 128x128
-[INFO] Loaded Resource<image>: Resource/images/enemy/rock_left_1.png scaled to 180x180
-[INFO] Loaded Resource<image>: Resource/images/enemy/anemon_yellow_1.png scaled to 180x180
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_1.png scaled to 128x128
-[INFO] Loaded Resource<image>: Resource/images/enemy/seaweed_1.png scaled to 150x150
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_1.png scaled to 128x128
-[INFO] Loaded Resource<image>: Resource/images/play/water.png scaled to 64x64
-[INFO] Loaded Resource<font>: Resource/fonts/pirulen.ttf with size 28
-[INFO] Loaded Resource<image>: Resource/images/play/wooden_forest.png scaled to 320x1216
-[INFO] Loaded Resource<font>: Resource/fonts/pirulen.ttf with size 24
-[INFO] Loaded Resource<image>: Resource/images/play/apple.png
-[INFO] Loaded Resource<image>: Resource/images/play/floor.png
-[INFO] Loaded Resource<image>: Resource/images/play/dirt.png
-[INFO] Loaded Resource<image>: Resource/images/play/orange.png
-[INFO] Loaded Resource<image>: Resource/images/play/null.png
-[INFO] Loaded Resource<image>: Resource/images/play/invinsible.png
-[INFO] Loaded Resource<image>: Resource/images/play/trap.png
-[INFO] Loaded Resource<image>: Resource/images/play/floor.png scaled to 672x816
-[INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 292x60
-[INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 400x60
-[INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 160x50
-[INFO] Loaded Resource<image>: Resource/images/play/benjamin.png
-[INFO] Loaded Resource<image>: Resource/images/play/rin prof.png scaled to 360x240
-[INFO] Loaded Resource<image>: Resource/images/play/target.png
-[INFO] Loaded Resource<audio>: Resource/audios/astronomia.ogg
-[INFO] Created<sample_instance>: Resource/audios/astronomia.ogg
-[INFO] Loaded Resource<image>: Resource/images/lose/benjamin-happy.png
-[INFO] Loaded Resource<audio>: Resource/audios/ocean-explore.wav
-[INFO] Changed to ocean scene
-[INFO] Loaded Resource<image>: Resource/images/Character/down_3.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_2.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_2.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_3.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_4.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_3.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/clam_frame_2.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/pink_anemon_2.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_5.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_4.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_6.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_7.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_5.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/clam_frame_3.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/pink_anemon_3.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_8.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_6.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_9.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_10.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_7.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_11.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/clam_frame_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/pink_anemon_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_8.png
 [INFO] Game Terminating...
-[INFO] stopped audio (bgm)
+[INFO] stopped audio (sample)
 [INFO] Game terminated
 [INFO] Game end
-[INFO] Destroyed Resource<image>: enemy/clam_frame_1.png
-[INFO] Destroyed Resource<image>: enemy/crab_7.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_8.png
-[INFO] Destroyed Resource<image>: enemy/clam_frame_3.png
-[INFO] Destroyed Resource<image>: enemy/pink_anemon_1.png
-[INFO] Destroyed Resource<image>: enemy/crab_5.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_6.png
-[INFO] Destroyed Resource<image>: enemy/crab_4.png
-[INFO] Destroyed Resource<image>: enemy/crab_6.png
-[INFO] Destroyed Resource<image>: enemy/pink_anemon_3.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_5.png
-[INFO] Destroyed Resource<image>: enemy/crab_1.png?128x128
-[INFO] Destroyed Resource<image>: enemy/crab_3.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_4.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_3.png
-[INFO] Destroyed Resource<image>: play/benjamin.png
-[INFO] Destroyed Resource<image>: stage-select/dirt.png?160x50
-[INFO] Destroyed Resource<image>: play/black.png?1792x1216
-[INFO] Destroyed Resource<image>: stage-select/dirt.png?400x60
-[INFO] Destroyed Resource<image>: stage-select/dirt.png?292x60
-[INFO] Destroyed Resource<image>: enemy/clam_frame_1.png?128x128
-[INFO] Destroyed Resource<image>: play/apple.png
-[INFO] Destroyed Resource<image>: lose/benjamin-happy.png
-[INFO] Destroyed Resource<image>: play/wooden_forest.png?320x1216
-[INFO] Destroyed Resource<image>: play/floor.png?672x816
-[INFO] Destroyed Resource<image>: enemy/crab_8.png
-[INFO] Destroyed Resource<image>: play/trap.png
-[INFO] Destroyed Resource<image>: play/invinsible.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_7.png
-[INFO] Destroyed Resource<image>: play/target.png
-[INFO] Destroyed Resource<image>: play/rin prof.png?360x240
-[INFO] Destroyed Resource<image>: play/null.png
-[INFO] Destroyed Resource<image>: play/orange.png
-[INFO] Destroyed Resource<image>: play/dirt.png
-[INFO] Destroyed Resource<image>: play/floor.png
-[INFO] Destroyed Resource<image>: enemy/anemon_yellow_1.png?320x320
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_1.png?128x128
-[INFO] Destroyed Resource<image>: play/water.png?64x64
-[INFO] Destroyed Resource<image>: enemy/pink_anemon_1.png?128x128
-[INFO] Destroyed Resource<image>: enemy/anemon_yellow_1.png?180x180
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_10.png
-[INFO] Destroyed Resource<image>: play/title screen.png?1811x1245
-[INFO] Destroyed Resource<image>: play/rin speed.png?1200x800
-[INFO] Destroyed Resource<image>: play/rin strength.png?1200x800
-[INFO] Destroyed Resource<image>: stage-select/underline.png?300x100
-[INFO] Destroyed Resource<image>: stage-select/dirt.png?200x80
-[INFO] Destroyed Resource<image>: enemy/pink_anemon_2.png
-[INFO] Destroyed Resource<image>: stage-select/dirt.png?400x100
 [INFO] Destroyed Resource<image>: stage-select/dirt.png
-[INFO] Destroyed Resource<image>: Character/down_3.png
-[INFO] Destroyed Resource<image>: icon.png
-[INFO] Destroyed Resource<image>: enemy/clam_frame_2.png
-[INFO] Destroyed Resource<image>: enemy/crab_2.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_9.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_2.png
-[INFO] Destroyed Resource<image>: play/dialogue.png?1250x150
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_11.png
 [INFO] Destroyed Resource<image>: stage-select/floor.png
-[INFO] Destroyed Resource<image>: stage-select/dirt.png?300x80
 [INFO] Destroyed Resource<image>: stage-select/underline.png?400x100
-[INFO] Destroyed Resource<image>: enemy/rock_left_1.png?180x180
-[INFO] Destroyed Resource<image>: Character/down_1.png?128x128
+[INFO] Destroyed Resource<image>: play/title screen.png?1811x1245
+[INFO] Destroyed Resource<image>: stage-select/underline.png?300x100
+[INFO] Destroyed Resource<image>: stage-select/dirt.png?400x100
 [INFO] Destroyed Resource<image>: stage-select/underline.png
-[INFO] Destroyed Resource<image>: enemy/seaweed_1.png?150x150
-[INFO] Destroyed Resource<font>: pirulen.ttf?24
-[INFO] Destroyed Resource<font>: pirulen.ttf?28
-[INFO] Destroyed Resource<font>: pirulen.ttf?32
-[INFO] Destroyed Resource<font>: To The Point.ttf?80
-[INFO] Destroyed Resource<font>: To The Point.ttf?70
-[INFO] Destroyed Resource<font>: To The Point.ttf?60
+[INFO] Destroyed Resource<image>: icon.png
 [INFO] Destroyed Resource<font>: pirulen.ttf?48
 [INFO] Destroyed Resource<font>: To The Point.ttf?100
 [INFO] Destroyed Resource<font>: pirulen.ttf?36
 [INFO] Destroyed Resource<font>: To The Point.ttf?200
-[INFO] Destroyed<sample_instance>: astronomia.ogg
 [INFO] Destroyed<sample_instance>: title.wav
-[INFO] Destroyed Resource<audio>: ocean-explore.wav
-[INFO] Destroyed Resource<audio>: astronomia.ogg
+[INFO] Destroyed<sample_instance>: press.mp3
 [INFO] Destroyed Resource<audio>: title.wav
+[INFO] Destroyed Resource<audio>: press.mp3

@@ -67,9 +67,11 @@ void StageSelectScene::PlayOnClick(int stage) {
 }
 
 void StageSelectScene::ScoreboardOnClick() {
+    AudioHelper::PlaySample("press.mp3");
     Engine::GameEngine::GetInstance().ChangeScene("memory");
 }
 void StageSelectScene::Ending() {
+    AudioHelper::PlaySample("press.mp3");
     Engine::GameEngine::GetInstance().ChangeScene("forest");
 }
 void StageSelectScene::BGMSlideOnValueChanged(float value) {

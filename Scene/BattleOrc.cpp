@@ -144,6 +144,7 @@ void BattleOrc::Initialize() {
         20, 20,                   // X, Y position (top-left)
         200, 60);                 // Width, Height
     backBtn->SetOnClickCallback([]() {
+        AudioHelper::PlaySample("press.mp3");
         Engine::GameEngine::GetInstance().ChangeScene("forest");
     });
     AddNewControlObject(backBtn);

@@ -147,6 +147,7 @@ void BattleScorpion::Initialize() {
         20, 20,                   // X, Y position (top-left)
         200, 60);                 // Width, Height
     backBtn->SetOnClickCallback([]() {
+        AudioHelper::PlaySample("press.mp3");
         Engine::GameEngine::GetInstance().ChangeScene("sahara");
     });
     AddNewControlObject(backBtn);
@@ -160,7 +161,7 @@ void BattleScorpion::Initialize() {
 }
 void BattleScorpion::OnClickAttack() {
     if (inputDisabled) return;
-    //AudioHelper::PlaySample("slash.mp3");
+    AudioHelper::PlaySample("slash.mp3");
     GameData::scorpionHP -= GameData::strength;
     if (GameData::scorpionHP < 0) GameData::scorpionHP = 0;
     scorpionHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::scorpionHP);
@@ -178,7 +179,7 @@ void BattleScorpion::OnClickAttack() {
 
 void BattleScorpion::OnClickHeal() {
     if (inputDisabled) return;
-    //AudioHelper::PlaySample("collect.mp3");
+    AudioHelper::PlaySample("collect.mp3");
     GameData::lives += 20; // No upper cap
     playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
     if (!enemyAttackScheduled) {
@@ -193,7 +194,7 @@ void BattleScorpion::OnClickHeal() {
 
 void BattleScorpion::OnClickDefend() {
     if (inputDisabled) return;
-    //AudioHelper::PlaySample("press.mp3");
+    AudioHelper::PlaySample("press.mp3");
     isDefending = true;
     // You would use this flag in the enemy's attack logic like so:
     // int damage = isDefending ? GameData::orcStrength / 2 : GameData::orcStrength;
@@ -211,7 +212,7 @@ void BattleScorpion::OnClickDefend() {
 
 void BattleScorpion::OnClickSkill() {
     if (inputDisabled) return;
-    //AudioHelper::PlaySample("slash.mp3");
+    AudioHelper::PlaySample("slash.mp3");
     GameData::scorpionHP -= (GameData::strength + 50);
     if (GameData::scorpionHP < 0) GameData::scorpionHP = 0;
 
