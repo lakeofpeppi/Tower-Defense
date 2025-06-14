@@ -146,7 +146,9 @@ void BattleScorpion::OnClickAttack() {
     if (inputDisabled) return;
     AudioHelper::PlaySample("slash.mp3");
     GameData::scorpionHP -= GameData::strength;
+    if (GameData::scorpionHP < 0) GameData::scorpionHP = 0;
     scorpionHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::scorpionHP);
+
     if (!enemyAttackScheduled) {
         enemyAttackScheduled = true;
         enemyAttackStartTime = al_get_time();
@@ -195,10 +197,14 @@ void BattleScorpion::OnClickSkill() {
     if (inputDisabled) return;
     AudioHelper::PlaySample("slash.mp3");
     GameData::scorpionHP -= (GameData::strength + 50);
+    if (GameData::scorpionHP < 0) GameData::scorpionHP = 0;
+
     GameData::lives -= 5;
+    if (GameData::lives < 0) GameData::lives = 0;
 
     scorpionHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::scorpionHP);
     playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
+
     if (!enemyAttackScheduled) {
         enemyAttackScheduled = true;
         enemyAttackStartTime = al_get_time();

@@ -149,13 +149,16 @@ void BattleSea::OnClickAttack() {
 
     AudioHelper::PlaySample("slash.mp3");
     GameData::seaHP -= GameData::strength;
-    seaHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::seaHP);
+    if (GameData::seaHP < 0) GameData::seaHP = 0;
 
     // Lose 5 HP unless null emotion is active
     if (!GameData::isNull) {
         GameData::lives -= 5;
-        playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
+        if (GameData::lives < 0) GameData::lives = 0;
     }
+
+    seaHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::seaHP);
+    playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
 
     // Only schedule enemy attack if not using poisonSting
     if (!enemyAttackScheduled && !GameData::poisonStingEquip) {
@@ -198,21 +201,20 @@ void BattleSea::OnClickDefend() {
 
 
 }
-
-
 void BattleSea::OnClickSkill() {
     if (inputDisabled) return;
     if (!GameData::poisonStingEquip) return; // Cannot use skill if not equipped
 
     AudioHelper::PlaySample("slash.mp3");
     GameData::seaHP -= (GameData::strength + 50);
+    if (GameData::seaHP < 0) GameData::seaHP = 0;
 
     // Lose 5 HP unless null emotion is active
     if (!GameData::isNull) {
         GameData::lives -= 5;
+        if (GameData::lives < 0) GameData::lives = 0;
     }
 
-    // Always update HP display
     seaHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::seaHP);
     playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
 

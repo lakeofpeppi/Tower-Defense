@@ -142,16 +142,15 @@ void BattleOrc::OnClickAttack() {
     if (inputDisabled) return;
     AudioHelper::PlaySample("slash.mp3");
     GameData::orcHP -= GameData::strength;
+    if (GameData::orcHP < 0) GameData::orcHP = 0; // Clamp here
     orcHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::orcHP);
+
     if (!enemyAttackScheduled) {
         enemyAttackScheduled = true;
         enemyAttackStartTime = al_get_time();
         turnIndicatorLabel->Text = "ENEMY TURN!";
         turnIndicatorLabel->Color = al_map_rgba(255, 0, 0, 255);
-
     }
-
-
 }
 
 void BattleOrc::OnClickHeal() {
@@ -191,18 +190,18 @@ void BattleOrc::OnClickSkill() {
     if (inputDisabled) return;
     AudioHelper::PlaySample("slash.mp3");
     GameData::orcHP -= (GameData::strength + 50);
+    if (GameData::orcHP < 0) GameData::orcHP = 0; // Clamp here
     GameData::lives -= 5;
 
     orcHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::orcHP);
     playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
+
     if (!enemyAttackScheduled) {
         enemyAttackScheduled = true;
         enemyAttackStartTime = al_get_time();
         turnIndicatorLabel->Text = "ENEMY TURN!";
         turnIndicatorLabel->Color = al_map_rgba(255, 0, 0, 255);
     }
-
-
 }
 
 void BattleOrc::Terminate() {

@@ -21,375 +21,48 @@
 [INFO] Created<sample_instance>: Resource/audios/title.wav
 [INFO] Changed to stage-select scene
 [INFO] stopped audio (sample)
-[INFO] Loaded Resource<image>: Resource/images/play/dialogue.png scaled to 1140x150
-[INFO] Loaded Resource<image>: Resource/images/play/rin normal.png scaled to 720x480
-[INFO] Loaded Resource<image>: Resource/images/play/rin worried.png scaled to 720x480
-[INFO] Loaded Resource<image>: Resource/images/play/rin close.png scaled to 720x480
-[INFO] Loaded Resource<image>: Resource/images/play/toma happy.png scaled to 720x480
-[INFO] Loaded Resource<image>: Resource/images/play/toma shock.png scaled to 720x480
-[INFO] Loaded Resource<image>: Resource/images/play/toma worry.png scaled to 720x480
-[INFO] Loaded Resource<image>: Resource/images/enemy/gubukkkk_1.png scaled to 280x280
-[INFO] Loaded Resource<image>: Resource/images/enemy/gubukk_1.png scaled to 280x280
-[INFO] Loaded Resource<image>: Resource/images/enemy/gubukkk_1.png scaled to 280x280
-[INFO] Loaded Resource<image>: Resource/images/enemy/pohon_1.png scaled to 280x280
-[INFO] Loaded Resource<image>: Resource/images/enemy/pohin_1.png scaled to 280x280
-[INFO] Loaded Resource<image>: Resource/images/enemy/pohonn_1.png scaled to 280x280
-[INFO] Loaded Resource<image>: Resource/images/play/house_book.png scaled to 256x256
-[INFO] Loaded Resource<image>: Resource/images/play/house_inventory.png scaled to 256x256
-[INFO] Loaded Resource<image>: Resource/images/npc/toma_1.png scaled to 128x128
-[INFO] Loaded Resource<image>: Resource/images/Character/down_1.png scaled to 128x128
-[INFO] Loaded Resource<image>: Resource/images/enemy/pohinnn_1.png scaled to 280x280
-[INFO] Loaded Resource<image>: Resource/images/enemy/pohinnnn_1.png scaled to 280x280
-[INFO] Loaded Resource<image>: Resource/images/enemy/pohinn_1.png scaled to 280x280
-[INFO] Loaded Resource<image>: Resource/images/enemy/gubukkkkkk_1.png scaled to 320x320
-[INFO] Loaded Resource<image>: Resource/images/enemy/gubukkkk_1.png scaled to 320x320
-[INFO] Loaded Resource<image>: Resource/images/enemy/gubukkkkk_1.png scaled to 500x500
-[INFO] Loaded Resource<image>: Resource/images/play/grass.png scaled to 64x64
-[INFO] Loaded Resource<image>: Resource/images/play/fence.png scaled to 64x64
-[INFO] Loaded Resource<image>: Resource/images/play/fence_right.png scaled to 64x64
-[INFO] Loaded Resource<image>: Resource/images/play/fence_left.png scaled to 64x64
-[INFO] Loaded Resource<image>: Resource/images/play/fence_down.png scaled to 64x64
-[INFO] Loaded Resource<font>: Resource/fonts/pirulen.ttf with size 28
-[INFO] Loaded Resource<image>: Resource/images/play/wooden_forest.png scaled to 320x1216
+[INFO] Loaded Resource<image>: Resource/images/play/darkforest.jpg scaled to 1900x1300
+[INFO] Loaded Resource<image>: Resource/images/play/black.png scaled to 1712x1136
+[INFO] Loaded Resource<image>: Resource/images/play/rin battle.png scaled to 1350x900
+[INFO] Loaded Resource<image>: Resource/images/play/orc battle.png scaled to 1500x1000
+[INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 320x100
+[INFO] Loaded Resource<font>: Resource/fonts/pirulen.ttf with size 40
 [INFO] Loaded Resource<font>: Resource/fonts/pirulen.ttf with size 32
-[INFO] Loaded Resource<font>: Resource/fonts/pirulen.ttf with size 24
-[INFO] Loaded Resource<image>: Resource/images/play/apple.png
-[INFO] Loaded Resource<image>: Resource/images/play/floor.png
-[INFO] Loaded Resource<image>: Resource/images/play/dirt.png
-[INFO] Loaded Resource<image>: Resource/images/play/orange.png
-[INFO] Loaded Resource<image>: Resource/images/play/null.png
-[INFO] Loaded Resource<image>: Resource/images/play/invinsible.png
-[INFO] Loaded Resource<image>: Resource/images/play/trap.png
-[INFO] Loaded Resource<image>: Resource/images/play/floor.png scaled to 672x816
-[INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 292x60
-[INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 400x60
-[INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 160x50
-[INFO] Loaded Resource<image>: Resource/images/play/benjamin.png
-[INFO] Loaded Resource<image>: Resource/images/play/rin prof.png scaled to 360x240
-[INFO] Loaded Resource<image>: Resource/images/play/target.png
-[INFO] Loaded Resource<audio>: Resource/audios/astronomia.ogg
-[INFO] Created<sample_instance>: Resource/audios/astronomia.ogg
-[INFO] Loaded Resource<image>: Resource/images/lose/benjamin-happy.png
-[INFO] Changed to village scene
-[INFO] Loaded Resource<image>: Resource/images/Character/down_3.png
-[INFO] Loaded Resource<image>: Resource/images/Character/right_3.png
-[INFO] Loaded Resource<image>: Resource/images/Character/right_1.png
-[INFO] Loaded Resource<image>: Resource/images/Character/right_2.png
-[INFO] Loaded Resource<image>: Resource/images/npc/toma_2.png
-[INFO] Loaded Resource<image>: Resource/images/npc/toma_3.png
-[INFO] Loaded Resource<image>: Resource/images/npc/toma_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/gubukkkk_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/gubukk_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/gubukkk_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/pohon_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/pohin_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/pohonn_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/pohinnn_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/pohinnnn_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/pohinn_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/gubukkkkkk_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/gubukkkkk_1.png
-[INFO] stopped audio (bgm)
-[INFO] Loaded Resource<image>: Resource/images/enemy/bushes_1.png scaled to 256x256
-[INFO] Loaded Resource<image>: Resource/images/enemy/orc_1.png scaled to 128x128
-[INFO] Loaded Resource<image>: Resource/images/enemy/bushes_red_1.png scaled to 150x150
-[INFO] Loaded Resource<image>: Resource/images/enemy/lava_1.png scaled to 150x150
-[INFO] Loaded Resource<image>: Resource/images/enemy/frog_1.png scaled to 128x128
-[INFO] Loaded Resource<image>: Resource/images/enemy/treee_1.png scaled to 320x320
-[INFO] Loaded Resource<image>: Resource/images/enemy/treeee_1.png scaled to 320x320
-[INFO] Loaded Resource<image>: Resource/images/enemy/treeeee_1.png scaled to 320x320
-[INFO] Loaded Resource<image>: Resource/images/enemy/treeeeee_1.png scaled to 320x320
-[INFO] Loaded Resource<image>: Resource/images/enemy/bush_1.png scaled to 320x320
-[INFO] Loaded Resource<image>: Resource/images/enemy/pinklava_1.png scaled to 320x320
-[INFO] Loaded Resource<image>: Resource/images/enemy/lava_1.png scaled to 320x320
-[INFO] Loaded Resource<image>: Resource/images/play/soil.png scaled to 64x64
-[INFO] Created<sample_instance>: Resource/audios/astronomia.ogg
-[INFO] Loaded Resource<audio>: Resource/audios/forest-explore.wav
-[INFO] Changed to forest scene
-[INFO] Loaded Resource<image>: Resource/images/enemy/frog_2.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/frog_3.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/frog_4.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/orc_2.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/frog_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/orc_3.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/orc_4.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/orc_5.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/bushes_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/bushes_red_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/lava_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/treee_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/treeee_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/treeeee_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/treeeeee_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/bush_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/pinklava_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/orc_6.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/orc_1.png
-[INFO] Loaded Resource<image>: Resource/images/Character/up_3.png
-[INFO] Loaded Resource<image>: Resource/images/Character/up_1.png
-[INFO] Loaded Resource<image>: Resource/images/Character/up_2.png
-[INFO] Loaded Resource<image>: Resource/images/Character/left_3.png
-[INFO] Loaded Resource<image>: Resource/images/Character/left_1.png
-[INFO] Loaded Resource<image>: Resource/images/Character/left_2.png
-[INFO] stopped audio (bgm)
-[INFO] Loaded Resource<image>: Resource/images/enemy/tree_sahara_1.png scaled to 300x300
-[INFO] Loaded Resource<image>: Resource/images/enemy/tree_sahara_1.png scaled to 320x320
-[INFO] Loaded Resource<image>: Resource/images/enemy/stalagmite_1.png scaled to 320x320
-[INFO] Loaded Resource<image>: Resource/images/enemy/mountain_1.png scaled to 320x320
-[INFO] Loaded Resource<image>: Resource/images/enemy/stalagmite_1.png scaled to 380x380
-[INFO] Loaded Resource<image>: Resource/images/enemy/stalagmite_1.png scaled to 270x270
-[INFO] Loaded Resource<image>: Resource/images/enemy/scorpion_1.png scaled to 128x128
-[INFO] Loaded Resource<image>: Resource/images/play/gurun.png scaled to 64x64
-[INFO] Created<sample_instance>: Resource/audios/astronomia.ogg
-[INFO] Changed to sahara scene
-[INFO] Loaded Resource<image>: Resource/images/Character/down_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/scorpion_2.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/scorpion_3.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/scorpion_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/tree_sahara_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/stalagmite_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/mountain_1.png
-[INFO] stopped audio (bgm)
-[INFO] Loaded Resource<image>: Resource/images/enemy/anemon_yellow_1.png scaled to 320x320
-[INFO] Loaded Resource<image>: Resource/images/enemy/clam_frame_1.png scaled to 128x128
-[INFO] Loaded Resource<image>: Resource/images/enemy/pink_anemon_1.png scaled to 128x128
-[INFO] Loaded Resource<image>: Resource/images/enemy/rock_left_1.png scaled to 180x180
-[INFO] Loaded Resource<image>: Resource/images/enemy/anemon_yellow_1.png scaled to 180x180
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_1.png scaled to 128x128
-[INFO] Loaded Resource<image>: Resource/images/enemy/seaweed_1.png scaled to 150x150
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_1.png scaled to 128x128
-[INFO] Loaded Resource<image>: Resource/images/play/water.png scaled to 64x64
-[INFO] Created<sample_instance>: Resource/audios/astronomia.ogg
-[INFO] Loaded Resource<audio>: Resource/audios/ocean-explore.wav
-[INFO] Changed to ocean scene
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_2.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_2.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_3.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_4.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_3.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/clam_frame_2.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/pink_anemon_2.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_5.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_4.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_6.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_7.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_5.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/clam_frame_3.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/pink_anemon_3.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_8.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_6.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_9.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_10.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_7.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_11.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/clam_frame_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/pink_anemon_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_8.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_12.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_13.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_9.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_14.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_10.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_15.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_11.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_16.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_17.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_12.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/jellyfish_frame_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_13.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_14.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/crab_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/anemon_yellow_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/rock_left_1.png
-[INFO] Loaded Resource<image>: Resource/images/enemy/seaweed_1.png
-[INFO] Loaded Resource<image>: Resource/images/Character/down_2.png
+[INFO] Loaded Resource<audio>: Resource/audios/fight.ogg
+[INFO] Created<sample_instance>: Resource/audios/fight.ogg
+[INFO] Changed to sea scene
+[INFO] Loaded Resource<audio>: Resource/audios/collect.mp3
+[INFO] Created<sample_instance>: Resource/audios/collect.mp3
+[INFO] Loaded Resource<audio>: Resource/audios/growl.mp3
+[INFO] Created<sample_instance>: Resource/audios/growl.mp3
 [INFO] Game Terminating...
-[INFO] stopped audio (bgm)
+[INFO] stopped audio (sample)
 [INFO] Game terminated
 [INFO] Game end
-[INFO] Destroyed Resource<image>: Character/down_2.png
-[INFO] Destroyed Resource<image>: enemy/crab_14.png
-[INFO] Destroyed Resource<image>: enemy/crab_13.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_1.png
-[INFO] Destroyed Resource<image>: enemy/crab_12.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_17.png
-[INFO] Destroyed Resource<image>: enemy/crab_11.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_15.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_12.png
-[INFO] Destroyed Resource<image>: enemy/pink_anemon_1.png
-[INFO] Destroyed Resource<image>: enemy/clam_frame_1.png
-[INFO] Destroyed Resource<image>: enemy/crab_7.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_16.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_10.png
-[INFO] Destroyed Resource<image>: enemy/clam_frame_3.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_5.png
-[INFO] Destroyed Resource<image>: enemy/crab_3.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_4.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_3.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_2.png
-[INFO] Destroyed Resource<image>: play/water.png?64x64
-[INFO] Destroyed Resource<image>: enemy/seaweed_1.png?150x150
-[INFO] Destroyed Resource<image>: enemy/rock_left_1.png?180x180
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_7.png
-[INFO] Destroyed Resource<image>: enemy/tree_sahara_1.png
-[INFO] Destroyed Resource<image>: enemy/scorpion_3.png
-[INFO] Destroyed Resource<image>: Character/down_1.png
-[INFO] Destroyed Resource<image>: play/gurun.png?64x64
-[INFO] Destroyed Resource<image>: enemy/mountain_1.png
-[INFO] Destroyed Resource<image>: enemy/stalagmite_1.png?380x380
-[INFO] Destroyed Resource<image>: enemy/tree_sahara_1.png?300x300
-[INFO] Destroyed Resource<image>: enemy/crab_1.png?128x128
-[INFO] Destroyed Resource<image>: Character/left_1.png
-[INFO] Destroyed Resource<image>: Character/left_3.png
-[INFO] Destroyed Resource<image>: Character/up_2.png
-[INFO] Destroyed Resource<image>: Character/up_3.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_13.png
-[INFO] Destroyed Resource<image>: enemy/treeeeee_1.png
-[INFO] Destroyed Resource<image>: enemy/pink_anemon_2.png
-[INFO] Destroyed Resource<image>: enemy/orc_1.png
-[INFO] Destroyed Resource<image>: enemy/orc_5.png
-[INFO] Destroyed Resource<image>: enemy/orc_4.png
-[INFO] Destroyed Resource<image>: enemy/orc_3.png
-[INFO] Destroyed Resource<image>: enemy/crab_2.png
-[INFO] Destroyed Resource<image>: Character/up_1.png
-[INFO] Destroyed Resource<image>: enemy/frog_4.png
-[INFO] Destroyed Resource<image>: enemy/frog_2.png
-[INFO] Destroyed Resource<image>: enemy/lava_1.png?320x320
-[INFO] Destroyed Resource<image>: enemy/tree_sahara_1.png?320x320
-[INFO] Destroyed Resource<image>: enemy/pinklava_1.png?320x320
-[INFO] Destroyed Resource<image>: enemy/clam_frame_2.png
-[INFO] Destroyed Resource<image>: enemy/bush_1.png
-[INFO] Destroyed Resource<image>: play/toma worry.png?720x480
-[INFO] Destroyed Resource<image>: play/wooden_forest.png?320x1216
-[INFO] Destroyed Resource<image>: enemy/bush_1.png?320x320
-[INFO] Destroyed Resource<image>: enemy/treeeee_1.png?320x320
-[INFO] Destroyed Resource<image>: enemy/frog_3.png
-[INFO] Destroyed Resource<image>: enemy/crab_5.png
-[INFO] Destroyed Resource<image>: enemy/bushes_red_1.png?150x150
-[INFO] Destroyed Resource<image>: enemy/treeee_1.png?320x320
-[INFO] Destroyed Resource<image>: enemy/frog_1.png?128x128
-[INFO] Destroyed Resource<image>: enemy/gubukkkk_1.png
-[INFO] Destroyed Resource<image>: enemy/lava_1.png?150x150
-[INFO] Destroyed Resource<image>: enemy/crab_8.png
-[INFO] Destroyed Resource<image>: enemy/gubukkkkkk_1.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_9.png
-[INFO] Destroyed Resource<image>: stage-select/underline.png?400x100
-[INFO] Destroyed Resource<image>: enemy/orc_2.png
-[INFO] Destroyed Resource<image>: play/fence_right.png?64x64
-[INFO] Destroyed Resource<image>: enemy/gubukk_1.png
-[INFO] Destroyed Resource<image>: enemy/pohinn_1.png
-[INFO] Destroyed Resource<image>: enemy/treeeee_1.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_11.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_8.png
-[INFO] Destroyed Resource<image>: enemy/pohinnnn_1.png
-[INFO] Destroyed Resource<image>: enemy/pohinnn_1.png
-[INFO] Destroyed Resource<image>: enemy/treeee_1.png
-[INFO] Destroyed Resource<image>: enemy/frog_1.png
-[INFO] Destroyed Resource<image>: enemy/anemon_yellow_1.png
-[INFO] Destroyed Resource<image>: enemy/treee_1.png?320x320
-[INFO] Destroyed Resource<image>: enemy/pohonn_1.png
-[INFO] Destroyed Resource<image>: enemy/gubukkk_1.png
-[INFO] Destroyed Resource<image>: enemy/bushes_1.png?256x256
-[INFO] Destroyed Resource<image>: play/soil.png?64x64
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_6.png
-[INFO] Destroyed Resource<image>: npc/toma_3.png
-[INFO] Destroyed Resource<image>: npc/toma_2.png
-[INFO] Destroyed Resource<image>: Character/right_1.png
-[INFO] Destroyed Resource<image>: Character/down_3.png
-[INFO] Destroyed Resource<image>: enemy/stalagmite_1.png?320x320
-[INFO] Destroyed Resource<image>: play/benjamin.png
-[INFO] Destroyed Resource<image>: stage-select/dirt.png?400x60
-[INFO] Destroyed Resource<image>: enemy/scorpion_1.png
-[INFO] Destroyed Resource<image>: enemy/orc_1.png?128x128
-[INFO] Destroyed Resource<image>: play/orange.png
-[INFO] Destroyed Resource<image>: enemy/crab_10.png
-[INFO] Destroyed Resource<image>: play/toma happy.png?720x480
-[INFO] Destroyed Resource<image>: enemy/stalagmite_1.png?270x270
-[INFO] Destroyed Resource<image>: play/null.png
-[INFO] Destroyed Resource<image>: play/floor.png?672x816
-[INFO] Destroyed Resource<image>: enemy/rock_left_1.png
-[INFO] Destroyed Resource<image>: enemy/anemon_yellow_1.png?320x320
-[INFO] Destroyed Resource<image>: enemy/gubukkkkkk_1.png?320x320
-[INFO] Destroyed Resource<image>: play/dirt.png
-[INFO] Destroyed Resource<image>: play/fence_down.png?64x64
-[INFO] Destroyed Resource<image>: lose/benjamin-happy.png
-[INFO] Destroyed Resource<image>: stage-select/dirt.png
-[INFO] Destroyed Resource<image>: play/fence_left.png?64x64
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_1.png?128x128
-[INFO] Destroyed Resource<image>: play/floor.png
-[INFO] Destroyed Resource<image>: stage-select/dirt.png?292x60
-[INFO] Destroyed Resource<image>: Character/down_1.png?128x128
-[INFO] Destroyed Resource<image>: Character/right_3.png
-[INFO] Destroyed Resource<image>: enemy/pink_anemon_3.png
-[INFO] Destroyed Resource<image>: enemy/anemon_yellow_1.png?180x180
-[INFO] Destroyed Resource<image>: enemy/gubukkkkk_1.png?500x500
-[INFO] Destroyed Resource<image>: play/target.png
-[INFO] Destroyed Resource<image>: play/rin prof.png?360x240
-[INFO] Destroyed Resource<image>: enemy/crab_4.png
-[INFO] Destroyed Resource<image>: enemy/pohon_1.png?280x280
-[INFO] Destroyed Resource<image>: enemy/gubukkkk_1.png?320x320
-[INFO] Destroyed Resource<image>: enemy/gubukk_1.png?280x280
-[INFO] Destroyed Resource<image>: enemy/seaweed_1.png
-[INFO] Destroyed Resource<image>: enemy/crab_9.png
-[INFO] Destroyed Resource<image>: enemy/pohinnnn_1.png?280x280
-[INFO] Destroyed Resource<image>: enemy/bushes_red_1.png
-[INFO] Destroyed Resource<image>: enemy/gubukkkkk_1.png
-[INFO] Destroyed Resource<image>: play/house_inventory.png?256x256
-[INFO] Destroyed Resource<image>: enemy/pohin_1.png?280x280
-[INFO] Destroyed Resource<image>: enemy/treeeeee_1.png?320x320
-[INFO] Destroyed Resource<image>: enemy/gubukkkk_1.png?280x280
-[INFO] Destroyed Resource<image>: npc/toma_1.png?128x128
-[INFO] Destroyed Resource<image>: enemy/bushes_1.png
-[INFO] Destroyed Resource<image>: npc/toma_1.png
-[INFO] Destroyed Resource<image>: enemy/pohon_1.png
-[INFO] Destroyed Resource<image>: enemy/jellyfish_frame_14.png
-[INFO] Destroyed Resource<image>: enemy/pohonn_1.png?280x280
-[INFO] Destroyed Resource<image>: play/toma shock.png?720x480
-[INFO] Destroyed Resource<image>: enemy/scorpion_2.png
+[INFO] Destroyed Resource<image>: stage-select/dirt.png?320x100
+[INFO] Destroyed Resource<image>: play/orc battle.png?1500x1000
 [INFO] Destroyed Resource<image>: stage-select/dirt.png?400x100
-[INFO] Destroyed Resource<image>: enemy/mountain_1.png?320x320
-[INFO] Destroyed Resource<image>: play/rin normal.png?720x480
-[INFO] Destroyed Resource<image>: play/rin close.png?720x480
-[INFO] Destroyed Resource<image>: Character/left_2.png
-[INFO] Destroyed Resource<image>: play/rin worried.png?720x480
-[INFO] Destroyed Resource<image>: play/apple.png
-[INFO] Destroyed Resource<image>: stage-select/dirt.png?160x50
-[INFO] Destroyed Resource<image>: enemy/scorpion_1.png?128x128
-[INFO] Destroyed Resource<image>: play/fence.png?64x64
-[INFO] Destroyed Resource<image>: play/invinsible.png
-[INFO] Destroyed Resource<image>: play/dialogue.png?1140x150
+[INFO] Destroyed Resource<image>: stage-select/dirt.png
 [INFO] Destroyed Resource<image>: stage-select/floor.png
-[INFO] Destroyed Resource<image>: enemy/pohin_1.png
-[INFO] Destroyed Resource<image>: enemy/treee_1.png
-[INFO] Destroyed Resource<image>: play/trap.png
-[INFO] Destroyed Resource<image>: enemy/orc_6.png
-[INFO] Destroyed Resource<image>: enemy/lava_1.png
-[INFO] Destroyed Resource<image>: stage-select/underline.png
+[INFO] Destroyed Resource<image>: stage-select/underline.png?400x100
+[INFO] Destroyed Resource<image>: play/rin battle.png?1350x900
+[INFO] Destroyed Resource<image>: play/black.png?1712x1136
+[INFO] Destroyed Resource<image>: play/darkforest.jpg?1900x1300
 [INFO] Destroyed Resource<image>: play/title screen.png?1811x1245
-[INFO] Destroyed Resource<image>: play/grass.png?64x64
-[INFO] Destroyed Resource<image>: enemy/crab_1.png
-[INFO] Destroyed Resource<image>: enemy/crab_6.png
-[INFO] Destroyed Resource<image>: enemy/stalagmite_1.png
-[INFO] Destroyed Resource<image>: Character/right_2.png
-[INFO] Destroyed Resource<image>: enemy/pohinn_1.png?280x280
-[INFO] Destroyed Resource<image>: enemy/pink_anemon_1.png?128x128
-[INFO] Destroyed Resource<image>: enemy/clam_frame_1.png?128x128
-[INFO] Destroyed Resource<image>: enemy/pinklava_1.png
-[INFO] Destroyed Resource<image>: enemy/pohinnn_1.png?280x280
-[INFO] Destroyed Resource<image>: play/house_book.png?256x256
 [INFO] Destroyed Resource<image>: stage-select/underline.png?300x100
-[INFO] Destroyed Resource<image>: enemy/gubukkk_1.png?280x280
+[INFO] Destroyed Resource<image>: stage-select/underline.png
 [INFO] Destroyed Resource<image>: icon.png
-[INFO] Destroyed Resource<font>: pirulen.ttf?24
 [INFO] Destroyed Resource<font>: pirulen.ttf?32
+[INFO] Destroyed Resource<font>: pirulen.ttf?40
 [INFO] Destroyed Resource<font>: pirulen.ttf?48
 [INFO] Destroyed Resource<font>: To The Point.ttf?100
-[INFO] Destroyed Resource<font>: pirulen.ttf?28
 [INFO] Destroyed Resource<font>: pirulen.ttf?36
 [INFO] Destroyed Resource<font>: To The Point.ttf?200
-[INFO] Destroyed<sample_instance>: astronomia.ogg
+[INFO] Destroyed<sample_instance>: growl.mp3
+[INFO] Destroyed<sample_instance>: collect.mp3
+[INFO] Destroyed<sample_instance>: fight.ogg
 [INFO] Destroyed<sample_instance>: title.wav
-[INFO] Destroyed Resource<audio>: forest-explore.wav
-[INFO] Destroyed Resource<audio>: ocean-explore.wav
-[INFO] Destroyed Resource<audio>: astronomia.ogg
+[INFO] Destroyed Resource<audio>: growl.mp3
+[INFO] Destroyed Resource<audio>: collect.mp3
+[INFO] Destroyed Resource<audio>: fight.ogg
 [INFO] Destroyed Resource<audio>: title.wav
