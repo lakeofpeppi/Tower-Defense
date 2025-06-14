@@ -58,7 +58,14 @@ void StartScene::PlayOnClick(int stage) {
     Engine::GameEngine::GetInstance().ChangeScene("intro");
 }
 void StartScene::StageOnClick(int stage) {
-    Engine::GameEngine::GetInstance().ChangeScene("stage-select");
+    PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("village"));
+    if (scene) {
+        scene->MapId = stage;
+        scene->LoadProgress();
+        Engine::GameEngine::GetInstance().ChangeScene("village");
+    };
+
+
 }
 void StartScene::SettingsOnClick(int stage) {
     Engine::GameEngine::GetInstance().ChangeScene("settings");

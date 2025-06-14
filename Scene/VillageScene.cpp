@@ -182,30 +182,31 @@ void VillageScene::Terminate() {
 void VillageScene::ReadMap() {
     // load file map.txt jd mapState
     // ngegambar tile floor / dirt ke TileMapGroup
-    std::string filename = std::string("Resource/map") + std::to_string(MapId) + ".txt";
-    // Read map file.
-    char c;
-    std::vector<int> mapData;
+    std::string filename = "Resource/map_village" + std::to_string(MapId) + ".txt";
     std::ifstream fin(filename);
-    while (fin >> c) {
-        switch (c) {
-            case '0': mapData.push_back(0); break;
-            case '1': mapData.push_back(1); break;
-            case '2': mapData.push_back(2); break;
-            case '3': mapData.push_back(3); break;
-            case '4': mapData.push_back(4); break;
-            case '5': mapData.push_back(5); break;
-            case '6': mapData.push_back(6); break;
-            case '7': mapData.push_back(7); break;
-            case '\n':
-            case '\r':
-                if (static_cast<int>(mapData.size()) / MapWidth != 0)
-                    throw std::ios_base::failure("Map data is corrupted.");
-                break;
-            default: throw std::ios_base::failure("Map data is corrupted.");
+    std::cerr << "[DEBUG] trying to open map file: " << filename << "\n";
+    if (!fin.is_open()) {
+        std::cerr << "[ERROR] could not open map file " << filename << "\n";
+        return;
+    }
+
+    std::vector<int> mapData;
+    char c;
+    while (fin.get(c)) {
+        if (c >= '0' && c <= '9') {
+            mapData.push_back(c - '0');
         }
+        // else if (c=='\n'||c=='\r') skip
+        // else ignore or warn
     }
     fin.close();
+
+    if (mapData.size() != MapWidth * MapHeight) {
+        std::cerr << "[ERROR] map size mismatch: got "
+                  << mapData.size() << " but expected "
+                  << (MapWidth * MapHeight) << "\n";
+        return;
+    }
     // Validate map data.
     if (static_cast<int>(mapData.size()) != MapWidth * MapHeight)
         throw std::ios_base::failure("Map data is corrupted.");

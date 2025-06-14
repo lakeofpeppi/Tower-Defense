@@ -877,11 +877,12 @@ void PlayScene::SaveProgressOnClick() {
         return;
     }
 
-    fout << "[Saved] Lives: " << GameData::lives
-         << ", Money: " << GameData::money
-         << ", Knowledge: " << GameData::knowledge
-         << ", Strength: " << GameData::strength
-         << ", Speed: " << GameData::speed << "\n";
+    fout << GameData::lives     << ' '
+         << GameData::money     << ' '
+         << GameData::knowledge << ' '
+         << GameData::strength  << ' '
+         << GameData::speed     << ' '
+         << "\n";
 
     std::cout << "[Saved] Lives: " << GameData::lives
               << ", Money: " << GameData::money
@@ -897,13 +898,16 @@ void PlayScene::LoadProgress() {
         return;
     }
 
-    fin >> GameData::lives >> GameData::money >> GameData::knowledge >> GameData::strength >> GameData::speed;
+    fin >> GameData::lives
+    >> GameData::money
+    >> GameData::knowledge
+    >> GameData::strength
+    >> GameData::speed;
+    std::cout
+              << " Lives=" << GameData::lives
+              << " Money=" << GameData::money
+              << " Know=" << GameData::knowledge << "\n";
 
-    std::cout << "[Loaded] Lives: " << GameData::lives
-              << ", Money: " << GameData::money
-              << ", Knowledge: " << GameData::knowledge
-              << ", Strength: " << GameData::strength
-              << ", Speed: " << GameData::speed << "\n";
 }
 
 
