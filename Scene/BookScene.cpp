@@ -18,6 +18,7 @@
 #include <iostream>
 #include <ostream>
 #include "BookScene.hpp"
+#include "GameData.hpp"
 #include "Scene/PlayScene.hpp"
 
 #include "PlayScene.hpp"
@@ -136,7 +137,7 @@ void BookScene::Initialize() {
         255, 255, 255, 255,       // black color
         0.5, 0.5));         // centered alignment
 
-   //bgmInstance = AudioHelper::PlaySample("book.mp3", true, AudioHelper::BGMVolume);
+   bgmInstance = AudioHelper::PlaySample("book.mp3", true, AudioHelper::BGMVolume);
 }
 void BookScene::Terminate() {
     if (bgmInstance) {
@@ -229,6 +230,8 @@ void BookScene::NextOnClick(int stage) {
         if (scene) {
             scene->MapId = stage;
             scene -> GainKnowledge();
+            GameData::returnX = 1128;
+            GameData::returnY = 250;
             Engine::GameEngine::GetInstance().ChangeScene("village");
         }
     }

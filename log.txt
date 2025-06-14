@@ -21,48 +21,35 @@
 [INFO] Created<sample_instance>: Resource/audios/title.wav
 [INFO] Changed to stage-select scene
 [INFO] stopped audio (sample)
-[INFO] Loaded Resource<image>: Resource/images/play/darkforest.jpg scaled to 1900x1300
-[INFO] Loaded Resource<image>: Resource/images/play/black.png scaled to 1712x1136
-[INFO] Loaded Resource<image>: Resource/images/play/rin battle.png scaled to 1350x900
-[INFO] Loaded Resource<image>: Resource/images/play/orc battle.png scaled to 1500x1000
-[INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 320x100
-[INFO] Loaded Resource<font>: Resource/fonts/pirulen.ttf with size 40
+[INFO] Loaded Resource<image>: Resource/images/play/black.png scaled to 1792x1216
+[INFO] Loaded Resource<image>: Resource/images/play/dialogue.png scaled to 1250x150
+[INFO] Loaded Resource<font>: Resource/fonts/To The Point.ttf with size 70
+[INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 200x80
+[INFO] Loaded Resource<font>: Resource/fonts/To The Point.ttf with size 80
+[INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 300x80
 [INFO] Loaded Resource<font>: Resource/fonts/pirulen.ttf with size 32
-[INFO] Loaded Resource<audio>: Resource/audios/fight.ogg
-[INFO] Created<sample_instance>: Resource/audios/fight.ogg
-[INFO] Changed to sea scene
-[INFO] Loaded Resource<audio>: Resource/audios/collect.mp3
-[INFO] Created<sample_instance>: Resource/audios/collect.mp3
-[INFO] Loaded Resource<audio>: Resource/audios/growl.mp3
-[INFO] Created<sample_instance>: Resource/audios/growl.mp3
+[INFO] Changed to memory scene
 [INFO] Game Terminating...
-[INFO] stopped audio (sample)
 [INFO] Game terminated
 [INFO] Game end
-[INFO] Destroyed Resource<image>: stage-select/dirt.png?320x100
-[INFO] Destroyed Resource<image>: play/orc battle.png?1500x1000
+[INFO] Destroyed Resource<image>: stage-select/underline.png?300x100
+[INFO] Destroyed Resource<image>: stage-select/dirt.png?200x80
 [INFO] Destroyed Resource<image>: stage-select/dirt.png?400x100
 [INFO] Destroyed Resource<image>: stage-select/dirt.png
+[INFO] Destroyed Resource<image>: icon.png
+[INFO] Destroyed Resource<image>: play/dialogue.png?1250x150
 [INFO] Destroyed Resource<image>: stage-select/floor.png
 [INFO] Destroyed Resource<image>: stage-select/underline.png?400x100
-[INFO] Destroyed Resource<image>: play/rin battle.png?1350x900
-[INFO] Destroyed Resource<image>: play/black.png?1712x1136
-[INFO] Destroyed Resource<image>: play/darkforest.jpg?1900x1300
 [INFO] Destroyed Resource<image>: play/title screen.png?1811x1245
-[INFO] Destroyed Resource<image>: stage-select/underline.png?300x100
 [INFO] Destroyed Resource<image>: stage-select/underline.png
-[INFO] Destroyed Resource<image>: icon.png
+[INFO] Destroyed Resource<image>: stage-select/dirt.png?300x80
+[INFO] Destroyed Resource<image>: play/black.png?1792x1216
 [INFO] Destroyed Resource<font>: pirulen.ttf?32
-[INFO] Destroyed Resource<font>: pirulen.ttf?40
+[INFO] Destroyed Resource<font>: To The Point.ttf?80
+[INFO] Destroyed Resource<font>: To The Point.ttf?70
 [INFO] Destroyed Resource<font>: pirulen.ttf?48
 [INFO] Destroyed Resource<font>: To The Point.ttf?100
 [INFO] Destroyed Resource<font>: pirulen.ttf?36
 [INFO] Destroyed Resource<font>: To The Point.ttf?200
-[INFO] Destroyed<sample_instance>: growl.mp3
-[INFO] Destroyed<sample_instance>: collect.mp3
-[INFO] Destroyed<sample_instance>: fight.ogg
 [INFO] Destroyed<sample_instance>: title.wav
-[INFO] Destroyed Resource<audio>: growl.mp3
-[INFO] Destroyed Resource<audio>: collect.mp3
-[INFO] Destroyed Resource<audio>: fight.ogg
 [INFO] Destroyed Resource<audio>: title.wav

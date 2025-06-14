@@ -25,6 +25,7 @@ void VillageScene::Initialize() {
    // buat initialize stage pas masuk level
     // ini kayak setup awal: load map, load musuh, set UI,sm start bgms
 
+
     std::cout << "[DEBUG] Entering PlayScene::Initialize()\n";
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
@@ -134,6 +135,14 @@ void VillageScene::Initialize() {
 
     rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
     rin->SetPlayScene(this);
+    if (GameData::returnX != -1 && GameData::returnY != -1) {
+        rin->Position.x = GameData::returnX;
+        rin->Position.y = GameData::returnY;
+        GameData::returnX = -1;
+        GameData::returnY = -1;
+    }
+
+
     EffectGroup->AddNewObject(rin);
     auto* pohon4 = new Creature(800, 950, "enemy/pohinnn", 1, 5.0f, 280, 280);
     EffectGroup->AddNewObject(pohon4);
@@ -159,7 +168,7 @@ void VillageScene::Initialize() {
     deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
     // Start BGM.
-    //bgmId = AudioHelper::PlayBGM("village-explore.mp3");
+    bgmId = AudioHelper::PlayBGM("village-explore.mp3");
 }
 std::string VillageScene::GetMapImagePath() const {
     return "play/village_map.png";
@@ -278,7 +287,7 @@ void VillageScene::OnKeyDown(int keyCode) {
         std::cout << "SPACE PRESSED & dialogueActive is TRUE\n";
 
         AdvanceDialogue();
-      //  AudioHelper::PlaySample("press.mp3");
+        AudioHelper::PlaySample("press.mp3");
         return;
 
     }
@@ -412,6 +421,8 @@ void VillageScene::AdvanceDialogue() {
             EarnMoney(700); // or any value you want to reward
             std::cout << "[DEBUG] Awarded 500 money for reaching dialogue 22\n";
             UIMoney->Text = "COINS: " + std::to_string(GameData::money);
+            AudioHelper::PlaySample("collect.mp3");
+
         }
         // Show expressions on specific lines
         //toma worry

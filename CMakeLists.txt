@@ -194,6 +194,8 @@ add_executable(2025_I2P2_TowerDefense
         Scene/BattleSea.hpp
         Helper/Frog.cpp
         Helper/Frog.hpp
+        Scene/MemoryScene.cpp
+        Scene/MemoryScene.hpp
 
 )
 

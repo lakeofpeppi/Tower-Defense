@@ -24,6 +24,7 @@
 #include "Scene/BattleOrc.hpp"
 #include  "Scene/BattleScorpion.hpp"
 #include  "Scene/BattleSea.hpp"
+#include "Scene/MemoryScene.hpp"
 
 
 
@@ -52,6 +53,7 @@ int main(int argc, char **argv) {
 	game.AddNewScene("orc", new BattleOrc());
 	game.AddNewScene("scorpion", new BattleScorpion());
 	game.AddNewScene("sea", new BattleSea());
+	game.AddNewScene("memory", new MemoryScene());
 
     // TODO HACKATHON-1 (1/1): Change the start scene (DONE)
 	game.Start("start", 60, 1792, 1216);

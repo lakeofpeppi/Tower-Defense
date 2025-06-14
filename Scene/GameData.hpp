@@ -16,8 +16,12 @@ public:
     static bool poisonStingEquip;
     static bool isInvincible;
     static bool isNull;
+    static bool isRose;
     static int seaHP;
     static int seaStrength;
+    static float returnX;
+    static float returnY;
+
 
     static void Reset() {
         lives = 50;

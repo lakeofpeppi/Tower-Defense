@@ -69,6 +69,7 @@ protected:
     std::list<std::pair<bool, Engine::IObject*>>::iterator closeMapObjIterator;
 
 
+    bool isBoneTurretPlaced;
 
 
 
@@ -98,7 +99,9 @@ public:
         TILE_FENCE_LEFT,
         TILE_BOOK,
         TILE_INVENTORY,
-        TILE_SOIL
+        TILE_SOIL,
+        TILE_ROSE,
+        TILE_DIG,
     };
     virtual bool IsTileWalkable(int tileType) const = 0;
 
@@ -183,6 +186,7 @@ public:
     std::vector<std::vector<TileType>> mapState;
     //bool IsTileWalkable(int tileType) const = 0;
 
+
     virtual void ReadMap() = 0;
     void ReadEnemyWave();
     Turret *preview;
@@ -221,14 +225,16 @@ public:
     void LoseStrength();
     void LoseSpeed();
     void BuyHP();
+    void GoToIntroScene();
 
 
     void ConstructUI();
-    void UIBtnClicked(int id);
-    bool CheckSpaceValid(int x, int y);
+    virtual void UIBtnClicked(int id);
+    bool CheckSpaceValid(int x, int y, int turret = -1);
     //void AddMultipleFlashes(int count, float interval);
     virtual TileType GetDefaultWalkableTile() const;
     virtual void Transition() = 0;
+
 
     std::vector<std::vector<int>> CalculateBFSDistance();
     // void ModifyReadMapTiles();

@@ -162,6 +162,13 @@ void ForestScene::Initialize() {
     auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
     rin->SetPlayScene(this);
     EffectGroup->AddNewObject(rin);
+
+    if (GameData::returnX != -1 && GameData::returnY != -1) {
+        rin->Position.x = GameData::returnX;
+        rin->Position.y = GameData::returnY;
+        GameData::returnX = -1;
+        GameData::returnY = -1;
+    }
     auto* tree = new Creature(135, 1060, "enemy/treee", 1, 5.0f, 320, 320);
     EffectGroup->AddNewObject(tree);
     auto* tree2 = new Creature(384, 1060, "enemy/treeee", 1, 5.0f, 320, 320);

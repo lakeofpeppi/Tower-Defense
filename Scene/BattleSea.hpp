@@ -74,7 +74,7 @@ public:
     void OnClickDefend();
     void OnClickSkill();
     void EnemyTurn();
-    void Update(float deltaTime);
+    void Update(float deltaTime)override;
 };
 
 #endif //BATTLESEA_HPP

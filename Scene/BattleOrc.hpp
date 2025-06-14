@@ -40,6 +40,10 @@ private:
     Engine::Label* orcHPLabel;
 
     bool isDefending = false;
+    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
+
+
+
 
 
 
@@ -49,7 +53,6 @@ private:
     Engine::Label* dialogueLabel = nullptr;
     Engine::Label* rinHP = nullptr;
     Engine::Label* orcHP = nullptr;
-    std::shared_ptr<ALLEGRO_SAMPLE_INSTANCE> bgmInstance;
     ALLEGRO_TIMER* enemyAttackTimer = nullptr;
     ALLEGRO_EVENT_QUEUE* timerQueue = nullptr;
     bool enemyAttackScheduled = false;
@@ -59,6 +62,7 @@ private:
     double defeatMessageStartTime = 0;
     Engine::Label* defeatLabel = nullptr;
     bool inputDisabled = false;
+
 
 
 
@@ -80,7 +84,10 @@ public:
     void OnClickDefend();
     void OnClickSkill();
     void EnemyTurn();
-    void Update(float deltaTime);
+    void Update(float deltaTime) override;
+
+    static std::string CurrentBGM;
+
 };
 
 #endif //BATTLEORC_HPP

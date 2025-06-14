@@ -114,6 +114,13 @@ void SaharaScene::Initialize() {
     rin->SetPlayScene(this);
     EffectGroup->AddNewObject(rin);
 
+    if (GameData::returnX != -1 && GameData::returnY != -1) {
+        rin->Position.x = GameData::returnX;
+        rin->Position.y = GameData::returnY;
+        GameData::returnX = -1;
+        GameData::returnY = -1;
+    }
+
     auto* tree1 = new Creature(130, 1000, "enemy/tree_sahara", 1, 5.0f, 320, 320);
     EffectGroup->AddNewObject(tree1);
     auto* tree = new Creature(256, 1000, "enemy/tree_sahara", 1, 5.0f, 320, 320);
@@ -184,7 +191,7 @@ void SaharaScene::ReadMap() {
             case '7': mapData.push_back(7); break;
             case '8': mapData.push_back(8); break;
             case '9': mapData.push_back(9); break;
-
+            case 'b': mapData.push_back(10); break;
             case '\n':
             case '\r':
                 if (static_cast<int>(mapData.size()) / MapWidth != 0)
@@ -240,6 +247,10 @@ void SaharaScene::ReadMap() {
                 case 9: mapState[i][j] = TILE_SAND;
                     TileMapGroup->AddNewObject(new Engine::Image("play/gurun.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize));
                     break;
+                case 10: mapState[i][j] = TILE_DIG;
+                    TileMapGroup->AddNewObject(new Engine::Image("play/dig.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize));
+                    break;
+
 
                     //case 2: mapState[i][j] = TILE_GRASS;
                     //TileMapGroup->AddNewObject(new Engine::Image("play/grass.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize) );
@@ -253,6 +264,7 @@ void SaharaScene::ReadMap() {
         }
     }
 }
+
 void SaharaScene::Update(float deltaTime) {
     PlayScene::Update(deltaTime);
     Transition();

@@ -74,6 +74,6 @@ public:
     void OnClickDefend();
     void OnClickSkill();
     void EnemyTurn();
-    void Update(float deltaTime);
+    void Update(float deltaTime)override;
 };
 #endif //BATTLESCORPION_HPP

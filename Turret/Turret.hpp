@@ -22,6 +22,7 @@ protected:
     PlayScene* getPlayScene() const; // for soldierUnit
     // Reference: Design Patterns - Factory Method.
     virtual void CreateBullet() = 0;
+    int turretID;
 
 public:
     bool Enabled = true;
@@ -31,5 +32,6 @@ public:
     void Update(float deltaTime) override;
     void Draw() const override;
     int GetPrice() const;
+    int GetTurretID() const { return turretID; }
 };
 #endif   // TURRET_HPP

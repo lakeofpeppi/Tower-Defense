@@ -361,8 +361,7 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
     }
     // NORMAL TURRET PLACEMENT LOGIC
     if (mapState[y][x] != TILE_OCCUPIED) {
-        if (!CheckSpaceValid(x, y)) {
-            Engine::Sprite* sprite;
+        if (!CheckSpaceValid(x, y, preview->GetTurretID())) {
             GroundEffectGroup->AddNewObject(
                 new DirtyEffect("play/target-invalid.png", 1,
                     x * BlockSize + BlockSize / 2,
@@ -370,6 +369,22 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
             );
             return;
         }
+        // Add this check for 'Bone turret' placement at (15, 15)
+        if (preview->GetTurretID() == 5 && x == 14 && y == 14) {
+            GameData::isRose = true;
+            std::cout << "Rose activated!" << std::endl;
+
+            AudioHelper::PlaySample("collect.mp3");
+            // Add the rose button UI immediately
+            Engine::ImageButton* btn = new TurretButton("play/floor.png", "play/dirt.png",
+                       Engine::Sprite("play/rose glass.png", 1714, 776, 64, 64, 0, 0),
+                       Engine::Sprite("play/rose glass.png", 1714, 776, 64, 64, 0, 0), 1714, 776, ShovelTool::Price);
+            btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 9));
+            UIGroup->AddNewControlObject(btn);
+        }
+
+    }
+
 
         // Purchase and place turret
         EarnMoney(-preview->GetPrice());
@@ -387,7 +402,6 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
         mapState[y][x] = TILE_OCCUPIED;
         OnMouseMove(mx, my);
     }
-}
 
 
 void PlayScene::OnKeyDown(int keyCode) {
@@ -576,6 +590,7 @@ void PlayScene::ConstructUI() {
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 3));
     UIGroup->AddNewControlObject(btn);
 
+
     if (GameData::scorpionHP == 0)
     {
         btn = new TurretButton("play/floor.png", "play/dirt.png",
@@ -584,6 +599,15 @@ void PlayScene::ConstructUI() {
         btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 4));
         UIGroup->AddNewControlObject(btn);
     }
+
+    // if (GameData::isRose)
+    // {
+    //     btn = new TurretButton("play/floor.png", "play/dirt.png",
+    //                    Engine::Sprite("play/rose glass.png", 1714, 776, 64, 64, 0, 0),
+    //                    Engine::Sprite("play/rose glass.png", 1714, 776, 64, 64, 0, 0), 1714, 776, ShovelTool::Price);
+    //     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 9));
+    //     UIGroup->AddNewControlObject(btn);
+    // }
 
 
     if (GameData::orcHP == 0) {
@@ -594,6 +618,8 @@ void PlayScene::ConstructUI() {
         btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 5));
         UIGroup->AddNewControlObject(btn);
     }
+
+
 
 
     btn = new TurretButton("play/floor.png", "play/dirt.png",
@@ -723,7 +749,7 @@ void PlayScene::UIBtnClicked(int id) {
             GameData::isNull= true;
             null_emotionStartTime = al_get_time();
             null_emotionLabel->Visible = true;
-            //AudioHelper::PlaySample("collect.mp3");
+            AudioHelper::PlaySample("collect.mp3");
         }
         return;
     }
@@ -740,16 +766,18 @@ void PlayScene::UIBtnClicked(int id) {
             GameData::isInvincible = true;
             invincibleStartTime = al_get_time();
             InvincibleLabel->Visible = true;
-            //AudioHelper::PlaySample("collect.mp3");
+            AudioHelper::PlaySample("collect.mp3");
 
         }
         return;
     }else if (id == 6 && GameData::money >= 200)
     {
+        AudioHelper::PlaySample("press.mp3");
         preview = new RocketTurret(0, 0);
     }
     else if (id == 5)
     {
+        AudioHelper::PlaySample("press.mp3");
         preview = new MachineGunTurret(0, 0);
     }else if (id == 4) {
         double now = al_get_time();
@@ -758,17 +786,20 @@ void PlayScene::UIBtnClicked(int id) {
             poisonStingStartTime = now;
             poisonStingLabel->Text = "POISON STING EQUIPPED!";
             poisonStingLabel->Visible = true;
-            //AudioHelper::PlaySample("press.mp3");
+            AudioHelper::PlaySample("press.mp3");
             std::cout << "Poison sting equipped" << std::endl;
         } else {
             GameData::poisonStingEquip = false;
             poisonStingLabel->Text = "POISON STING UNEQUIPPED!";
             poisonStingStartTime = now; // reset timer so the label shows for 3 sec
             poisonStingLabel->Visible = true;
-            //AudioHelper::PlaySample("press.mp3");
+            AudioHelper::PlaySample("press.mp3");
             std::cout << "Poison sting unequipped (manual)" << std::endl;
         }
-    }
+    }else if (id == 9)
+    {
+        Engine::GameEngine::GetInstance().ChangeScene("memory");
+    };
 
     //fireTurret new yeah
     // else if (id == 2 && money >= FireTurret::Price)
@@ -787,35 +818,42 @@ void PlayScene::UIBtnClicked(int id) {
     OnMouseMove(Engine::GameEngine::GetInstance().GetMousePosition().x, Engine::GameEngine::GetInstance().GetMousePosition().y);
 }
 
-bool PlayScene::CheckSpaceValid(int x, int y) {
-    // ngecek bisa naro turret di (x, y) gak plus gak boleh blokir jalan musuh (appliednya mulai level 2)
-    // pake BFS cek pathing enemy
+bool PlayScene::CheckSpaceValid(int x, int y, int turretID /* = -1 */) {
     if (x < 0 || x >= MapWidth || y < 0 || y >= MapHeight)
         return false;
+
+    // Tile restriction logic per turret ID
+    if (turretID == 5) {  // Bone or MachineGun
+        if (mapState[y][x] != TILE_DIG)
+            return false;
+    }
+
     auto map00 = mapState[y][x];
     mapState[y][x] = TILE_OCCUPIED;
     std::vector<std::vector<int>> map = CalculateBFSDistance();
     mapState[y][x] = map00;
+
     if (map[0][0] == -1)
         return false;
-    for (auto &it : EnemyGroup->GetObjects()) {
+
+    for (auto& it : EnemyGroup->GetObjects()) {
         Engine::Point pnt;
-        pnt.x = floor(it->Position.x / BlockSize);
-        pnt.y = floor(it->Position.y / BlockSize);
-        if (pnt.x < 0) pnt.x = 0;
-        if (pnt.x >= MapWidth) pnt.x = MapWidth - 1;
-        if (pnt.y < 0) pnt.y = 0;
-        if (pnt.y >= MapHeight) pnt.y = MapHeight - 1;
+        pnt.x = static_cast<int>(std::clamp(it->Position.x / BlockSize, 0.0f, static_cast<float>(MapWidth - 1)));
+        pnt.y = static_cast<int>(std::clamp(it->Position.y / BlockSize, 0.0f, static_cast<float>(MapHeight - 1)));
+
         if (map[pnt.y][pnt.x] == -1)
             return false;
     }
-    // All enemy have path to exit.
+
     mapState[y][x] = TILE_OCCUPIED;
     mapDistance = map;
-    for (auto &it : EnemyGroup->GetObjects())
-        dynamic_cast<Enemy *>(it)->UpdatePath(mapDistance);
+
+    for (auto& it : EnemyGroup->GetObjects())
+        dynamic_cast<Enemy*>(it)->UpdatePath(mapDistance);
+
     return true;
 }
+
 
 std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
     // ini BFS buat nyari jarak dari tile ke goal (ujung kanan bawah)
@@ -859,6 +897,7 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
 void PlayScene::MenuOnClick() {
     std::cout << "[DEBUG] Menu button clicked\n";
 
+    AudioHelper::PlaySample("press.mp3");
     if (saveBtn)saveBtn->Visible = true;
     if (saveLabel)saveLabel->Visible = true;
     if (titleBtn)titleBtn->Visible = true;
@@ -872,6 +911,7 @@ void PlayScene::MenuOnClick() {
 
 void PlayScene::SaveProgressOnClick() {
     std::ofstream fout("Resource/gamedata.txt");
+    AudioHelper::PlaySample("press.mp3");
     if (!fout.is_open()) {
         std::cerr << "Error opening gamedata.txt for writing!\n";
         return;
@@ -909,15 +949,18 @@ void PlayScene::LoadProgress() {
 
 
 void PlayScene::ReturnToTitleOnClick() {
+    AudioHelper::PlaySample("press.mp3");
     Engine::GameEngine::GetInstance().ChangeScene("start");
 }
 
 void PlayScene::SettingsOnClick() {
+    AudioHelper::PlaySample("press.mp3");
     // TODO: Implement or transition to SettingsScene
     std::cout << "Opening settings...\n";
     Engine::GameEngine::GetInstance().ChangeScene("settings");
 }
 void PlayScene::MapOnClick() {
+    AudioHelper::PlaySample("press.mp3");
     if (mapVisible) return;
     std::string mapImagePath = GetMapImagePath();
 
@@ -955,9 +998,11 @@ void PlayScene::MapOnClick() {
 
 
 std::string PlayScene::GetMapImagePath() const {
+
     return "play/map_default.png"; // fallback image if not overridden
 }
 void PlayScene::CloseMap() {
+    AudioHelper::PlaySample("press.mp3");
     if (!mapVisible) return;
 
     if (mapOverlay)
@@ -974,6 +1019,7 @@ void PlayScene::CloseMap() {
 
 
 void PlayScene::BackOnClick() {
+    AudioHelper::PlaySample("press.mp3");
     if (blackScreen)blackScreen->Visible = false;
     if (saveBtn)saveBtn->Visible = false;
     if (saveLabel)saveLabel->Visible = false;

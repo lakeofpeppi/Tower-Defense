@@ -67,10 +67,10 @@ void StageSelectScene::PlayOnClick(int stage) {
 }
 
 void StageSelectScene::ScoreboardOnClick() {
-    Engine::GameEngine::GetInstance().ChangeScene("scorpion");
+    Engine::GameEngine::GetInstance().ChangeScene("memory");
 }
 void StageSelectScene::Ending() {
-    Engine::GameEngine::GetInstance().ChangeScene("sea");
+    Engine::GameEngine::GetInstance().ChangeScene("forest");
 }
 void StageSelectScene::BGMSlideOnValueChanged(float value) {
     AudioHelper::ChangeSampleVolume(bgmInstance, value);
