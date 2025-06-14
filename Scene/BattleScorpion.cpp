@@ -152,7 +152,7 @@ void BattleScorpion::Initialize() {
     });
     AddNewControlObject(backBtn);
     AddNewObject(new Engine::Label("BACK", "pirulen.ttf", 32,
-        20 + 100, 20 + 30,        // Centered in button
+        20 + 100, 20 + 30,
         255, 255, 255, 255, 0.5, 0.5));
 
 
@@ -180,7 +180,7 @@ void BattleScorpion::OnClickAttack() {
 void BattleScorpion::OnClickHeal() {
     if (inputDisabled) return;
     AudioHelper::PlaySample("collect.mp3");
-    GameData::lives += 20; // No upper cap
+    GameData::lives += 20;
     playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
     if (!enemyAttackScheduled) {
         enemyAttackScheduled = true;
@@ -196,9 +196,6 @@ void BattleScorpion::OnClickDefend() {
     if (inputDisabled) return;
     AudioHelper::PlaySample("press.mp3");
     isDefending = true;
-    // You would use this flag in the enemy's attack logic like so:
-    // int damage = isDefending ? GameData::orcStrength / 2 : GameData::orcStrength;
-    // GameData::lives -= damage;
     if (!enemyAttackScheduled) {
         enemyAttackScheduled = true;
         enemyAttackStartTime = al_get_time();
@@ -244,7 +241,7 @@ void BattleScorpion::Terminate() {
 
     if (bgmInstance) {
         AudioHelper::StopSample(bgmInstance);
-        bgmInstance.reset();  // safer and clearer
+        bgmInstance.reset();
     }
     IScene::Terminate();
 }
@@ -275,15 +272,14 @@ void BattleScorpion::SFXSlideOnValueChanged(float value) {
 void BattleScorpion::Update(float deltaTime) {
     Engine::IScene::Update(deltaTime);
 
-    // Prevent enemy actions if scorpion is already defeated
+
     if (GameData::scorpionHP <= 0 && scorpionDefeatedShown) {
-        // Show defeat message and wait before transitioning scene
         if (al_get_time() - defeatMessageStartTime > 5.0) {
             GameData::returnX = 512;
             GameData::returnY = 300;
             Engine::GameEngine::GetInstance().ChangeScene("sahara");
         }
-        return; // Prevent further updates like enemy attacking
+        return;
     }
 
     if (enemyAttackScheduled) {
@@ -299,7 +295,7 @@ void BattleScorpion::Update(float deltaTime) {
     if (GameData::scorpionHP <= 0 && !scorpionDefeatedShown) {
         GameData::scorpionHP = 0;
         scorpionDefeatedShown = true;
-        inputDisabled = true; // Disable inputs
+        inputDisabled = true;
         defeatMessageStartTime = al_get_time();
 
         defeatLabel = new Engine::Label(

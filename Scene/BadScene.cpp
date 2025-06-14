@@ -120,9 +120,6 @@ void BadScene::Terminate() {
     }
     IScene::Terminate();
 }
-// void BadScene::BackOnClick() {
-//    // Engine::GameEngine::GetInstance().ChangeScene("princess");
-// }
 void BadScene::NextOnClick(int stage) {
     AudioHelper::PlaySample("press.mp3");
     if (currentLine + 1 < (int)dialogueLines.size()) {
@@ -135,55 +132,13 @@ void BadScene::NextOnClick(int stage) {
         int halfW = screenW / 2;
         int halfH = screenH / 2;
 
-        // // Default position and visibility
-        // if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
-        // if (dialogueLabel)dialogueLabel->Position.y = halfH - 100;
-        // if (dialogueBoxImage)dialogueBoxImage->Visible = false;
-        // if (rin_normal)rin_normal->Visible = false;
-        // if (rin_worry)rin_worry->Visible = false;
-
-        // // Hide black screen by default
-        // if (blackScreen) blackScreen->Visible = false;
-
-        // Special cases: Show dialogue box + appropriate Rin expression
-        // if (currentLine == 4 || currentLine == 5 || currentLine == 12 || currentLine == 13) {
-        //     if (dialogueLabel)dialogueLabel->Position.x = halfW - 300;
-        //     if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
-        //     if (dialogueBoxImage)dialogueBoxImage->Visible = true;
-        //
-        //     if (currentLine == 4 || currentLine == 5) {
-        //         if (rin_worry)rin_worry->Visible = true;
-        //     } else if (currentLine == 12 || currentLine == 13) {
-        //         if (rin_normal)rin_normal->Visible = true;
-        //     }
-        // }
-
-        // Show black screen on "You slowly approached the villager"
-        // if (currentLine == 14) {
-        //     if (blackScreen) blackScreen->Visible = true;
-        //
-        //     if (dialogueBoxImage)dialogueBoxImage->Visible = false;
-        //     if (rin_normal)rin_normal->Visible = false;
-        //     if (rin_worry)rin_worry->Visible = false;
-        //
-        //     // Position dialogue label at bottom center
-        //     if (dialogueLabel)dialogueLabel->Position.x = halfW - 250;
-        //     if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;  // near bottom with some padding
-        //
-        //     // Optionally, make sure the label is visible if you hid it earlier
-        //     if (dialogueLabel)dialogueLabel->Visible = true;
-        // }
         if (currentLine == 9)
         {
             if (BadScreen) BadScreen->Visible = true;
         }
 
     } else {
-        // PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("start"));
-        // if (scene) {
-        //     scene->MapId = stage;
-        //     Engine::GameEngine::GetInstance().ChangeScene("start");
-        // }
+
     }
 }
 

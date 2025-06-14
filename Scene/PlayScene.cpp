@@ -93,9 +93,6 @@ void PlayScene::Update(float deltaTime) {
     // spawn musuh, update status enemy, win/lose check, preview turret gerak, cheat code timer etc
     // If we use deltaTime directly, then we might have Bullet-through-paper problem.
     // Reference: Bullet-Through-Paper
-    //IScene::Update(deltaTime); // Keep this
-
-    // --- INVINCIBILITY TIMER CHECK ---
     if (GameData::poisonStingEquip) {
         double currentTime = al_get_time();
         if (currentTime - poisonStingStartTime >= 3.0) {
@@ -125,12 +122,10 @@ void PlayScene::Update(float deltaTime) {
         deathCountDown = -1;
     else if (deathCountDown != -1)
         SpeedMult = 1;
-    // Calculate danger zone.
     std::vector<float> reachEndTimes;
     for (auto &it : EnemyGroup->GetObjects()) {
         reachEndTimes.push_back(dynamic_cast<Enemy *>(it)->reachEndTime);
     }
-    // Can use Heap / Priority-Queue instead. But since we won't have too many enemies, sorting is fast enough.
     std::sort(reachEndTimes.begin(), reachEndTimes.end());
     float newDeathCountDown = -1;
     int danger = GameData::lives;
@@ -138,10 +133,8 @@ void PlayScene::Update(float deltaTime) {
         if (it <= DangerTime) {
             danger--;
             if (danger <= 0) {
-                // Death Countdown
                 float pos = DangerTime - it;
                 if (it > deathCountDown) {
-                    // Restart Death Count Down BGM.
                     AudioHelper::StopSample(deathBGMInstance);
                     if (SpeedMult != 0)
                         deathBGMInstance = AudioHelper::PlaySample("astronomia.ogg", false, AudioHelper::BGMVolume, pos);
@@ -192,7 +185,6 @@ for (int i = 0; i < SpeedMult; i++) {
                 } else if (auto* scorpion = dynamic_cast<ScorpionEnemy*>(obj)) {
                     scorpion->OnTouch();
                 } else if (auto* jelly = dynamic_cast<JellyFishEnemy*>(obj)) {
-                    //if (jelly->hasSpoken) continue;
                     jelly->OnTouch();
                 } else if (auto* house = dynamic_cast<House*>(obj)) {
                     house->OnTouch();
@@ -201,7 +193,6 @@ for (int i = 0; i < SpeedMult; i++) {
         }
     }
 
-    // Proceed with enemy spawning as usual...
     ticks += deltaTime;
     if (enemyWaveData.empty()) {
         if (EnemyGroup->GetObjects().empty()) {
@@ -239,15 +230,13 @@ for (int i = 0; i < SpeedMult; i++) {
 
     if (preview) {
         preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
-        // To keep responding when paused.
         preview->Update(deltaTime);
     }
-    // Automatically restore life label color if it shows damage red
     if (UILives) {
         ALLEGRO_COLOR alertRed = al_map_rgb(255, 40, 40);
         ALLEGRO_COLOR current = UILives->Color;
         if (current.r == alertRed.r && current.g == alertRed.g && current.b == alertRed.b) {
-            UILives->Color = al_map_rgb(255, 255, 255); // Reset to default white
+            UILives->Color = al_map_rgb(255, 255, 255);
         }
     }
     if (cheatActive) {
@@ -263,22 +252,18 @@ for (int i = 0; i < SpeedMult; i++) {
         if (refundTimer >= 2.0f && refundLabel) {
             UIGroup->RemoveObject(refundLabel->GetObjectIterator());
             refundLabel = nullptr;
-            refundActive = false; // hide it
+            refundActive = false;
         }
     }
 }
 
 void PlayScene::Draw() const {
 
-    // buat gambar ulang seluruh scene (dipanggil tiap frame)
-    // kalo debug mode on, dia juga ngegambar jarak path musuh (BFS)
     IScene::Draw();
     if (DebugMode) {
-        // Draw reverse BFS distance on all reachable blocks.
         for (int i = 0; i < MapHeight; i++) {
             for (int j = 0; j < MapWidth; j++) {
                 if (mapDistance[i][j] != -1) {
-                    // Not elegant nor efficient, but it's quite enough for debugging.
                     Engine::Label label(std::to_string(mapDistance[i][j]), "pirulen.ttf", 32, (j + 0.5) * BlockSize, (i + 0.5) * BlockSize);
                     label.Anchor = Engine::Point(0.5, 0.5);
                     label.Draw();
@@ -290,16 +275,13 @@ void PlayScene::Draw() const {
 }
 
 void PlayScene::OnMouseDown(int button, int mx, int my) {
-    // pas mouse diklik (kiri/right), ini yg nanganin cancel turret preview
     if ((button & 1) && !imgTarget->Visible && preview) {
-        // Cancel turret construct.
         UIGroup->RemoveObject(preview->GetObjectIterator());
         preview = nullptr;
     }
     IScene::OnMouseDown(button, mx, my);
 }
 void PlayScene::OnMouseMove(int mx, int my) {
-    // update posisi target image biar kek sesuai posisi mouse
     IScene::OnMouseMove(mx, my);
     const int x = mx / BlockSize;
     const int y = my / BlockSize;
@@ -313,8 +295,6 @@ void PlayScene::OnMouseMove(int mx, int my) {
 }
 
 void PlayScene::OnMouseUp(int button, int mx, int my) {
-    // kalo mouse dilepas, handle logic buat naro turret atau shovel delete
-    // ini juga yang nentuin refund kalo pake shovel tool
     IScene::OnMouseUp(button, mx, my);
     if (!imgTarget->Visible) return;
 
@@ -359,7 +339,6 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
         preview = nullptr;
         return;
     }
-    // NORMAL TURRET PLACEMENT LOGIC
     if (mapState[y][x] != TILE_OCCUPIED) {
         if (!CheckSpaceValid(x, y, preview->GetTurretID())) {
             GroundEffectGroup->AddNewObject(
@@ -369,13 +348,11 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
             );
             return;
         }
-        // Add this check for 'Bone turret' placement at (15, 15)
         if (preview->GetTurretID() == 5 && x == 14 && y == 14) {
             GameData::isRose = true;
             std::cout << "Rose activated!" << std::endl;
 
             AudioHelper::PlaySample("collect.mp3");
-            // Add the rose button UI immediately
             Engine::ImageButton* btn = new TurretButton("play/floor.png", "play/dirt.png",
                        Engine::Sprite("play/rose glass.png", 1714, 776, 64, 64, 0, 0),
                        Engine::Sprite("play/rose glass.png", 1714, 776, 64, 64, 0, 0), 1714, 776, ShovelTool::Price);
@@ -385,8 +362,6 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
 
     }
 
-
-        // Purchase and place turret
         EarnMoney(-preview->GetPrice());
         preview->GetObjectIterator()->first = false;
         UIGroup->RemoveObject(preview->GetObjectIterator());
@@ -405,15 +380,7 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
 
 
 void PlayScene::OnKeyDown(int keyCode) {
-    //handle shortcut turret Q/W/E/R
-// juga logic cheat code masuk disini (bisa spawn plane + 10k)
     std::cout << "Pressed: " << keyCode << std::endl;
-
-    // if (keyCode == ALLEGRO_KEY_SPACE && dialogueActive) {
-    //     std::cout << "SPACE PRESSED & dialogueActive is TRUE\n";
-    //     AdvanceDialogue();
-    //     return;
-    // }
     IScene::OnKeyDown(keyCode);
     if (keyCode == ALLEGRO_KEY_W || keyCode == 84 || keyCode == ALLEGRO_KEY_UP)keyUpDown = true;
     if (keyCode == ALLEGRO_KEY_S || keyCode == 85 || keyCode == ALLEGRO_KEY_DOWN) keyDownDown = true;
@@ -439,8 +406,8 @@ void PlayScene::OnKeyDown(int keyCode) {
                                                 640, 300, 255, 0, 0, 255);
             cheatLabel->Anchor = Engine::Point(0.5, 0.5);
             UIGroup->AddNewObject(cheatLabel);
-            cheatTimer = 0.0f;         // timer for the text
-            cheatActive = true;        // to track it lah peppi
+            cheatTimer = 0.0f;
+            cheatActive = true;
             std::cout << "Cheat Code Matched, adding 10k to money and spawning plane\n";
             keyStrokes.clear();
         }
@@ -600,15 +567,6 @@ void PlayScene::ConstructUI() {
         UIGroup->AddNewControlObject(btn);
     }
 
-    // if (GameData::isRose)
-    // {
-    //     btn = new TurretButton("play/floor.png", "play/dirt.png",
-    //                    Engine::Sprite("play/rose glass.png", 1714, 776, 64, 64, 0, 0),
-    //                    Engine::Sprite("play/rose glass.png", 1714, 776, 64, 64, 0, 0), 1714, 776, ShovelTool::Price);
-    //     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 9));
-    //     UIGroup->AddNewControlObject(btn);
-    // }
-
 
     if (GameData::orcHP == 0) {
         btn = new TurretButton("play/floor.png", "play/dirt.png",
@@ -632,14 +590,14 @@ void PlayScene::ConstructUI() {
 
     blackScreen = new Engine::Image("play/floor.png", 400, 200, 672, 816);
     blackScreen->Visible = false;
-    UIGroup->AddNewObject(blackScreen); // MUST be before other UI elements
+    UIGroup->AddNewObject(blackScreen);
 
     //MENU
     Engine::ImageButton* menuButton = new Engine::ImageButton(
-    "stage-select/dirt.png",           // Default image
-    "stage-select/floor.png",          // Hover image
-    1486, 900,                         // X, Y position (adjust if needed)
-    292, 60                            // Width, Height
+    "stage-select/dirt.png",
+    "stage-select/floor.png",
+    1486, 900,
+    292, 60
      );
     menuButton->SetOnClickCallback(std::bind(&PlayScene::MenuOnClick, this));
     UIGroup->AddNewControlObject(menuButton);
@@ -649,20 +607,16 @@ void PlayScene::ConstructUI() {
 
     Engine::ImageButton* mapButton = new Engine::ImageButton(
         "stage-select/dirt.png", "stage-select/floor.png",
-        1486, 970, 292, 60 // Same X, increased Y
+        1486, 970, 292, 60
     );
-    mapButton->SetOnClickCallback(std::bind(&PlayScene::MapOnClick, this)); // Make sure MapOnClick() exists
+    mapButton->SetOnClickCallback(std::bind(&PlayScene::MapOnClick, this));
     UIGroup->AddNewControlObject(mapButton);
 
     UIGroup->AddNewObject(new Engine::Label("MAP", "pirulen.ttf", 32,
-        1632, 1000, 255, 255, 255, 255, 0.5f, 0.5f)); // Adjusted label position
+        1632, 1000, 255, 255, 255, 255, 0.5f, 0.5f));
 
 
 
-
-
-    //buttons inside blackscreen
-    // Save Progress button
     saveBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", 520, 300, 400, 60);
     saveBtn->Visible = false;
     saveBtn->SetOnClickCallback(std::bind(&PlayScene::SaveProgressOnClick, this));
@@ -672,7 +626,6 @@ void PlayScene::ConstructUI() {
     saveLabel->Visible = false;
     UIGroup->AddNewObject(saveLabel);
 
-    // Return to Title button
     titleBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", 520, 400, 400, 60);
     titleBtn->Visible = false;
     titleBtn->SetOnClickCallback(std::bind(&PlayScene::ReturnToTitleOnClick, this));
@@ -682,7 +635,6 @@ void PlayScene::ConstructUI() {
     titleLabel->Visible = false;
     UIGroup->AddNewObject(titleLabel);
 
-    // Settings button
     settingsBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", 520, 500, 400, 60);
     settingsBtn->Visible = false;
     settingsBtn->SetOnClickCallback(std::bind(&PlayScene::SettingsOnClick, this));
@@ -692,7 +644,6 @@ void PlayScene::ConstructUI() {
     settingsLabel->Visible = false;
     UIGroup->AddNewObject(settingsLabel);
 
-    // Back button
     backBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", 420, 920, 160, 50);
     backBtn->Visible = false;
     backBtn->SetOnClickCallback(std::bind(&PlayScene::BackOnClick, this));
@@ -719,7 +670,6 @@ void PlayScene::ConstructUI() {
 
 
 void PlayScene::UIBtnClicked(int id) {
-    // pas tombol turret diklik, ini yg buat turret preview muncul
     if (preview)
         UIGroup->RemoveObject(preview->GetObjectIterator());
     if ((id == 0 || id == 1) && GameData::money >= 50)
@@ -791,7 +741,7 @@ void PlayScene::UIBtnClicked(int id) {
         } else {
             GameData::poisonStingEquip = false;
             poisonStingLabel->Text = "POISON STING UNEQUIPPED!";
-            poisonStingStartTime = now; // reset timer so the label shows for 3 sec
+            poisonStingStartTime = now;
             poisonStingLabel->Visible = true;
             AudioHelper::PlaySample("press.mp3");
             std::cout << "Poison sting unequipped (manual)" << std::endl;
@@ -801,13 +751,6 @@ void PlayScene::UIBtnClicked(int id) {
         Engine::GameEngine::GetInstance().ChangeScene("memory");
     };
 
-    //fireTurret new yeah
-    // else if (id == 2 && money >= FireTurret::Price)
-    //     preview = new FireTurret(0, 0);
-    // else if (id == 3 && money >= RocketTurret::Price)
-    //     preview = new RocketTurret(0, 0);
-    // else if (id == 4 && money >= ShovelTool::Price)
-    //     preview = new ShovelTool(0, 0);
     if (!preview)
         return;
     preview->Position = Engine::GameEngine::GetInstance().GetMousePosition();
@@ -822,8 +765,8 @@ bool PlayScene::CheckSpaceValid(int x, int y, int turretID /* = -1 */) {
     if (x < 0 || x >= MapWidth || y < 0 || y >= MapHeight)
         return false;
 
-    // Tile restriction logic per turret ID
-    if (turretID == 5) {  // Bone or MachineGun
+
+    if (turretID == 5) {
         if (mapState[y][x] != TILE_DIG)
             return false;
     }
@@ -856,13 +799,8 @@ bool PlayScene::CheckSpaceValid(int x, int y, int turretID /* = -1 */) {
 
 
 std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
-    // ini BFS buat nyari jarak dari tile ke goal (ujung kanan bawah)
-    // dipake musuh buat update path tiap kali ada turret ditaro
-    // Reverse BFS to find path.
     std::vector<std::vector<int>> map(MapHeight, std::vector<int>(std::vector<int>(MapWidth, -1)));
     std::queue<Engine::Point> que;
-    // Push end point.
-    // BFS from end point.
     if (mapState[MapHeight - 1][MapWidth - 1] != GetDefaultWalkableTile())
         return map;
     que.push(Engine::Point(MapWidth - 1, MapHeight - 1));
@@ -874,21 +812,14 @@ std::vector<std::vector<int>> PlayScene::CalculateBFSDistance() {
         //               For each step you should assign the corresponding distance to the most right-bottom block.
         //               mapState[y][x] is TILE_DIRT if it is empty.
 
-        for (const auto& offset : directions) { //bfs for enemy(trying all possible neighbor first then move to next step)
-            //direction is olr listed as up, down, right and left
-            int next_x = p.x + offset.x; //calculating neighbor in x direction
-            int next_y = p.y + offset.y; // the same but for y direction
-            // out of bounds check, kalo diluar limit ya skip
+        for (const auto& offset : directions) {
+
+            int next_x = p.x + offset.x;
+            int next_y = p.y + offset.y;
             if (next_x < 0 || next_x >= MapWidth || next_y < 0 || next_y >= MapHeight)
                 continue;
-            // availability check, kalo gakosong skip, kalo walls skip
             if (mapState[next_y][next_x] != GetDefaultWalkableTile() || map[next_y][next_x] != -1)
                 continue;
-
-            // distance formula= first until last diitung
-            //bfs movement(+1 to jalan)
-            map[next_y][next_x] = map[p.y][p.x] + 1;
-            //bis itu push bfs further from available tile after checking them
             que.push(Engine::Point(next_x, next_y));
         }
     }
@@ -968,7 +899,6 @@ void PlayScene::MapOnClick() {
     if (mapVisible) return;
     std::string mapImagePath = GetMapImagePath();
 
-    // Map image at (300, 100) with size 1024x1024
     int mapX = 300;
     int mapY = 100;
     int mapW = 1024;
@@ -977,23 +907,23 @@ void PlayScene::MapOnClick() {
     mapOverlay = new Engine::Image(mapImagePath, mapX, mapY, mapW, mapH);
     UIGroup->AddNewObject(mapOverlay);
 
-    // Close button size
     int btnW = 120;
     int btnH = 50;
 
-    // Place button near bottom-left corner of the map
-    int btnX = mapX + 20;                        // 20px padding from left
-    int btnY = mapY + mapH - btnH - 20;          // 20px padding from bottom
+
+    int btnX = mapX + 20;
+    int btnY = mapY + mapH - btnH - 20;
+
 
     closeMapBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", btnX, btnY, btnW, btnH);
     closeMapBtn->SetOnClickCallback(std::bind(&PlayScene::CloseMap, this));
     closeMapBtn->Visible = true;
     UIGroup->AddNewControlObject(closeMapBtn);
 
-    // Label centered on button
+
     closeMapLabel = new Engine::Label("Close", "pirulen.ttf", 20,
-        btnX + btnW / 2, btnY + btnH / 2,         // center position
-        255, 255, 255, 255, 0.5f, 0.5f);          // white, centered
+        btnX + btnW / 2, btnY + btnH / 2,
+        255, 255, 255, 255, 0.5f, 0.5f);
     closeMapLabel->Visible = true;
     UIGroup->AddNewObject(closeMapLabel);
 
@@ -1003,7 +933,7 @@ void PlayScene::MapOnClick() {
 
 std::string PlayScene::GetMapImagePath() const {
 
-    return "play/map_default.png"; // fallback image if not overridden
+    return "play/map_default.png";
 }
 void PlayScene::CloseMap() {
     AudioHelper::PlaySample("press.mp3");

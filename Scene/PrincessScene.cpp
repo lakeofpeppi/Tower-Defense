@@ -212,7 +212,7 @@ void PrincessScene::Initialize() {
 void PrincessScene::Terminate() {
     if (bgmInstance) {
         AudioHelper::StopSample(bgmInstance);
-        bgmInstance.reset();  // safer and clearer
+        bgmInstance.reset();
     }
     IScene::Terminate();
 }
@@ -229,20 +229,15 @@ void PrincessScene::NextOnClick(int stage) {
         int screenH = Engine::GameEngine::GetInstance().GetScreenSize().y;
         int halfW = screenW / 2;
         int halfH = screenH / 2;
-
-        // Default position and visibility
         if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
         if (dialogueLabel)dialogueLabel->Position.y = halfH - 100;
         if (dialogueBoxImage)dialogueBoxImage->Visible = false;
-        //sayuki
         if (sayuki_close)sayuki_close->Visible = false;
         if (sayuki_far)sayuki_far->Visible = false;
         if (sayuki_scars)sayuki_scars->Visible = false;
         if (sayuki_worry)sayuki_worry->Visible = false;
         if (sayuki_normal) sayuki_normal->Visible = false;
-        //rin
         if (rin_normal)rin_normal-> Visible= false;
-        //bg
         if (RoomScreen)RoomScreen-> Visible= false;
         if (FireScreen)FireScreen-> Visible= false;
         if (RainScreen)RainScreen-> Visible= false;
@@ -250,7 +245,6 @@ void PrincessScene::NextOnClick(int stage) {
         if (PrayScreen) PrayScreen-> Visible= false;
         if (WorshipScreen) WorshipScreen-> Visible= false;
         if (AngryScreen) AngryScreen -> Visible= false;
-        // black screen
         if (blackScreen) blackScreen->Visible = false;
         if (good) good->Visible= false;
         if (bad) bad->Visible= false;
@@ -267,7 +261,6 @@ void PrincessScene::NextOnClick(int stage) {
 
         }
 
-        // ROOM
         if (currentLine == 7 || currentLine == 8 || currentLine == 9 || currentLine == 10 || currentLine == 11 || currentLine == 12 || currentLine == 19 || currentLine == 20 || currentLine ==27 || currentLine == 28 || currentLine == 29 || currentLine == 25 || currentLine == 26) {
             if (RoomScreen)RoomScreen-> Visible = true;
             if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
@@ -298,10 +291,6 @@ void PrincessScene::NextOnClick(int stage) {
             {
                 if (sayuki_close) sayuki_close->Visible = true;
             }
-            // else if (currentLine == 19 || currentLine == 20)
-            // {
-            //     if (sayuki_scars) sayuki_scars->Visible = true;
-            // }
             else if (currentLine == 25 || currentLine == 26 || currentLine == 29)
             {
                 if (sayuki_worry)sayuki_worry->Visible = true;
@@ -345,16 +334,8 @@ void PrincessScene::NextOnClick(int stage) {
             if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
             if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
         }
-        // Show black screen on "You slowly approached the villager"
         if (currentLine == 2 || currentLine == 3 || currentLine == 4 || currentLine == 5 || currentLine == 6) {
             if (blackScreen) blackScreen->Visible = true;
-
-
-            // // Position dialogue label at bottom center
-            // if (dialogueLabel)dialogueLabel->Position.x = halfW - 250;
-            // if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;  // near bottom with some padding
-
-            // Optionally, make sure the label is visible if you hid it earlier
             if (dialogueLabel)dialogueLabel->Visible = true;
             if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
             if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
@@ -376,40 +357,22 @@ void PrincessScene::NextOnClick(int stage) {
 
 
     } else {
-        // PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("village"));
-        // if (scene) {
-        //     scene->MapId = stage;
-        //     Engine::GameEngine::GetInstance().ChangeScene("village");
-        // }
-    }
+      }
 }
 
 void PrincessScene::GoodOnClick()
 {
     Engine::GameEngine::GetInstance().ChangeScene("good");
-    // PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("good"));
-    // if (scene) {
-    //     scene->MapId = stage;
-    //     Engine::GameEngine::GetInstance().ChangeScene("good");
-    // }
-}
+    }
 void PrincessScene::BadOnClick()
 {
     Engine::GameEngine::GetInstance().ChangeScene("bad");
-    // PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("bad"));
-    // if (scene) {
-    //     scene->MapId = stage;
-    //     Engine::GameEngine::GetInstance().ChangeScene("bad");
-    // }
+
 }
 void PrincessScene::NormalOnClick()
 {
     Engine::GameEngine::GetInstance().ChangeScene("normal");
-    // PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("normal"));
-    // if (scene) {
-    //     scene->MapId = stage;
-    //     Engine::GameEngine::GetInstance().ChangeScene("normal");
-    // }
+
 }
 
 void PrincessScene::BGMSlideOnValueChanged(float value) {

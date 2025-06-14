@@ -142,17 +142,17 @@ void BattleSea::Initialize() {
 
 
     Engine::ImageButton* backBtn = new Engine::ImageButton(
-        "stage-select/dirt.png",  // Normal image
-        "stage-select/floor.png", // Hover image
-        20, 20,                   // X, Y position (top-left)
-        200, 60);                 // Width, Height
+        "stage-select/dirt.png",
+        "stage-select/floor.png",
+        20, 20,
+        200, 60);
     backBtn->SetOnClickCallback([]() {
         AudioHelper::PlaySample("press.mp3");
         Engine::GameEngine::GetInstance().ChangeScene("ocean");
     });
     AddNewControlObject(backBtn);
     AddNewObject(new Engine::Label("BACK", "pirulen.ttf", 32,
-        20 + 100, 20 + 30,        // Centered in button
+        20 + 100, 20 + 30,
         255, 255, 255, 255, 0.5, 0.5));
     bgmInstance = AudioHelper::PlaySample("fight.ogg", true, AudioHelper::BGMVolume);
 }
@@ -163,7 +163,7 @@ void BattleSea::OnClickAttack() {
     GameData::seaHP -= GameData::strength;
     if (GameData::seaHP < 0) GameData::seaHP = 0;
 
-    // Lose 5 HP unless null emotion is active
+
     if (!GameData::isNull) {
         GameData::lives -= 5;
         if (GameData::lives < 0) GameData::lives = 0;
@@ -178,7 +178,7 @@ void BattleSea::OnClickAttack() {
 void BattleSea::OnClickHeal() {
     if (inputDisabled) return;
     AudioHelper::PlaySample("collect.mp3");
-    GameData::lives += 20; // No upper cap
+    GameData::lives += 20;
     playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
     if (!enemyAttackScheduled) {
         enemyAttackScheduled = true;
@@ -194,9 +194,6 @@ void BattleSea::OnClickDefend() {
     if (inputDisabled) return;
     AudioHelper::PlaySample("press.mp3");
     isDefending = true;
-    // You would use this flag in the enemy's attack logic like so:
-    // int damage = isDefending ? GameData::orcStrength / 2 : GameData::orcStrength;
-    // GameData::lives -= damage;
     if (!enemyAttackScheduled) {
         enemyAttackScheduled = true;
         enemyAttackStartTime = al_get_time();
@@ -210,7 +207,7 @@ void BattleSea::OnClickDefend() {
 
 void BattleSea::OnClickSkill() {
     if (inputDisabled) return;
-    if (!GameData::poisonStingEquip) return; // Skill requires poison sting
+    if (!GameData::poisonStingEquip) return; //
 
     // Skill effect
     AudioHelper::PlaySample("slash.mp3");
@@ -223,7 +220,7 @@ void BattleSea::OnClickSkill() {
         if (GameData::lives < 0) GameData::lives = 0;
     }
 
-    // Update UI
+
     seaHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::seaHP);
     playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
 }
@@ -240,7 +237,7 @@ void BattleSea::Terminate() {
 
     if (bgmInstance) {
         AudioHelper::StopSample(bgmInstance);
-        bgmInstance.reset();  // safer and clearer
+        bgmInstance.reset();
     }
     IScene::Terminate();
 }
@@ -275,7 +272,7 @@ void BattleSea::Update(float deltaTime) {
         std::cout << "[DEBUG] update(): enemyAttackScheduled=" << enemyAttackScheduled << "\n";
         double currentTime = al_get_time();
         if (currentTime - enemyAttackStartTime >= 2) {
-            //AudioHelper::PlaySample("growl.mp3");
+
             EnemyTurn();
             enemyAttackScheduled = false;
             turnIndicatorLabel->Text = "YOUR TURN!";
@@ -286,10 +283,9 @@ void BattleSea::Update(float deltaTime) {
     if (GameData::seaHP <= 0 && !seaDefeatedShown) {
         GameData::seaHP = 0;
         seaDefeatedShown = true;
-        inputDisabled = true; // Disable inputs
+        inputDisabled = true;
         defeatMessageStartTime = al_get_time();
 
-        // Top label: Guilt message
         defeatLabel = new Engine::Label(
             "YOU HAVE KILLED AN INNOCENT CREATURE",
             "pirulen.ttf", 48,

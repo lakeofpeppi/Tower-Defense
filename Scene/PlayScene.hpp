@@ -110,20 +110,6 @@ public:
     bool keyLeftDown  = false;
     bool keyRightDown = false;
 
-    /*
-    enum class PlayMode {
-        NONE,
-        BUILD_TURRET,
-        SHOVEL
-    };
-    PlayMode Mode = PlayMode::NONE;
-    */
-    // void ShowDialogue(const std::vector<std::string>& lines);
-    // void AdvanceDialogue();
-
-
-
-    // int currentDialogueIndex = 0;
 
 
 

@@ -161,17 +161,12 @@ std::string SaharaScene::GetMapImagePath() const {
     return "play/sahara_map.png";
 }
 void SaharaScene::CloseMap() {
-    PlayScene::CloseMap();  // Optional: call base logic
-
-    // Add village-specific logic here if needed
+    PlayScene::CloseMap();
     std::cout << "[VillageScene] Closed village map.\n";
 }
 
 void SaharaScene::ReadMap() {
-    // load file map.txt jd mapState
-    // ngegambar tile floor / dirt ke TileMapGroup
     std::string filename = std::string("Resource/map_sahara") + std::to_string(MapId) + ".txt";
-    // Read map file.
     char c;
     std::vector<int> mapData;
     std::ifstream fin(filename);
@@ -201,21 +196,12 @@ void SaharaScene::ReadMap() {
         }
     }
     fin.close();
-    // Validate map data.
     if (static_cast<int>(mapData.size()) != MapWidth * MapHeight)
         throw std::ios_base::failure("Map data is corrupted.");
-    // Store map in 2d array.
     mapState = std::vector<std::vector<TileType>>(MapHeight, std::vector<TileType>(MapWidth));
     for (int i = 0; i < MapHeight; i++) {
         for (int j = 0; j < MapWidth; j++) {
             const int num = mapData[i * MapWidth + j];
-            //mapState[i][j] = num ? TILE_FLOOR : TILE_DIRT;
-            // if (1) {
-            //     TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize)); // previously floor.png
-            // }
-            // if (2) {
-            //     TileMapGroup->AddNewObject(new Engine::Image("play/grass.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
-            // }
             switch(num) {
                 case 0: mapState[i][j] = TILE_GRASS;
                     TileMapGroup->AddNewObject( new Engine::Image("play/grass.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize) );
@@ -273,18 +259,15 @@ void SaharaScene::Update(float deltaTime) {
 void SaharaScene::Transition() {
     if (_didTransition) return;
 
-    // find our RinCharacter in the scene
     RinCharacter* rin = nullptr;
     for (auto* obj : EffectGroup->GetObjects()) {
         if ((rin = dynamic_cast<RinCharacter*>(obj))) break;
     }
     if (!rin) return;
 
-    // grid‐coords:
     int gx = static_cast<int>(rin->Position.x) / BlockSize;
     int gy = static_cast<int>(rin->Position.y) / BlockSize;
 
-    // if she's on bottom‐right, switch scenes once
     if (gx == MapWidth - 1 && gy == MapHeight - 1) {
         _didTransition = true;
         Engine::GameEngine::GetInstance().ChangeScene("ocean");

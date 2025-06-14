@@ -26,7 +26,7 @@ private:
     void ShowMemory(int memoryIndex, std::string textLine1, std::string textLine2, std::function<void()> giveUpCallback);
 
 
-    // Member variables
+
     Engine::Image* memory1Photo = nullptr;
     Engine::Image* memory2Photo = nullptr;
     Engine::Label* memory1Dialogue = nullptr;

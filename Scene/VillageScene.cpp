@@ -43,7 +43,6 @@ void VillageScene::Initialize() {
     ticks = 0;
     deathCountDown = -1;
     SpeedMult = 1;
-    // Add groups from bottom to top.
     AddNewObject(TileMapGroup = new Engine::Group());
     AddNewObject(GroundEffectGroup = new Engine::Group());
     AddNewObject(DebugIndicatorGroup = new Engine::Group());
@@ -51,7 +50,6 @@ void VillageScene::Initialize() {
     AddNewObject(EnemyGroup = new Engine::Group());
     AddNewObject(BulletGroup = new Engine::Group());
     AddNewObject(EffectGroup = new Engine::Group());
-    // Should support buttons.
     AddNewControlObject(UIGroup = new Engine::Group());
 
 
@@ -59,32 +57,29 @@ void VillageScene::Initialize() {
     dialogueBoxImage->Visible = false;
     UIGroup->AddNewObject(dialogueBoxImage);
 
-    // Rin normal
     rin_normal = new Engine::Image("play/rin normal.png", halfW - 950, h - 480, 720, 480);
     rin_normal->Visible = false;
     AddNewObject(rin_normal);
 
-    // Rin worried
+
     rin_worry = new Engine::Image("play/rin worried.png", halfW - 950, h - 480, 720, 480);
     rin_worry->Visible = false;
     AddNewObject(rin_worry);
 
-    // Rin close
+
     rin_close = new Engine::Image("play/rin close.png", halfW - 950, h - 480, 720, 480);
     rin_close->Visible = false;
     AddNewObject(rin_close);
 
-    // Toma happy
+
     toma_happy = new Engine::Image("play/toma happy.png", halfW - 950, h - 480, 720, 480);
     toma_happy->Visible = false;
     AddNewObject(toma_happy);
 
-    // Toma shock
     toma_shock = new Engine::Image("play/toma shock.png", halfW - 950, h - 480, 720, 480);
     toma_shock->Visible = false;
     AddNewObject(toma_shock);
 
-    // Toma worry
     toma_worry = new Engine::Image("play/toma worry.png", halfW - 950, h - 480, 720, 480);
     toma_worry->Visible = false;
     AddNewObject(toma_worry);
@@ -102,7 +97,6 @@ void VillageScene::Initialize() {
     EffectGroup->AddNewObject(gubukkk);
 
 
-    // Create house
     auto* pohon1 = new Creature(1000, 650, "enemy/pohon", 1, 5.0f, 280, 280);
     EffectGroup->AddNewObject(pohon1);
     auto* pohon2 = new Creature(1150, 675, "enemy/pohin", 1, 5.0f, 280, 280);
@@ -112,9 +106,9 @@ void VillageScene::Initialize() {
 
 
     auto* Book = new House(
-        1128, 180,  // Example position
-        "play/house_book.png",  // Image of the house
-        "book"         // The scene it should go to when touched
+        1128, 180,
+        "play/house_book.png",
+        "book"
     );
     EffectGroup->AddNewObject(Book);
 
@@ -164,19 +158,16 @@ void VillageScene::Initialize() {
     imgTarget->Visible = false;
     preview = nullptr;
     UIGroup->AddNewObject(imgTarget);
-    // Preload Lose Scene
     deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
-    // Start BGM.
     bgmId = AudioHelper::PlayBGM("village-explore.mp3");
 }
 std::string VillageScene::GetMapImagePath() const {
     return "play/village_map.png";
 }
 void VillageScene::CloseMap() {
-    PlayScene::CloseMap();  // Optional: call base logic
+    PlayScene::CloseMap();
 
-    // Add village-specific logic here if needed
     std::cout << "[VillageScene] Closed village map.\n";
 }
 
@@ -185,12 +176,10 @@ void VillageScene::Terminate() {
         al_stop_sample_instance(footstepsInstance.get());
         footstepsPlaying = false;
     }
-    PlayScene::Terminate(); // Call base class cleanup
+    PlayScene::Terminate();
 }
 
 void VillageScene::ReadMap() {
-    // load file map.txt jd mapState
-    // ngegambar tile floor / dirt ke TileMapGroup
     std::string filename = "Resource/map_village" + std::to_string(MapId) + ".txt";
     std::ifstream fin(filename);
     std::cerr << "[DEBUG] trying to open map file: " << filename << "\n";
@@ -205,9 +194,7 @@ void VillageScene::ReadMap() {
         if (c >= '0' && c <= '9') {
             mapData.push_back(c - '0');
         }
-        // else if (c=='\n'||c=='\r') skip
-        // else ignore or warn
-    }
+      }
     fin.close();
 
     if (mapData.size() != MapWidth * MapHeight) {
@@ -216,21 +203,15 @@ void VillageScene::ReadMap() {
                   << (MapWidth * MapHeight) << "\n";
         return;
     }
-    // Validate map data.
+
     if (static_cast<int>(mapData.size()) != MapWidth * MapHeight)
         throw std::ios_base::failure("Map data is corrupted.");
-    // Store map in 2d array.
+
     mapState = std::vector<std::vector<TileType>>(MapHeight, std::vector<TileType>(MapWidth));
     for (int i = 0; i < MapHeight; i++) {
         for (int j = 0; j < MapWidth; j++) {
             const int num = mapData[i * MapWidth + j];
-            //mapState[i][j] = num ? TILE_FLOOR : TILE_DIRT;
-            // if (1) {
-            //     TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize)); // previously floor.png
-            // }
-            // if (2) {
-            //     TileMapGroup->AddNewObject(new Engine::Image("play/grass.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
-            // }
+
             switch(num) {
                 case 0: mapState[i][j] = TILE_GRASS;
                     TileMapGroup->AddNewObject( new Engine::Image("play/grass.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize) );
@@ -272,16 +253,8 @@ void VillageScene::ReadMap() {
 
 
 void VillageScene::OnKeyDown(int keyCode) {
-    //handle shortcut turret Q/W/E/R
-// juga logic cheat code masuk disini (bisa spawn plane + 10k)
     std::cout << "Pressed: " << keyCode << std::endl;
 
-/*
-    if (!footstepsPlaying) {
-        footstepsInstance = AudioHelper::PlaySample("footsteps.mp3", true); // looped
-        footstepsPlaying = true;
-    }
-    */
 
 
     if (keyCode == ALLEGRO_KEY_SPACE && dialogueActive) {
@@ -317,8 +290,8 @@ void VillageScene::OnKeyDown(int keyCode) {
                                                 640, 300, 255, 0, 0, 255);
             cheatLabel->Anchor = Engine::Point(0.5, 0.5);
             UIGroup->AddNewObject(cheatLabel);
-            cheatTimer = 0.0f;         // timer for the text
-            cheatActive = true;        // to track it lah peppi
+            cheatTimer = 0.0f;
+            cheatActive = true;
             std::cout << "Cheat Code Matched, adding 10k to money and spawning plane\n";
             keyStrokes.clear();
         }
@@ -368,15 +341,12 @@ void VillageScene::ShowDialogue(const std::vector<std::string>& lines) {
     currentDialogueIndex = 0;
     dialogueActive = true;
 
-    // Create dialogue box image if not already created
     if (!dialogueBoxImage) {
         dialogueBoxImage = new Engine::Image("play/dialogue.png", halfW - 600, screenSize.y - 210, 1140, 150);
         UIGroup->AddNewObject(dialogueBoxImage);
     }
     dialogueBoxImage->Visible = true;
 
-
-    // Create dialogue label if not already created
     if (!dialogueLabel) {
         dialogueLabel = new Engine::Label("", "To The Point.ttf", 70, startX-15, startY, 255, 255, 255, 255);
         dialogueLabel->Anchor = Engine::Point(0.0, 0.5);
@@ -384,11 +354,10 @@ void VillageScene::ShowDialogue(const std::vector<std::string>& lines) {
     }
     dialogueLabel->Visible = true;
 
-    // Set first line of dialogue
     if (!dialogueLines.empty()) {
         std::cout << "Setting initial dialogue line: " << dialogueLines[0] << std::endl;
 
-        dialogueLabel->Text = ""; // Force refresh
+        dialogueLabel->Text = "";
         dialogueLabel->Text = dialogueLines[0];
         dialogueLabel->Visible = true;
         dialogueLabel->Position.x = halfW - 450;
@@ -405,10 +374,8 @@ void VillageScene::AdvanceDialogue() {
     if (currentDialogueIndex < (int)dialogueLines.size()) {
         std::cout << "Advancing to line: " << dialogueLines[currentDialogueIndex] << std::endl;
 
-        // Force refresh text
         if (dialogueLabel)dialogueLabel->Text = "";
         if (dialogueLabel)dialogueLabel->Text = dialogueLines[currentDialogueIndex];
-        // Optionally force position and visibility again
         if (dialogueLabel)dialogueLabel->Visible = true;
 
         if (rin_normal) rin_normal->Visible = false;
@@ -419,13 +386,12 @@ void VillageScene::AdvanceDialogue() {
         if (toma_worry) toma_worry->Visible = false;
 
         if (currentDialogueIndex == 22) {
-            EarnMoney(700); // or any value you want to reward
+            EarnMoney(700);
             std::cout << "[DEBUG] Awarded 500 money for reaching dialogue 22\n";
             UIMoney->Text = "COINS: " + std::to_string(GameData::money);
             AudioHelper::PlaySample("collect.mp3");
 
         }
-        // Show expressions on specific lines
         //toma worry
         if (currentDialogueIndex == 4 || currentDialogueIndex == 5 || currentDialogueIndex == 8 || currentDialogueIndex == 9 || currentDialogueIndex == 10 || currentDialogueIndex == 11 || currentDialogueIndex == 12) {
             if (toma_worry) toma_worry->Visible = true;
@@ -450,7 +416,7 @@ void VillageScene::AdvanceDialogue() {
             if (rin_close) rin_close->Visible = true;
         }else if (currentDialogueIndex == 22)
         {
-            //AudioHelper::PlaySample("collect.mp3");
+            AudioHelper::PlaySample("collect.mp3");
         }
 
         currentDialogueIndex++;
@@ -489,18 +455,15 @@ void VillageScene::Update(float deltaTime) {
 void VillageScene::Transition() {
     if (_didTransition) return;
 
-    // find our RinCharacter in the scene
     RinCharacter* rin = nullptr;
     for (auto* obj : EffectGroup->GetObjects()) {
         if ((rin = dynamic_cast<RinCharacter*>(obj))) break;
     }
     if (!rin) return;
 
-    // grid‐coords:
     int gx = static_cast<int>(rin->Position.x) / BlockSize;
     int gy = static_cast<int>(rin->Position.y) / BlockSize;
 
-    // if she's on bottom‐right, switch scenes once
     if (gx == MapWidth - 1 && gy == MapHeight - 1) {
         _didTransition = true;
         footstepsPlaying=false;

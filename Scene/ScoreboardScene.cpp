@@ -52,7 +52,7 @@ void ScoreboardScene::Initialize() {
     Engine::ImageButton *btn;
 
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW - 200, halfH * 3 / 2 - 50, 400, 100);
-    btn->SetOnClickCallback(std::bind(&ScoreboardScene::BackOnClick, this, 1)); // this sets the back button behavior — returns to stage select
+    btn->SetOnClickCallback(std::bind(&ScoreboardScene::BackOnClick, this, 1));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("Back", "pirulen.ttf", 48, halfW, halfH * 3 / 2, 0, 0, 0, 255, 0.5, 0.5));
 }
@@ -62,7 +62,6 @@ void ScoreboardScene::ShowPage(int pageNum) {
     for (auto it = objects.begin(); it != objects.end();) {
         Engine::IObject* obj = it->second;
         auto* label = dynamic_cast<Engine::Label*>(obj);
-        //if (label && label != pageLabel) {
         if (label && label != pageLabel && label->Text.find("PREV") == std::string::npos && label->Text.find("NEXT") == std::string::npos && label->Text.find("Back") == std::string::npos) {
             delete obj;
             it = objects.erase(it);
@@ -75,7 +74,7 @@ void ScoreboardScene::ShowPage(int pageNum) {
     int baseY = 120;
     int lineHeight = 50;
 
-    // re-add the SCOREBOARD title on top (resets every time)
+
     AddNewObject(new Engine::Label("SCOREBOARD", "pirulen.ttf", 36, 800, 60, 255, 20, 147, 255, 0.5, 0));
     if (scores.empty()) {
         AddNewObject(new Engine::Label("No scores yet!", "pirulen.ttf", 28, 800, baseY, 255, 20, 147, 255, 0.5, 0));
@@ -87,13 +86,10 @@ void ScoreboardScene::ShowPage(int pageNum) {
             AddNewObject(new Engine::Label(ss.str(), "pirulen.ttf", 28, 800, baseY + i * lineHeight, 139, 0, 98, 255, 0.5, 0));
         }
     }
-    // updates the page number display biar gak selamanya constant
     if (pageLabel) {
         pageLabel->Text = "PAGE: " + std::to_string(page + 1);
     }
-    // fallback if the label somehow got deleted (prevents crash)
     if (!pageLabel) {
-        // Fallback: create it again (just in case)
         pageLabel = new Engine::Label("PAGE: ?", "pirulen.ttf", 28, 800, 680, 255, 255, 255, 255, 0.5, 0);
         std::cerr << "[ERROR] pageLabel was null during ShowPage!\n";
         AddNewObject(pageLabel);
@@ -105,10 +101,8 @@ void ScoreboardScene::AddNavigationButtons() {
     int halfW = w / 2;
     int halfH = h / 2;
 
-    // prev button on
     Engine::ImageButton* prevBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png",
                                                            halfW - 700, halfH * 3 / 2 - 50, 400, 100);
-    // prev button logic which only works if were not already on the first page
     prevBtn->SetOnClickCallback([this]() {
         if (page > 0) ShowPage(page - 1);
     });
@@ -117,29 +111,27 @@ void ScoreboardScene::AddNavigationButtons() {
     AddNewObject(new Engine::Label("PREV", "pirulen.ttf", 48,
         halfW - 500, halfH * 3 / 2, 0, 0, 0, 255, 0.5, 0.5));
 
-    // nxt button
     Engine::ImageButton* nextBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png",
                                                            halfW + 300, halfH * 3 / 2 - 50, 400, 100);
-    // next button logic biar gak past the last page
     nextBtn->SetOnClickCallback([this]() {
         if ((page + 1) * entriesPerPage < scores.size()) ShowPage(page + 1);
     });
     AddNewControlObject(nextBtn);
     AddNewObject(new Engine::Label("NEXT", "pirulen.ttf", 48,
         halfW + 500, halfH * 3 / 2, 0, 0, 0, 255, 0.5, 0.5));
-    // page label
+
     pageLabel = new Engine::Label("PAGE: 1", "pirulen.ttf", 28, halfW, halfH * 3 / 2 + 120, 255, 255, 255, 255, 0.5, 0);
     pageLabel->Visible = true;
     AddNewObject(pageLabel);
 }
 
 void ScoreboardScene::Terminate() {
-    if (bgmInstance) { // stops background music when leaving the scoreboard scene
+    if (bgmInstance) {
         AudioHelper::StopSample(bgmInstance);
         bgmInstance.reset();
     }
 
-    // manually delete only Label objects (to prevent double-deletion from ShowPage)
+
     for (auto it = objects.begin(); it != objects.end();) {
         Engine::IObject* obj = it->second;
         if (dynamic_cast<Engine::Label*>(obj)) {
@@ -149,7 +141,6 @@ void ScoreboardScene::Terminate() {
             ++it;
         }
     }
-    // jadi skrg let IScene handle the rest (buttons, internals)
     IScene::Terminate();
 }
 
