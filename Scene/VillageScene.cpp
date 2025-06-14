@@ -120,7 +120,7 @@ void VillageScene::Initialize() {
     auto* Inventory = new House(
         1330, 180,
         "play/house_inventory.png",
-        "intro");
+        "orc");
     EffectGroup->AddNewObject(Inventory);
 
 

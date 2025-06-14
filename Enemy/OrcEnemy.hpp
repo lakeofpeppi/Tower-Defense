@@ -12,7 +12,6 @@
 
 class OrcEnemy : public Engine::Sprite {
 public:
-    bool hasSpoken = false;
     std::string targetSceneName;
     float animationTimer = 0.0f;
     float animationInterval = 1.0f;

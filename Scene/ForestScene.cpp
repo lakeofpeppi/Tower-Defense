@@ -5,6 +5,8 @@
 // Created by Angelie Melisa on 2025/6/12.
 //
 #include "ForestScene.hpp"
+
+#include "GameData.hpp"
 #include "Engine/AudioHelper.hpp"
 #include "Engine/GameEngine.hpp"
 #include "Engine/Group.hpp"
@@ -111,11 +113,15 @@ void ForestScene::Initialize() {
     int bush_scale = 150;
 
 
-    auto* orc_enemy = new OrcEnemy(
+    if (GameData::orcHP > 0)
+    {
+        auto* orc_enemy = new OrcEnemy(
                     ox, oy,
                     "enemy/orc",
-                    "intro");
-    EffectGroup->AddNewObject(orc_enemy);
+                    "orc");
+        EffectGroup->AddNewObject(orc_enemy);
+    }
+
 
     std::vector<std::pair<int, int>> bush_offsets = {
         {-2, -1}, { -1, -1.5}, { -1, -2},{ 0, -2}, {1,-2},
@@ -310,7 +316,6 @@ void ForestScene::ReadMap() {
 }
 void ForestScene::Update(float deltaTime) {
     PlayScene::Update(deltaTime);
-
     Transition();
 }
 

@@ -2,6 +2,8 @@
 // Created by Angelie Melisa on 2025/6/12.
 //
 #include "SaharaScene.hpp"
+
+#include "GameData.hpp"
 #include "Engine/AudioHelper.hpp"
 #include "Enemy/ScorpionEnemy.hpp"
 #include "Engine/GameEngine.hpp"
@@ -156,12 +158,15 @@ void SaharaScene::Initialize() {
         EffectGroup->AddNewObject(stalagmite);
     }
 
-
-    auto* scorpion_enemy = new ScorpionEnemy(
+    if (GameData::scorpionHP > 0)
+    {
+        auto* scorpion_enemy = new ScorpionEnemy(
             512, 300,
             "enemy/scorpion",
             "intro");
-    EffectGroup->AddNewObject(scorpion_enemy);
+        EffectGroup->AddNewObject(scorpion_enemy);
+    }
+
 
 
 

@@ -1,3 +1,6 @@
+//
+// Created by Shenice Mau on 6/14/2025.
+//
 #include <allegro5/allegro_audio.h>
 #include <functional>
 #include <memory>
@@ -22,8 +25,9 @@
 
 #include "PlayScene.hpp"
 #include "Engine/Sprite.hpp"
+#include "Scene/BattleScorpion.hpp"
 
-void BattleOrc::Initialize() {
+void BattleScorpion::Initialize() {
     enemyAttackTimer = al_create_timer(0.7); // 0.7 second delay
     timerQueue = al_create_event_queue();
     al_register_event_source(timerQueue, al_get_timer_event_source(enemyAttackTimer));
@@ -60,8 +64,8 @@ void BattleOrc::Initialize() {
     AddNewObject(rin_battle);
 
     // Rin worried
-    orc_battle = new Engine::Image("play/orc battle.png", halfW - 250, h - 1200, 1500, 1000);
-    AddNewObject(orc_battle);
+    scorpion_battle = new Engine::Image("play/orc battle.png", halfW - 250, h - 1200, 1500, 1000);
+    AddNewObject(scorpion_battle);
 
     ///ADA SEGMENTATION ERROR KL PAKE INI
     // UIGroup->AddNewObject(UILives = new Engine::Label(std::string("HP: ") + std::to_string(GameData::lives), "pirulen.ttf", 32, 1500, 300));
@@ -79,7 +83,7 @@ void BattleOrc::Initialize() {
     // ATTACK button
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png",
         baseX, baseY, btnWidth, btnHeight);
-    btn->SetOnClickCallback(std::bind(&BattleOrc::OnClickAttack, this));
+    btn->SetOnClickCallback(std::bind(&BattleScorpion::OnClickAttack, this));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("ATTACK", "pirulen.ttf", 40,
         baseX + btnWidth / 2, baseY + btnHeight / 2,
@@ -88,7 +92,7 @@ void BattleOrc::Initialize() {
     // HEAL button
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png",
         baseX + btnWidth + padding, baseY, btnWidth, btnHeight);
-    btn->SetOnClickCallback(std::bind(&BattleOrc::OnClickHeal, this));
+    btn->SetOnClickCallback(std::bind(&BattleScorpion::OnClickHeal, this));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("HEAL", "pirulen.ttf", 40,
         baseX + btnWidth + padding + btnWidth / 2, baseY + btnHeight / 2,
@@ -97,7 +101,7 @@ void BattleOrc::Initialize() {
     // ESCAPE button
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png",
         baseX, baseY + btnHeight + padding, btnWidth, btnHeight);
-    btn->SetOnClickCallback(std::bind(&BattleOrc::OnClickDefend, this));
+    btn->SetOnClickCallback(std::bind(&BattleScorpion::OnClickDefend, this));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("DEFEND", "pirulen.ttf", 40,
         baseX + btnWidth / 2, baseY + btnHeight + padding + btnHeight / 2,
@@ -106,7 +110,7 @@ void BattleOrc::Initialize() {
     // SKILL button
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png",
         baseX + btnWidth + padding, baseY + btnHeight + padding, btnWidth, btnHeight);
-    btn->SetOnClickCallback(std::bind(&BattleOrc::OnClickSkill, this));
+    btn->SetOnClickCallback(std::bind(&BattleScorpion::OnClickSkill, this));
     AddNewControlObject(btn);
     AddNewObject(new Engine::Label("SKILL", "pirulen.ttf", 40,
         baseX + btnWidth + padding + btnWidth / 2, baseY + btnHeight + padding + btnHeight / 2,
@@ -119,12 +123,12 @@ void BattleOrc::Initialize() {
     255, 255, 255, 255, 0.0, 1.0); // Left aligned, top
     AddNewObject(playerHPLabel);
 
-    orcHPLabel = new Engine::Label(
-     std::string("Enemy HP: ") + std::to_string(GameData::orcHP),
+    scorpionHPLabel = new Engine::Label(
+     std::string("Enemy HP: ") + std::to_string(GameData::scorpionHP),
      "pirulen.ttf", 32,
      halfW - 250 + 300, h - 1050, // shifted lower by 50
      255, 0, 0, 255, 0.0, 1.0); // Left aligned, top
-    AddNewObject(orcHPLabel);
+    AddNewObject(scorpionHPLabel);
 
 
 
@@ -138,11 +142,11 @@ void BattleOrc::Initialize() {
 
     bgmInstance = AudioHelper::PlaySample("fight.ogg", true, AudioHelper::BGMVolume);
 }
-void BattleOrc::OnClickAttack() {
+void BattleScorpion::OnClickAttack() {
     if (inputDisabled) return;
     AudioHelper::PlaySample("slash.mp3");
-    GameData::orcHP -= GameData::strength;
-    orcHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::orcHP);
+    GameData::scorpionHP -= GameData::strength;
+    scorpionHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::scorpionHP);
     if (!enemyAttackScheduled) {
         enemyAttackScheduled = true;
         enemyAttackStartTime = al_get_time();
@@ -154,7 +158,7 @@ void BattleOrc::OnClickAttack() {
 
 }
 
-void BattleOrc::OnClickHeal() {
+void BattleScorpion::OnClickHeal() {
     if (inputDisabled) return;
     AudioHelper::PlaySample("collect.mp3");
     GameData::lives += 20; // No upper cap
@@ -169,7 +173,7 @@ void BattleOrc::OnClickHeal() {
 
 }
 
-void BattleOrc::OnClickDefend() {
+void BattleScorpion::OnClickDefend() {
     if (inputDisabled) return;
     AudioHelper::PlaySample("press.mp3");
     isDefending = true;
@@ -187,13 +191,13 @@ void BattleOrc::OnClickDefend() {
 }
 
 
-void BattleOrc::OnClickSkill() {
+void BattleScorpion::OnClickSkill() {
     if (inputDisabled) return;
     AudioHelper::PlaySample("slash.mp3");
-    GameData::orcHP -= (GameData::strength + 50);
+    GameData::scorpionHP -= (GameData::strength + 50);
     GameData::lives -= 5;
 
-    orcHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::orcHP);
+    scorpionHPLabel->Text = std::string("Enemy HP: ") + std::to_string(GameData::scorpionHP);
     playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
     if (!enemyAttackScheduled) {
         enemyAttackScheduled = true;
@@ -205,7 +209,7 @@ void BattleOrc::OnClickSkill() {
 
 }
 
-void BattleOrc::Terminate() {
+void BattleScorpion::Terminate() {
     if (enemyAttackTimer) {
         al_destroy_timer(enemyAttackTimer);
         enemyAttackTimer = nullptr;
@@ -221,31 +225,31 @@ void BattleOrc::Terminate() {
     }
     IScene::Terminate();
 }
-void BattleOrc::EnemyTurn() {
+void BattleScorpion::EnemyTurn() {
 
-    int damage = isDefending ? GameData::orcStrength / 2 : GameData::orcStrength;
+    int damage = isDefending ? GameData::scorpionStrength / 2 : GameData::scorpionStrength;
     GameData::lives -= damage;
     playerHPLabel->Text = std::string("HP: ") + std::to_string(GameData::lives);
     isDefending = false;
 }
 
-void BattleOrc::BackOnClick(int stage) {
+void BattleScorpion::BackOnClick(int stage) {
 
 }
-void BattleOrc::NextOnClick(int stage) {
+void BattleScorpion::NextOnClick(int stage) {
 
 }
 
 
 
-void BattleOrc::BGMSlideOnValueChanged(float value) {
+void BattleScorpion::BGMSlideOnValueChanged(float value) {
     AudioHelper::ChangeSampleVolume(bgmInstance, value);
     AudioHelper::BGMVolume = value;
 }
-void BattleOrc::SFXSlideOnValueChanged(float value) {
+void BattleScorpion::SFXSlideOnValueChanged(float value) {
     AudioHelper::SFXVolume = value;
 }
-void BattleOrc::Update(float deltaTime) {
+void BattleScorpion::Update(float deltaTime) {
     Engine::IScene::Update(deltaTime);
 
     if (enemyAttackScheduled) {
@@ -261,15 +265,15 @@ void BattleOrc::Update(float deltaTime) {
 
     // Check if orc was just defeated
     // Check if orc was just defeated
-    if (GameData::orcHP <= 0 && !orcDefeatedShown) {
-        GameData::orcHP = 0;
-        orcDefeatedShown = true;
+    if (GameData::scorpionHP <= 0 && !scorpionDefeatedShown) {
+        GameData::scorpionHP = 0;
+        scorpionDefeatedShown = true;
         inputDisabled = true; // Disable inputs
         defeatMessageStartTime = al_get_time();
 
         // Top label: YOU HAVE DEFEATED AN ORC
         defeatLabel = new Engine::Label(
-            "YOU HAVE DEFEATED AN ORC",
+            "YOU HAVE DEFEATED A SCORPION",
             "pirulen.ttf", 48,
             1792 / 2, 1216 / 2 - 40,
             255, 255, 255, 255, 0.5, 0.5
@@ -278,7 +282,7 @@ void BattleOrc::Update(float deltaTime) {
 
         // Bottom label: BONE SHOVEL OBTAINED!
         AddNewObject(new Engine::Label(
-            "BONE SHOVEL OBTAINED!",
+            "POISONOUS STING OBTAINED!",
             "pirulen.ttf", 36,
             1792 / 2, 1216 / 2 + 40,
             255, 255, 255, 255, 0.5, 0.5
@@ -289,8 +293,8 @@ void BattleOrc::Update(float deltaTime) {
     }
 
     // After 5 seconds, switch scene
-    if (orcDefeatedShown && al_get_time() - defeatMessageStartTime > 5.0) {
-        Engine::GameEngine::GetInstance().ChangeScene("forest");
+    if (scorpionDefeatedShown && al_get_time() - defeatMessageStartTime > 5.0) {
+        Engine::GameEngine::GetInstance().ChangeScene("sahara");
     }
 
 }

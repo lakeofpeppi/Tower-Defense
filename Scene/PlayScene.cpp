@@ -223,10 +223,19 @@ void PlayScene::Update(float deltaTime) {
     //IScene::Update(deltaTime); // Keep this
 
     // --- INVINCIBILITY TIMER CHECK ---
+    if (GameData::poisonStingEquip) {
+        double currentTime = al_get_time();
+        if (currentTime - poisonStingStartTime >= 3.0) {
+            GameData::poisonStingEquip = false;
+            poisonStingLabel->Visible = false;
+            std::cout << "Poison sting unequipped" << std::endl;
+        }
+    }
+
     if (invincible) {
         double currentTime = al_get_time();
         if (currentTime - invincibleStartTime >= 5.0) {
-            invincible = false;
+            GameData::isInvincible = false;
             std::cout << "Invincibility ended" << std::endl;
             InvincibleLabel->Visible = false;
         }
@@ -234,7 +243,7 @@ void PlayScene::Update(float deltaTime) {
     if (null_emotion) {
         double currentTime = al_get_time();
         if (currentTime - null_emotionStartTime >= 10.0) {
-            null_emotion = false;
+            GameData::isNull = false;
             std::cout << "Null emotion ended" << std::endl;
             null_emotionLabel->Visible = false;
         }
@@ -665,13 +674,22 @@ void PlayScene::ReadEnemyWave() {
 void PlayScene::ConstructUI() {
     // setup tombol-tombol turret, text UI (stage, money, lives)
     // Background
-    InvincibleLabel = new Engine::Label("INVINCIBLE!", "pirulen.ttf", 28,  650, 100,64, 224, 208, 255);
+    InvincibleLabel = new Engine::Label("INVINCIBLE!", "pirulen.ttf", 28,
+     736, 30, 64, 224, 208, 255, 0.5f, 0.5f);
     InvincibleLabel->Visible = false;
     UIGroup->AddNewObject(InvincibleLabel);
 
-    null_emotionLabel = new Engine::Label("NULL EMOTIONS!", "pirulen.ttf", 28,  650, 100,128, 0, 128, 255);
+    null_emotionLabel = new Engine::Label("NULL EMOTIONS!", "pirulen.ttf", 28,
+        736, 60, 128, 0, 128, 255, 0.5f, 0.5f);
     null_emotionLabel->Visible = false;
     UIGroup->AddNewObject(null_emotionLabel);
+
+    poisonStingLabel = new Engine::Label("POISON STING EQUIPPED!", "pirulen.ttf", 28,
+        736, 90, 0, 255, 0, 255, 0.5f, 0.5f);
+    poisonStingLabel->Visible = false;
+    UIGroup->AddNewObject(poisonStingLabel);
+
+
 
     UIGroup->AddNewObject(new Engine::Image("play/wooden_forest.png", 1472, 0, 320, 1216));
     // Text
@@ -685,7 +703,7 @@ void PlayScene::ConstructUI() {
     // Button 1
     btn = new TurretButton("play/floor.png", "play/dirt.png",
                            Engine::Sprite("play/apple.png", 1486, 700, 0, 0, 0, 0),
-                           Engine::Sprite("play/apple.png", 1486, 700, 0, 0, 0, 0), 1486, 700, MachineGunTurret::Price);
+                           Engine::Sprite("play/apple.png", 1486, 700, 0, 0, 0, 0), 1486, 700, LaserTurret::Price);
     // Reference: Class Member Function Pointer and std::bind.
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 0));
     UIGroup->AddNewControlObject(btn);
@@ -711,22 +729,29 @@ void PlayScene::ConstructUI() {
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 3));
     UIGroup->AddNewControlObject(btn);
 
-    //shovel btn
-    btn = new TurretButton("play/floor.png", "play/dirt.png",
-                       Engine::Sprite("play/poison sting.png", 1486, 776, 0, 0, 0, 0),
-                       Engine::Sprite("play/poison sting.png", 1486, 776, 0, 0, 0, 0), 1486, 776, ShovelTool::Price);
-    btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 4));
-    UIGroup->AddNewControlObject(btn);
+    if (GameData::scorpionHP == 0)
+    {
+        btn = new TurretButton("play/floor.png", "play/dirt.png",
+                       Engine::Sprite("play/poison sting.png", 1636, 776, 0, 0, 0, 0),
+                       Engine::Sprite("play/poison sting.png", 1636, 776, 0, 0, 0, 0), 1636, 776, ShovelTool::Price);
+        btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 4));
+        UIGroup->AddNewControlObject(btn);
+    }
+
+
+    if (GameData::orcHP == 0) {
+        btn = new TurretButton("play/floor.png", "play/dirt.png",
+                               Engine::Sprite("play/bone.png", 1562, 776, 0, 0, 0, 0),
+                               Engine::Sprite("play/bone.png", 1562, 776, 0, 0, 0, 0),
+                               1562, 776, MachineGunTurret::Price);
+        btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 5));
+        UIGroup->AddNewControlObject(btn);
+    }
+
 
     btn = new TurretButton("play/floor.png", "play/dirt.png",
-                       Engine::Sprite("play/bone.png", 1562, 776, 0, 0, 0, 0),
-                       Engine::Sprite("play/bone.png", 1562, 776, 0, 0, 0, 0), 1562, 776, ShovelTool::Price); //will be obtained after killing orc
-    btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 5));
-    UIGroup->AddNewControlObject(btn);
-
-    btn = new TurretButton("play/floor.png", "play/dirt.png",
-                       Engine::Sprite("play/trap.png", 1636, 776, 0, 0, 0, 0),
-                       Engine::Sprite("play/trap.png", 1636, 776 , 0, 0, 0, 0), 1636, 776, RocketTurret::Price);
+                       Engine::Sprite("play/trap.png", 1486, 776, 0, 0, 0, 0),
+                       Engine::Sprite("play/trap.png", 1486, 776 , 0, 0, 0, 0), 1486, 776, RocketTurret::Price);
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 6));
     UIGroup->AddNewControlObject(btn);
 
@@ -848,7 +873,7 @@ void PlayScene::UIBtnClicked(int id) {
             std::cout << "lose money"<< std::endl;
             UIMoney->Text = "COINS: " + std::to_string(GameData::money);
 
-            null_emotion = true;
+            GameData::isNull= true;
             null_emotionStartTime = al_get_time();
             null_emotionLabel->Visible = true;
             AudioHelper::PlaySample("collect.mp3");
@@ -865,7 +890,7 @@ void PlayScene::UIBtnClicked(int id) {
 
             UIMoney->Text = "COINS: " + std::to_string(GameData::money);
 
-            invincible = true;
+            GameData::isInvincible = true;
             invincibleStartTime = al_get_time();
             InvincibleLabel->Visible = true;
             AudioHelper::PlaySample("collect.mp3");
@@ -876,6 +901,28 @@ void PlayScene::UIBtnClicked(int id) {
     {
         preview = new RocketTurret(0, 0);
     }
+    else if (id == 5)
+    {
+        preview = new MachineGunTurret(0, 0);
+    }else if (id == 4) {
+        double now = al_get_time();
+        if (!GameData::poisonStingEquip) {
+            GameData::poisonStingEquip = true;
+            poisonStingStartTime = now;
+            poisonStingLabel->Text = "POISON STING EQUIPPED!";
+            poisonStingLabel->Visible = true;
+            AudioHelper::PlaySample("press.mp3");
+            std::cout << "Poison sting equipped" << std::endl;
+        } else {
+            GameData::poisonStingEquip = false;
+            poisonStingLabel->Text = "POISON STING UNEQUIPPED!";
+            poisonStingStartTime = now; // reset timer so the label shows for 3 sec
+            poisonStingLabel->Visible = true;
+            AudioHelper::PlaySample("press.mp3");
+            std::cout << "Poison sting unequipped (manual)" << std::endl;
+        }
+    }
+
     //fireTurret new yeah
     // else if (id == 2 && money >= FireTurret::Price)
     //     preview = new FireTurret(0, 0);

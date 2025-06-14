@@ -2,8 +2,9 @@
 // Created by Shenice Mau on 6/14/2025.
 //
 
-#ifndef BATTLEORC_HPP
-#define BATTLEORC_HPP
+#ifndef BATTLESEA_HPP
+#define BATTLESEA_HPP
+
 
 
 
@@ -12,20 +13,14 @@
 #include "Engine/IScene.hpp"
 #include <allegro5/allegro_audio.h>
 
-enum class BattleState {
-    PlayerTurn,
-    EnemyTurn,
-    Win,
-    Lose
-};
 
-class BattleOrc final : public Engine::IScene {
+class BattleSea final : public Engine::IScene {
 private:
 
     std::vector<std::string> dialogueLines;
     Engine::Image* dialogueBoxImage = nullptr;
     Engine::Image* rin_battle = nullptr;
-    Engine::Image* orc_battle = nullptr;
+    Engine::Image* sea_battle = nullptr;
     Engine::Image* rin_close = nullptr;
     Engine::Sprite* blackScreen = nullptr;
     Group *UIGroup;
@@ -35,9 +30,8 @@ private:
     Engine::Label *UIStrength;
     Engine::Label *UILives;
     Engine::Label *EnemyLives;
-    BattleState currentState = BattleState::PlayerTurn;
     Engine::Label* playerHPLabel;
-    Engine::Label* orcHPLabel;
+    Engine::Label* seaHPLabel;
 
     bool isDefending = false;
 
@@ -55,7 +49,7 @@ private:
     bool enemyAttackScheduled = false;
     double enemyAttackStartTime = 0;
     Engine::Label* turnIndicatorLabel = nullptr;
-    bool orcDefeatedShown = false;
+    bool seaDefeatedShown = false;
     double defeatMessageStartTime = 0;
     Engine::Label* defeatLabel = nullptr;
     bool inputDisabled = false;
@@ -67,7 +61,7 @@ private:
 
 
 public:
-    explicit BattleOrc() = default;
+    explicit BattleSea() = default;
     void Initialize() override;
     void Terminate() override;
     void BackOnClick(int stage);
@@ -83,4 +77,4 @@ public:
     void Update(float deltaTime);
 };
 
-#endif //BATTLEORC_HPP
+#endif //BATTLESEA_HPP

@@ -12,6 +12,12 @@ public:
     static int orcHP;
     static int orcStrength;
     static int scorpionHP;
+    static int scorpionStrength;
+    static bool poisonStingEquip;
+    static bool isInvincible;
+    static bool isNull;
+    static int seaHP;
+    static int seaStrength;
 
     static void Reset() {
         lives = 50;

@@ -54,6 +54,9 @@ protected:
     double invincibleStartTime = 0;
     Engine::Label* InvincibleLabel = nullptr;
 
+    double poisonStingStartTime = 0;
+    Engine::Label* poisonStingLabel = nullptr;
+
     //for null emotion so that when fighting sea creature your hp wont drain
     bool null_emotion = false;
     double null_emotionStartTime = 0;

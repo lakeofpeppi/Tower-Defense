@@ -9,11 +9,11 @@
 #include "MachineGunTurret.hpp"
 #include "Scene/PlayScene.hpp"
 
-const int MachineGunTurret::Price = 50;
+const int MachineGunTurret::Price = 0;
 MachineGunTurret::MachineGunTurret(float x, float y)
-    : Turret("play/tower-base.png", "play/turret-1.png", x, y, 200, Price, 0.5) {
+    : Turret("play/bone.png", "play/bone.png", x, y, 200, Price, 0.5) {
     // Move center downward, since we the turret head is slightly biased upward.
-    Anchor.y += 8.0f / GetBitmapHeight();
+    //Anchor.y += 8.0f / GetBitmapHeight();
 }
 void MachineGunTurret::CreateBullet() {
     Engine::Point diff = Engine::Point(cos(Rotation - ALLEGRO_PI / 2), sin(Rotation - ALLEGRO_PI / 2));
