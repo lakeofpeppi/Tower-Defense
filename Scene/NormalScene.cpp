@@ -121,6 +121,7 @@ void NormalScene::Terminate() {
 //    // Engine::GameEngine::GetInstance().ChangeScene("princess");
 // }
 void NormalScene::NextOnClick(int stage) {
+    AudioHelper::PlaySample("press.mp3");
     if (currentLine + 1 < (int)dialogueLines.size()) {
         currentLine++;
         dialogueLabel->Text = dialogueLines[currentLine];

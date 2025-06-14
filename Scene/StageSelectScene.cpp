@@ -54,10 +54,12 @@ void StageSelectScene::Terminate() {
     IScene::Terminate();
 }
 void StageSelectScene::BackOnClick(int stage) {
+    AudioHelper::PlaySample("press.mp3");
     Engine::GameEngine::GetInstance().ChangeScene("start");
 }
 
 void StageSelectScene::PlayOnClick(int stage) {
+    AudioHelper::PlaySample("press.mp3");
     //Engine::GameEngine::GetInstance().AddNewScene("play", new PlayScene());
     PlayScene* scene = dynamic_cast<PlayScene*>(Engine::GameEngine::GetInstance().GetScene("village"));
     if (scene) {

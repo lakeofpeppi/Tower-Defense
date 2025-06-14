@@ -14,31 +14,125 @@
 [INFO] Game start event loop
 [INFO] Loaded Resource<audio>: Resource/audios/press.mp3
 [INFO] Created<sample_instance>: Resource/audios/press.mp3
-[INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 400x100
+[INFO] Loaded Resource<image>: Resource/images/play/dialogue.png scaled to 1140x150
+[INFO] Loaded Resource<image>: Resource/images/play/rin normal.png scaled to 720x480
+[INFO] Loaded Resource<image>: Resource/images/play/rin worried.png scaled to 720x480
+[INFO] Loaded Resource<image>: Resource/images/play/rin close.png scaled to 720x480
+[INFO] Loaded Resource<image>: Resource/images/play/toma happy.png scaled to 720x480
+[INFO] Loaded Resource<image>: Resource/images/play/toma shock.png scaled to 720x480
+[INFO] Loaded Resource<image>: Resource/images/play/toma worry.png scaled to 720x480
+[INFO] Loaded Resource<image>: Resource/images/enemy/gubukkkk_1.png scaled to 280x280
+[INFO] Loaded Resource<image>: Resource/images/enemy/gubukk_1.png scaled to 280x280
+[INFO] Loaded Resource<image>: Resource/images/enemy/gubukkk_1.png scaled to 280x280
+[INFO] Loaded Resource<image>: Resource/images/enemy/pohon_1.png scaled to 280x280
+[INFO] Loaded Resource<image>: Resource/images/enemy/pohin_1.png scaled to 280x280
+[INFO] Loaded Resource<image>: Resource/images/enemy/pohonn_1.png scaled to 280x280
+[INFO] Loaded Resource<image>: Resource/images/play/house_book.png scaled to 256x256
+[INFO] Loaded Resource<image>: Resource/images/play/house_inventory.png scaled to 256x256
+[INFO] Loaded Resource<image>: Resource/images/npc/toma_1.png scaled to 128x128
+[INFO] Loaded Resource<image>: Resource/images/Character/down_1.png scaled to 128x128
+[INFO] Loaded Resource<image>: Resource/images/enemy/pohinnn_1.png scaled to 280x280
+[INFO] Loaded Resource<image>: Resource/images/enemy/pohinnnn_1.png scaled to 280x280
+[INFO] Loaded Resource<image>: Resource/images/enemy/pohinn_1.png scaled to 280x280
+[INFO] Loaded Resource<image>: Resource/images/enemy/gubukkkkkk_1.png scaled to 320x320
+[INFO] Loaded Resource<image>: Resource/images/enemy/gubukkkk_1.png scaled to 320x320
+[INFO] Loaded Resource<image>: Resource/images/enemy/gubukkkkk_1.png scaled to 500x500
+[INFO] Loaded Resource<image>: Resource/images/play/grass.png scaled to 64x64
+[INFO] Loaded Resource<image>: Resource/images/play/fence.png scaled to 64x64
+[INFO] Loaded Resource<image>: Resource/images/play/fence_right.png scaled to 64x64
+[INFO] Loaded Resource<image>: Resource/images/play/fence_left.png scaled to 64x64
+[INFO] Loaded Resource<image>: Resource/images/play/fence_down.png scaled to 64x64
+[INFO] Loaded Resource<font>: Resource/fonts/pirulen.ttf with size 28
+[INFO] Loaded Resource<image>: Resource/images/play/wooden_forest.png scaled to 320x1216
+[INFO] Loaded Resource<font>: Resource/fonts/pirulen.ttf with size 32
+[INFO] Loaded Resource<font>: Resource/fonts/pirulen.ttf with size 24
+[INFO] Loaded Resource<image>: Resource/images/play/apple.png
+[INFO] Loaded Resource<image>: Resource/images/play/floor.png
+[INFO] Loaded Resource<image>: Resource/images/play/dirt.png
+[INFO] Loaded Resource<image>: Resource/images/play/orange.png
+[INFO] Loaded Resource<image>: Resource/images/play/null.png
+[INFO] Loaded Resource<image>: Resource/images/play/invinsible.png
+[INFO] Loaded Resource<image>: Resource/images/play/trap.png
+[INFO] Loaded Resource<image>: Resource/images/play/floor.png scaled to 672x816
+[INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 292x60
 [INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png
 [INFO] Loaded Resource<image>: Resource/images/stage-select/floor.png
-[INFO] Loaded Resource<font>: Resource/fonts/pirulen.ttf with size 48
-[INFO] Loaded Resource<font>: Resource/fonts/pirulen.ttf with size 36
-[INFO] Loaded Resource<audio>: Resource/audios/title.wav
-[INFO] Created<sample_instance>: Resource/audios/title.wav
-[INFO] Changed to stage-select scene
+[INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 400x60
+[INFO] Loaded Resource<image>: Resource/images/stage-select/dirt.png scaled to 160x50
+[INFO] Loaded Resource<image>: Resource/images/play/benjamin.png
+[INFO] Loaded Resource<image>: Resource/images/play/rin prof.png scaled to 360x240
+[INFO] Loaded Resource<image>: Resource/images/play/target.png
+[INFO] Loaded Resource<audio>: Resource/audios/astronomia.ogg
+[INFO] Created<sample_instance>: Resource/audios/astronomia.ogg
+[INFO] Loaded Resource<image>: Resource/images/lose/benjamin-happy.png
+[INFO] Loaded Resource<audio>: Resource/audios/village-explore.mp3
+[INFO] Changed to village scene
+[INFO] Loaded Resource<image>: Resource/images/Character/down_3.png
+[INFO] Loaded Resource<image>: Resource/images/npc/toma_2.png
 [INFO] Game Terminating...
-[INFO] stopped audio (sample)
+[INFO] stopped audio (bgm)
 [INFO] Game terminated
 [INFO] Game end
-[INFO] Destroyed Resource<image>: stage-select/dirt.png
+[INFO] Destroyed Resource<image>: npc/toma_2.png
+[INFO] Destroyed Resource<image>: Character/down_3.png
+[INFO] Destroyed Resource<image>: play/benjamin.png
+[INFO] Destroyed Resource<image>: play/fence.png?64x64
+[INFO] Destroyed Resource<image>: stage-select/dirt.png?160x50
+[INFO] Destroyed Resource<image>: stage-select/dirt.png?400x60
+[INFO] Destroyed Resource<image>: play/toma happy.png?720x480
+[INFO] Destroyed Resource<image>: play/orange.png
+[INFO] Destroyed Resource<image>: play/null.png
+[INFO] Destroyed Resource<image>: play/floor.png?672x816
+[INFO] Destroyed Resource<image>: play/wooden_forest.png?320x1216
+[INFO] Destroyed Resource<image>: play/dirt.png
+[INFO] Destroyed Resource<image>: play/fence_down.png?64x64
+[INFO] Destroyed Resource<image>: play/fence_left.png?64x64
+[INFO] Destroyed Resource<image>: play/fence_right.png?64x64
+[INFO] Destroyed Resource<image>: play/dialogue.png?1140x150
 [INFO] Destroyed Resource<image>: stage-select/floor.png
+[INFO] Destroyed Resource<image>: play/floor.png
+[INFO] Destroyed Resource<image>: enemy/gubukkkkk_1.png?500x500
+[INFO] Destroyed Resource<image>: play/target.png
+[INFO] Destroyed Resource<image>: play/rin prof.png?360x240
+[INFO] Destroyed Resource<image>: enemy/gubukkkk_1.png?320x320
+[INFO] Destroyed Resource<image>: enemy/gubukk_1.png?280x280
+[INFO] Destroyed Resource<image>: enemy/gubukkkkkk_1.png?320x320
+[INFO] Destroyed Resource<image>: enemy/pohinnnn_1.png?280x280
+[INFO] Destroyed Resource<image>: enemy/pohonn_1.png?280x280
+[INFO] Destroyed Resource<image>: npc/toma_1.png?128x128
+[INFO] Destroyed Resource<image>: play/grass.png?64x64
+[INFO] Destroyed Resource<image>: enemy/pohinnn_1.png?280x280
+[INFO] Destroyed Resource<image>: enemy/pohinn_1.png?280x280
+[INFO] Destroyed Resource<image>: play/house_book.png?256x256
+[INFO] Destroyed Resource<image>: play/house_inventory.png?256x256
+[INFO] Destroyed Resource<image>: enemy/pohin_1.png?280x280
+[INFO] Destroyed Resource<image>: stage-select/dirt.png?292x60
+[INFO] Destroyed Resource<image>: enemy/gubukkkk_1.png?280x280
+[INFO] Destroyed Resource<image>: lose/benjamin-happy.png
+[INFO] Destroyed Resource<image>: play/apple.png
+[INFO] Destroyed Resource<image>: play/toma worry.png?720x480
+[INFO] Destroyed Resource<image>: stage-select/dirt.png
+[INFO] Destroyed Resource<image>: enemy/pohon_1.png?280x280
+[INFO] Destroyed Resource<image>: play/rin normal.png?720x480
+[INFO] Destroyed Resource<image>: play/rin close.png?720x480
+[INFO] Destroyed Resource<image>: play/toma shock.png?720x480
+[INFO] Destroyed Resource<image>: play/rin worried.png?720x480
 [INFO] Destroyed Resource<image>: stage-select/underline.png?400x100
+[INFO] Destroyed Resource<image>: Character/down_1.png?128x128
+[INFO] Destroyed Resource<image>: play/invinsible.png
+[INFO] Destroyed Resource<image>: play/trap.png
+[INFO] Destroyed Resource<image>: stage-select/underline.png
 [INFO] Destroyed Resource<image>: play/title screen.png?1811x1245
 [INFO] Destroyed Resource<image>: stage-select/underline.png?300x100
-[INFO] Destroyed Resource<image>: stage-select/dirt.png?400x100
-[INFO] Destroyed Resource<image>: stage-select/underline.png
+[INFO] Destroyed Resource<image>: enemy/gubukkk_1.png?280x280
 [INFO] Destroyed Resource<image>: icon.png
-[INFO] Destroyed Resource<font>: pirulen.ttf?48
+[INFO] Destroyed Resource<font>: pirulen.ttf?24
+[INFO] Destroyed Resource<font>: pirulen.ttf?32
 [INFO] Destroyed Resource<font>: To The Point.ttf?100
-[INFO] Destroyed Resource<font>: pirulen.ttf?36
+[INFO] Destroyed Resource<font>: pirulen.ttf?28
 [INFO] Destroyed Resource<font>: To The Point.ttf?200
-[INFO] Destroyed<sample_instance>: title.wav
+[INFO] Destroyed<sample_instance>: astronomia.ogg
 [INFO] Destroyed<sample_instance>: press.mp3
-[INFO] Destroyed Resource<audio>: title.wav
+[INFO] Destroyed Resource<audio>: village-explore.mp3
+[INFO] Destroyed Resource<audio>: astronomia.ogg
 [INFO] Destroyed Resource<audio>: press.mp3

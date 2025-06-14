@@ -113,6 +113,7 @@ void IntroScene::BackOnClick(int stage) {
 
 }
 void IntroScene::NextOnClick(int stage) {
+    AudioHelper::PlaySample("press.mp3");
     if (currentLine + 1 < (int)dialogueLines.size()) {
         currentLine++;
         dialogueLabel->Text = dialogueLines[currentLine];
