@@ -39,7 +39,6 @@ void BookScene::Initialize() {
 
     Engine::ImageButton *btn;
 
-    // Fill dialogue lines
     dialogueLines = {
         " ", //0 -> black
         "    The smell of paper and incense fill your nose  ", //1 -> black
@@ -47,7 +46,7 @@ void BookScene::Initialize() {
         "as it will aid you in your journey",//3 ->narrator
         "As you look around, a strange note catches your eye",//4 -> black
         "What is this?", //5 -> rin normal
-        " ", //make the first page show up // 6
+        " ", // 6
         "……trees…Forest?", //7 ->rin normal
         " And sands is abundant in the desert,", //8 -> rin normal
         "but how can there be a desert near here? ", //9 -> rin worried
@@ -58,21 +57,21 @@ void BookScene::Initialize() {
         " ",//14 -> page 2 will show up here
         "...", // 15 -> rin normal
         " ",//16 -> page 3 will show up here
-        "It seems I need to take this mission seriously",//make this postion on the bottom //17 ->rin closed
+        "It seems I need to take this mission seriously", //17 ->rin closed
         "       As you let go of the note, it vanishes,      ", //18 -> black
         "      like it never existed in the first place.     ", //19 ->black
         "Outlander, it seems you have sufficient knowledge,", //20 ->narrator
         "it is best to hurry up and not waste time here anymore" // 21 -> narator
     };
 
-    // Create the first line label
+
     float lineHeight = 70;
+
     // Black screen
     blackScreen = new Engine::Image("play/black.png", 0, 0, w, h);
     blackScreen->Visible = true;
     AddNewObject(blackScreen);
 
-    // Page dimensions
     float pageWidth = w * 0.8f;
     float pageHeight = h * 0.8f;
 
@@ -116,8 +115,8 @@ void BookScene::Initialize() {
     dialogueLabel = new Engine::Label(dialogueLines[0], "To The Point.ttf", 70, startX, startY, 255, 255, 255, 255, 0.0, 0.5);
     AddNewObject(dialogueLabel);
 
-    int btnX = 1792 - 400 - 20; // Right edge - button width - padding
-    int btnY = 1216 - 100 - 20; // Bottom edge - button height - padding
+    int btnX = 1792 - 400 - 20;
+    int btnY = 1216 - 100 - 20;
 
     btn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", halfW + 680, halfH + 500, 200, 80);
     btn->SetOnClickCallback([this]() {
@@ -130,19 +129,19 @@ void BookScene::Initialize() {
 
 
 
-    // Center the label on the button
+
     AddNewObject(new Engine::Label("next", "To The Point.ttf", 80,
-        btnX + 300,         // btnX + width/2
-        btnY + 50,          // btnY + height/2
-        255, 255, 255, 255,       // black color
-        0.5, 0.5));         // centered alignment
+        btnX + 300,
+        btnY + 50,
+        255, 255, 255, 255,
+        0.5, 0.5));
 
    bgmInstance = AudioHelper::PlaySample("book.mp3", true, AudioHelper::BGMVolume);
 }
 void BookScene::Terminate() {
     if (bgmInstance) {
         AudioHelper::StopSample(bgmInstance);
-        bgmInstance.reset();  // safer and clearer
+        bgmInstance.reset();
     }
     IScene::Terminate();
 }
@@ -160,7 +159,6 @@ void BookScene::NextOnClick(int stage) {
         int halfW = screenW / 2;
         int halfH = screenH / 2;
 
-        // Default position and visibility
         if (dialogueLabel)dialogueLabel->Position.x = halfW - 600;
         if (dialogueLabel)dialogueLabel->Position.y = halfH - 100;
         if (dialogueBoxImage) dialogueBoxImage->Visible = false;
@@ -171,12 +169,7 @@ void BookScene::NextOnClick(int stage) {
         if (page2) page2->Visible = false;
         if (page3) page3->Visible = false;
 
-
-
-        // Hide black screen by default
         if (blackScreen) blackScreen->Visible = false;
-
-        // Special cases: Show dialogue box + appropriate Rin expression
         if (currentLine == 5 || currentLine == 11 || currentLine == 7 || currentLine == 8 || currentLine == 9 || currentLine == 10|| currentLine == 12 || currentLine == 15 || currentLine == 17) {
             if (dialogueLabel)dialogueLabel->Position.x = halfW - 300;
             if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
@@ -191,7 +184,7 @@ void BookScene::NextOnClick(int stage) {
             }
         }
 
-        // Show page images at specific lines
+
         if (currentLine == 6) {
             if (page1) page1->Visible = true;
             if (dialogueBoxImage) dialogueBoxImage->Visible = false;
@@ -205,7 +198,7 @@ void BookScene::NextOnClick(int stage) {
             if (dialogueBoxImage) dialogueBoxImage->Visible = false;
         }
 
-        // Show black screen on "You slowly approached the villager"
+
         if (currentLine == 0|| currentLine == 1 || currentLine == 4 || currentLine == 13 || currentLine == 18 || currentLine == 19) {
             if (blackScreen) blackScreen->Visible = true;
 
@@ -217,12 +210,8 @@ void BookScene::NextOnClick(int stage) {
             if (page2) page2->Visible = false;
             if (page3) page3->Visible = false;
 
-
-            // Position dialogue label at bottom center
             if (dialogueLabel) dialogueLabel->Position.x = halfW - 350;
-            if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;  // near bottom with some padding
-
-            // Optionally, make sure the label is visible if you hid it earlier
+            if (dialogueLabel)dialogueLabel->Position.y = screenH - 150;
             if (dialogueLabel)dialogueLabel->Visible = true;
         }
 

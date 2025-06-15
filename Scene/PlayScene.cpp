@@ -95,7 +95,7 @@ void PlayScene::Update(float deltaTime) {
     // Reference: Bullet-Through-Paper
     //IScene::Update(deltaTime); // Keep this
 
-    // --- INVINCIBILITY TIMER CHECK ---
+
     if (GameData::poisonStingEquip) {
         double currentTime = al_get_time();
         if (currentTime - poisonStingStartTime >= 3.0) {
@@ -104,7 +104,7 @@ void PlayScene::Update(float deltaTime) {
             std::cout << "Poison sting unequipped" << std::endl;
         }
     }
-
+    // timer buat invincible
     if (invincible) {
         double currentTime = al_get_time();
         if (currentTime - invincibleStartTime >= 5.0) {
@@ -113,6 +113,7 @@ void PlayScene::Update(float deltaTime) {
             InvincibleLabel->Visible = false;
         }
     }
+    //timer buat null emotion //kalo mau tambahin timer copas kek gini aj gausah tambahin apapa lagi
     if (null_emotion) {
         double currentTime = al_get_time();
         if (currentTime - null_emotionStartTime >= 10.0) {
@@ -369,7 +370,7 @@ void PlayScene::OnMouseUp(int button, int mx, int my) {
             );
             return;
         }
-        // Add this check for 'Bone turret' placement at (15, 15)
+        // Add this check for 'Bone turret' placement at (15, 15) -->salah seharusnya dari 14 x 14 cuz index 0
         if (preview->GetTurretID() == 5 && x == 14 && y == 14) {
             GameData::isRose = true;
             std::cout << "Rose activated!" << std::endl;
@@ -556,34 +557,33 @@ void PlayScene::ConstructUI() {
     // Text
     UIGroup->AddNewObject(UILives = new Engine::Label(std::string("HP: ") + std::to_string(GameData::lives), "pirulen.ttf", 32, 1500, 300));
     UIGroup->AddNewObject(UIMoney = new Engine::Label(std::string("COINS: ") + std::to_string(GameData::money), "pirulen.ttf", 32, 1500, 350));
-    //UIGroup->AddNewObject(UILives = new Engine::Label(std::string("STAGE: ") + std::to_string(MapId), "pirulen.ttf", 24, 1486, 400));
     UIGroup->AddNewObject(UIKnowledge = new Engine::Label(std::string("Knowledge -- ") + std::to_string(GameData::knowledge), "pirulen.ttf", 24, 1486, 450));
     UIGroup->AddNewObject(UISpeed = new Engine::Label(std::string("Speed -- ") + std::to_string(GameData::speed), "pirulen.ttf", 24, 1486, 500));
     UIGroup->AddNewObject(UIStrength = new Engine::Label(std::string("Strength -- ") + std::to_string(GameData::strength), "pirulen.ttf", 24, 1486, 550));
     TurretButton *btn;
-    // Button 1
+
+    // apple
     btn = new TurretButton("play/floor.png", "play/dirt.png",
                            Engine::Sprite("play/apple.png", 1486, 700, 0, 0, 0, 0),
                            Engine::Sprite("play/apple.png", 1486, 700, 0, 0, 0, 0), 1486, 700, LaserTurret::Price);
-    // Reference: Class Member Function Pointer and std::bind.
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 0));
     UIGroup->AddNewControlObject(btn);
 
-    // Button 2
+    // orange
     btn = new TurretButton("play/floor.png", "play/dirt.png",
                            Engine::Sprite("play/orange.png", 1562, 705, 0, 0, 0, 0),
                            Engine::Sprite("play/orange.png", 1562, 705, 0, 0, 0, 0), 1562, 700, LaserTurret::Price);
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 1));
     UIGroup->AddNewControlObject(btn);
 
-    // fire turret
+    // null potion
     btn = new TurretButton("play/floor.png", "play/dirt.png",
                        Engine::Sprite("play/null.png", 1636, 696, 0, 0, 0, 0),
                        Engine::Sprite("play/null.png", 1636, 696, 0, 0, 0, 0), 1636, 700, FireTurret::Price);
     btn->SetOnClickCallback(std::bind(&PlayScene::UIBtnClicked, this, 2)); // ID = 2
     UIGroup->AddNewControlObject(btn);
 
-    //rocket turret
+    //invincible potion
     btn = new TurretButton("play/floor.png", "play/dirt.png",
                        Engine::Sprite("play/invinsible.png", 1714, 696, 0, 0, 0, 0),
                        Engine::Sprite("play/invinsible.png", 1714, 696, 0, 0, 0, 0), 1714, 700, FireTurret::Price);
@@ -600,6 +600,7 @@ void PlayScene::ConstructUI() {
         UIGroup->AddNewControlObject(btn);
     }
 
+    //glass rose kalo di declare disini doesnt work, harus di onmouseup
     // if (GameData::isRose)
     // {
     //     btn = new TurretButton("play/floor.png", "play/dirt.png",
@@ -632,14 +633,14 @@ void PlayScene::ConstructUI() {
 
     blackScreen = new Engine::Image("play/floor.png", 400, 200, 672, 816);
     blackScreen->Visible = false;
-    UIGroup->AddNewObject(blackScreen); // MUST be before other UI elements
+    UIGroup->AddNewObject(blackScreen);
 
     //MENU
     Engine::ImageButton* menuButton = new Engine::ImageButton(
-    "stage-select/dirt.png",           // Default image
-    "stage-select/floor.png",          // Hover image
-    1486, 900,                         // X, Y position (adjust if needed)
-    292, 60                            // Width, Height
+    "stage-select/dirt.png",
+    "stage-select/floor.png",
+    1486, 900,
+    292, 60
      );
     menuButton->SetOnClickCallback(std::bind(&PlayScene::MenuOnClick, this));
     UIGroup->AddNewControlObject(menuButton);
@@ -649,19 +650,15 @@ void PlayScene::ConstructUI() {
 
     Engine::ImageButton* mapButton = new Engine::ImageButton(
         "stage-select/dirt.png", "stage-select/floor.png",
-        1486, 970, 292, 60 // Same X, increased Y
+        1486, 970, 292, 60
     );
-    mapButton->SetOnClickCallback(std::bind(&PlayScene::MapOnClick, this)); // Make sure MapOnClick() exists
+    mapButton->SetOnClickCallback(std::bind(&PlayScene::MapOnClick, this));
     UIGroup->AddNewControlObject(mapButton);
 
     UIGroup->AddNewObject(new Engine::Label("MAP", "pirulen.ttf", 32,
-        1632, 1000, 255, 255, 255, 255, 0.5f, 0.5f)); // Adjusted label position
+        1632, 1000, 255, 255, 255, 255, 0.5f, 0.5f));
 
 
-
-
-
-    //buttons inside blackscreen
     // Save Progress button
     saveBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", 520, 300, 400, 60);
     saveBtn->Visible = false;
@@ -982,18 +979,17 @@ void PlayScene::MapOnClick() {
     int btnH = 50;
 
     // Place button near bottom-left corner of the map
-    int btnX = mapX + 20;                        // 20px padding from left
-    int btnY = mapY + mapH - btnH - 20;          // 20px padding from bottom
+    int btnX = mapX + 20;
+    int btnY = mapY + mapH - btnH - 20;
 
     closeMapBtn = new Engine::ImageButton("stage-select/dirt.png", "stage-select/floor.png", btnX, btnY, btnW, btnH);
     closeMapBtn->SetOnClickCallback(std::bind(&PlayScene::CloseMap, this));
     closeMapBtn->Visible = true;
     UIGroup->AddNewControlObject(closeMapBtn);
 
-    // Label centered on button
     closeMapLabel = new Engine::Label("Close", "pirulen.ttf", 20,
-        btnX + btnW / 2, btnY + btnH / 2,         // center position
-        255, 255, 255, 255, 0.5f, 0.5f);          // white, centered
+        btnX + btnW / 2, btnY + btnH / 2,
+        255, 255, 255, 255, 0.5f, 0.5f);
     closeMapLabel->Visible = true;
     UIGroup->AddNewObject(closeMapLabel);
 
@@ -1003,7 +999,7 @@ void PlayScene::MapOnClick() {
 
 std::string PlayScene::GetMapImagePath() const {
 
-    return "play/map_default.png"; // fallback image if not overridden
+    return "play/map_default.png";
 }
 void PlayScene::CloseMap() {
     AudioHelper::PlaySample("press.mp3");

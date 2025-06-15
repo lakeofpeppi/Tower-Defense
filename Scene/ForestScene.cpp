@@ -33,7 +33,7 @@ void ForestScene::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
-    int halfH = h / 2;    // ini kayak setup awal: load map, load musuh, set UI,sm start bgms
+    int halfH = h / 2;
     float startX = halfW - 600;
     float startY = halfH - 100;
     keyUpDown = false;
@@ -47,7 +47,6 @@ void ForestScene::Initialize() {
     deathCountDown = -1;
 
     SpeedMult = 1;
-    // Add groups from bottom to top.
     AddNewObject(TileMapGroup = new Engine::Group());
     AddNewObject(GroundEffectGroup = new Engine::Group());
     AddNewObject(DebugIndicatorGroup = new Engine::Group());
@@ -55,19 +54,18 @@ void ForestScene::Initialize() {
     AddNewObject(EnemyGroup = new Engine::Group());
     AddNewObject(BulletGroup = new Engine::Group());
     AddNewObject(EffectGroup = new Engine::Group());
-    // Should support buttons.
     AddNewControlObject(UIGroup = new Engine::Group());
 
-    int x_r = 1480;          // right side of the screen (adjust to your map)
-    int y_start_r = 100;     // top
-    int y_end_r = 1000;       // bottom
-    int x_l = 55;          // right side of the screen (adjust to your map)
-    int y_start_l = 290;     // top
+    int x_r = 1480;          // right side screen buat tile right edge
+    int y_start_r = 100;     // top buat tile left edge
+    int y_end_r = 1000;       // bottom buat tile right edge
+    int x_l = 55;          // right side screen buat tile left edge
+    int y_start_l = 290;
     int y_end_l = 1256;
-    int spacing_tree = 100;     // vertical gap between trees
+    int spacing_tree = 100;     // vertical gap buat trees
     int scale_tree = 256;
     int y_top = 55;               // y-position for the top row
-    int x_start_top = 300;        // leave a little margin on the left
+    int x_start_top = 300;        // kasi margin
     int x_end_top = 1400;
     for (int x = x_start_top; x <= x_end_top; x += spacing_tree) {
         auto* topBush = new Creature(x, y_top, "enemy/bushes", 1, 5.0f, scale_tree, scale_tree);
@@ -82,8 +80,6 @@ void ForestScene::Initialize() {
         EffectGroup->AddNewObject(tree);
     }
 
-    //auto* mountain = new Creature(700, 128, "enemy/mountain_green", 1, 5.0f, 320, 320);
-    //EffectGroup->AddNewObject(mountain);
     float ox = 1200;
     float oy = 400;
     int spacing = 100;
@@ -118,22 +114,19 @@ void ForestScene::Initialize() {
     float jx = 350.f;
     float jy = 750.f;
 
-
-    // Offsets surrounding the frog (excluding the center {0, 0})
     std::vector<std::pair<float, float>> bush_yellow = {
         {-1, -1}, { 0, -1}, { 1, -1},
         {-1,  0},    {0,0}  ,     { 1,  0},
         {-1,  1}, { 0,  1}, { 1,  1},
     };
 
-    // Correct loop with the correct vector
     for (auto [dx, dy] : bush_yellow) {
         float bx = jx + dx * spacing;
         float by = jy + dy * spacing;
 
         auto* yellowBush = new Creature(
             bx, by,
-            "enemy/lava",       // path to your bush sprite
+            "enemy/lava",
             1, 5.0f,
             bush_scale, bush_scale
         );
@@ -194,19 +187,16 @@ void ForestScene::Initialize() {
     imgTarget->Visible = false;
     preview = nullptr;
     UIGroup->AddNewObject(imgTarget);
-    // Preload Lose Scene
     deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
-    // Start BGM.
+
     bgmId = AudioHelper::PlayBGM("forest-explore.wav");
 }
 std::string ForestScene::GetMapImagePath() const {
     return "play/forest_map.png";
 }
 void ForestScene::CloseMap() {
-    PlayScene::CloseMap();  // Optional: call base logic
-
-    // Add village-specific logic here if needed
+    PlayScene::CloseMap();
     std::cout << "[VillageScene] Closed village map.\n";
 }
 
@@ -244,21 +234,13 @@ void ForestScene::ReadMap() {
         }
     }
     fin.close();
-    // Validate map data.
     if (static_cast<int>(mapData.size()) != MapWidth * MapHeight)
         throw std::ios_base::failure("Map data is corrupted.");
-    // Store map in 2d array.
+    //taro map di 2d array
     mapState = std::vector<std::vector<TileType>>(MapHeight, std::vector<TileType>(MapWidth));
     for (int i = 0; i < MapHeight; i++) {
         for (int j = 0; j < MapWidth; j++) {
             const int num = mapData[i * MapWidth + j];
-            //mapState[i][j] = num ? TILE_FLOOR : TILE_DIRT;
-            // if (1) {
-            //     TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize)); // previously floor.png
-            // }
-            // if (2) {
-            //     TileMapGroup->AddNewObject(new Engine::Image("play/grass.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
-            // }
             switch(num) {
                 case 0: mapState[i][j] = TILE_GRASS;
                     TileMapGroup->AddNewObject( new Engine::Image("play/grass.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize) );
@@ -313,14 +295,14 @@ void ForestScene::Update(float deltaTime) {
 void ForestScene::Transition() {
     if (_didTransition) return;
 
-    // find our RinCharacter in the scene
+    //cari rin di scene
     RinCharacter* rin = nullptr;
     for (auto* obj : EffectGroup->GetObjects()) {
         if ((rin = dynamic_cast<RinCharacter*>(obj))) break;
     }
     if (!rin) return;
 
-    // grid‐coords:
+    //abis ketemu rinnya dmn, return the location biar nanti bisa di track buat transition
     int gx = static_cast<int>(rin->Position.x) / BlockSize;
     int gy = static_cast<int>(rin->Position.y) / BlockSize;
 

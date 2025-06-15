@@ -110,24 +110,6 @@ public:
     bool keyLeftDown  = false;
     bool keyRightDown = false;
 
-    /*
-    enum class PlayMode {
-        NONE,
-        BUILD_TURRET,
-        SHOVEL
-    };
-    PlayMode Mode = PlayMode::NONE;
-    */
-    // void ShowDialogue(const std::vector<std::string>& lines);
-    // void AdvanceDialogue();
-
-
-
-    // int currentDialogueIndex = 0;
-
-
-
-    // void HideDialogue();
     static bool DebugMode;
     static const std::vector<Engine::Point> directions;
     static const int MapWidth, MapHeight;
@@ -179,9 +161,6 @@ public:
 
 
     //shovel handling
-
-
-
     std::vector<std::vector<int>> mapDistance;
     std::vector<std::vector<TileType>> mapState;
     //bool IsTileWalkable(int tileType) const = 0;
@@ -224,21 +203,17 @@ public:
     void GainKnowledge();
     void LoseStrength();
     void LoseSpeed();
-    void BuyHP();
-    void GoToIntroScene();
 
 
     void ConstructUI();
     virtual void UIBtnClicked(int id);
     bool CheckSpaceValid(int x, int y, int turret = -1);
-    //void AddMultipleFlashes(int count, float interval);
     virtual TileType GetDefaultWalkableTile() const;
     virtual void Transition() = 0;
 
 
     std::vector<std::vector<int>> CalculateBFSDistance();
-    // void ModifyReadMapTiles();
-    //std::vector<std::pair<float, std::function<void()>>> scheduledEffects;
+
 
 };
 #endif   // PLAYSCENE_HPP

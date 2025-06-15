@@ -27,7 +27,7 @@ void OceanScene::Initialize() {
     int w = Engine::GameEngine::GetInstance().GetScreenSize().x;
     int h = Engine::GameEngine::GetInstance().GetScreenSize().y;
     int halfW = w / 2;
-    int halfH = h / 2;    // ini kayak setup awal: load map, load musuh, set UI,sm start bgms
+    int halfH = h / 2;
     float startX = halfW - 600;
     float startY = halfH - 100;
     keyUpDown = false;
@@ -40,7 +40,6 @@ void OceanScene::Initialize() {
     ticks = 0;
     deathCountDown = -1;
     SpeedMult = 1;
-    // Add groups from bottom to top.
     AddNewObject(TileMapGroup = new Engine::Group());
     AddNewObject(GroundEffectGroup = new Engine::Group());
     AddNewObject(DebugIndicatorGroup = new Engine::Group());
@@ -48,7 +47,6 @@ void OceanScene::Initialize() {
     AddNewObject(EnemyGroup = new Engine::Group());
     AddNewObject(BulletGroup = new Engine::Group());
     AddNewObject(EffectGroup = new Engine::Group());
-    // Should support buttons.
     AddNewControlObject(UIGroup = new Engine::Group());
 
     auto* rin = new RinCharacter(PlayScene::BlockSize / 2, PlayScene::BlockSize / 2);
@@ -82,16 +80,16 @@ void OceanScene::Initialize() {
     auto* anemon2 = new Creature(470, 1032, "enemy/pink_anemon", 3, 0.7f);
     EffectGroup->AddNewObject(anemon2);
 
-    int x_r = 1450;          // right side of the screen (adjust to your map)
-    int y_start_r = 100;     // top
-    int y_end_r = 1000;       // bottom
-    int x_l = 55;          // right side of the screen (adjust to your map)
-    int y_start_l = 290;     // top
+    int x_r = 1450;
+    int y_start_r = 100;
+    int y_end_r = 1000;
+    int x_l = 55;
+    int y_start_l = 290;
     int y_end_l = 1256;
-    int spacing_tree = 100;     // vertical gap between trees
+    int spacing_tree = 100;
     int scale_tree = 180;
-    int x_start = 1120;         // far left
-    int x_end = 1600;        // far right (adjust to map width)
+    int x_start = 1120;
+    int x_end = 1600;
     int y_bottom = 1150;
 
     for (int y = y_start_l; y <= y_end_l; y += spacing_tree) {
@@ -187,19 +185,17 @@ void OceanScene::Initialize() {
     imgTarget->Visible = false;
     preview = nullptr;
     UIGroup->AddNewObject(imgTarget);
-    // Preload Lose Scene
+
     deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
-    // Start BGM.
+
     bgmId = AudioHelper::PlayBGM("ocean-explore.wav");
 }
 std::string OceanScene::GetMapImagePath() const {
     return "play/ocean_map.png";
 }
 void OceanScene::CloseMap() {
-    PlayScene::CloseMap();  // Optional: call base logic
-
-    // Add village-specific logic here if needed
+    PlayScene::CloseMap();
     std::cout << "[VillageScene] Closed village map.\n";
 }
 
@@ -207,7 +203,9 @@ void OceanScene::ReadMap() {
     // load file map.txt jd mapState
     // ngegambar tile floor / dirt ke TileMapGroup
     std::string filename = std::string("Resource/map_sea") + std::to_string(MapId) + ".txt";
-    // Read map file.
+
+
+    //read map
     char c;
     std::vector<int> mapData;
     std::ifstream fin(filename);
@@ -235,21 +233,14 @@ void OceanScene::ReadMap() {
         }
     }
     fin.close();
-    // Validate map data.
+    //validate map
     if (static_cast<int>(mapData.size()) != MapWidth * MapHeight)
         throw std::ios_base::failure("Map data is corrupted.");
-    // Store map in 2d array.
+
     mapState = std::vector<std::vector<TileType>>(MapHeight, std::vector<TileType>(MapWidth));
     for (int i = 0; i < MapHeight; i++) {
         for (int j = 0; j < MapWidth; j++) {
             const int num = mapData[i * MapWidth + j];
-            //mapState[i][j] = num ? TILE_FLOOR : TILE_DIRT;
-            // if (1) {
-            //     TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize)); // previously floor.png
-            // }
-            // if (2) {
-            //     TileMapGroup->AddNewObject(new Engine::Image("play/grass.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
-            // }
             switch(num) {
                 case 0: mapState[i][j] = TILE_GRASS;
                     TileMapGroup->AddNewObject( new Engine::Image("play/grass.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize) );

@@ -26,7 +26,7 @@ void MemoryScene::Initialize() {
     int halfW = screenW / 2;
     int halfH = screenH / 2;
 
-    // Add a black screen at the start
+    //blackscreen dulu
     blackScreen = new Engine::Image("play/black.png", 0, 0, screenW, screenH);
     blackScreen->Visible = true;
     AddNewObject(blackScreen);
@@ -37,20 +37,20 @@ void MemoryScene::Initialize() {
     };
     currentState = MemoryState::INTRO;
 
-    // Dialogue box setup
+
     dialogueBoxImage = new Engine::Image("play/dialogue.png", halfW - 600, screenH - 210, 1250, 150);
     dialogueBoxImage->Visible = false;
     AddNewObject(dialogueBoxImage);
 
     for (size_t i = 0; i < dialogueLines.size(); ++i) {
         Engine::Label* label = new Engine::Label(dialogueLines[i], "To The Point.ttf", 70, screenW / 2, screenH / 2, 255, 255, 255, 255, 0.5, 0.5);
-        label->Visible = (i == 0); // Show only first line
+        label->Visible = (i == 0); //show first line dulu
         dialogueLabels.push_back(label);
         AddNewObject(label);
     }
 
 
-    // Memory Buttons (Initially hidden)
+    //memory buttons
     int buttonWidth = 200;
     int buttonHeight = 80;
     int spacing = 40;
@@ -62,8 +62,8 @@ void MemoryScene::Initialize() {
 
     // Next button label
     labelNext = new Engine::Label("next", "To The Point.ttf", 80,
-                                  halfW + 680 + 100, // X center of button
-                                  halfH + 500 + 40,  // Y center of button
+                                  halfW + 680 + 100,
+                                  halfH + 500 + 40,
                                   255, 255, 255, 255, 0.5, 0.5);
     AddNewObject(labelNext);
 
@@ -139,7 +139,6 @@ void MemoryScene::NextOnClick(int stage) {
         if (currentLine < dialogueLabels.size()) {
             dialogueLabels[currentLine]->Visible = true;
         } else {
-            // Transition to memory selection
             currentState = MemoryState::CHOOSE_MEMORY;
             blackScreen->Visible = false;
 
@@ -158,21 +157,17 @@ void MemoryScene::NextOnClick(int stage) {
 }
 
 void MemoryScene::ShowMemory(int memoryIndex, std::string textLine1, std::string textLine2, std::function<void()> giveUpCallback) {
-    // Hide memory selection UI
     memory1Button->Visible = false;
     memory2Button->Visible = false;
     labelMemory1->Visible = false;
     labelMemory2->Visible = false;
-
-    // Hide all memory photos first
     memoryPhoto1->Visible = false;
     memoryPhoto2->Visible = false;
 
-    // Show the selected photo
     if (memoryIndex == 1) memoryPhoto1->Visible = true;
     if (memoryIndex == 2) memoryPhoto2->Visible = true;
 
-    // Update dialogue
+
     dialogue1->Visible = true;
     dialogue1->Text = textLine1;
 
@@ -200,7 +195,7 @@ void MemoryScene::Memory1OnClick() {
 void MemoryScene::Terminate() {
     if (bgmInstance) {
         AudioHelper::StopSample(bgmInstance);
-        bgmInstance.reset();  // safer and clearer
+        bgmInstance.reset();
     }
     IScene::Terminate();
 }

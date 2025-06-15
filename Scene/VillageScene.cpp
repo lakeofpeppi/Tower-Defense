@@ -43,7 +43,7 @@ void VillageScene::Initialize() {
     ticks = 0;
     deathCountDown = -1;
     SpeedMult = 1;
-    // Add groups from bottom to top.
+
     AddNewObject(TileMapGroup = new Engine::Group());
     AddNewObject(GroundEffectGroup = new Engine::Group());
     AddNewObject(DebugIndicatorGroup = new Engine::Group());
@@ -51,7 +51,6 @@ void VillageScene::Initialize() {
     AddNewObject(EnemyGroup = new Engine::Group());
     AddNewObject(BulletGroup = new Engine::Group());
     AddNewObject(EffectGroup = new Engine::Group());
-    // Should support buttons.
     AddNewControlObject(UIGroup = new Engine::Group());
 
 
@@ -112,8 +111,8 @@ void VillageScene::Initialize() {
 
 
     auto* Book = new House(
-        1128, 180,  // Example position
-        "play/house_book.png",  // Image of the house
+        1128, 180,
+        "play/house_book.png",  // Image
         "book"         // The scene it should go to when touched
     );
     EffectGroup->AddNewObject(Book);
@@ -164,19 +163,17 @@ void VillageScene::Initialize() {
     imgTarget->Visible = false;
     preview = nullptr;
     UIGroup->AddNewObject(imgTarget);
-    // Preload Lose Scene
+
     deathBGMInstance = Engine::Resources::GetInstance().GetSampleInstance("astronomia.ogg");
     Engine::Resources::GetInstance().GetBitmap("lose/benjamin-happy.png");
-    // Start BGM.
+
     bgmId = AudioHelper::PlayBGM("village-explore.mp3");
 }
 std::string VillageScene::GetMapImagePath() const {
     return "play/village_map.png";
 }
 void VillageScene::CloseMap() {
-    PlayScene::CloseMap();  // Optional: call base logic
-
-    // Add village-specific logic here if needed
+    PlayScene::CloseMap();
     std::cout << "[VillageScene] Closed village map.\n";
 }
 
@@ -185,7 +182,7 @@ void VillageScene::Terminate() {
         al_stop_sample_instance(footstepsInstance.get());
         footstepsPlaying = false;
     }
-    PlayScene::Terminate(); // Call base class cleanup
+    PlayScene::Terminate();
 }
 
 void VillageScene::ReadMap() {
@@ -205,8 +202,6 @@ void VillageScene::ReadMap() {
         if (c >= '0' && c <= '9') {
             mapData.push_back(c - '0');
         }
-        // else if (c=='\n'||c=='\r') skip
-        // else ignore or warn
     }
     fin.close();
 
@@ -219,18 +214,11 @@ void VillageScene::ReadMap() {
     // Validate map data.
     if (static_cast<int>(mapData.size()) != MapWidth * MapHeight)
         throw std::ios_base::failure("Map data is corrupted.");
-    // Store map in 2d array.
+
     mapState = std::vector<std::vector<TileType>>(MapHeight, std::vector<TileType>(MapWidth));
     for (int i = 0; i < MapHeight; i++) {
         for (int j = 0; j < MapWidth; j++) {
             const int num = mapData[i * MapWidth + j];
-            //mapState[i][j] = num ? TILE_FLOOR : TILE_DIRT;
-            // if (1) {
-            //     TileMapGroup->AddNewObject(new Engine::Image("play/floor.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize)); // previously floor.png
-            // }
-            // if (2) {
-            //     TileMapGroup->AddNewObject(new Engine::Image("play/grass.png", j * BlockSize, i * BlockSize, BlockSize, BlockSize));
-            // }
             switch(num) {
                 case 0: mapState[i][j] = TILE_GRASS;
                     TileMapGroup->AddNewObject( new Engine::Image("play/grass.png", j*BlockSize, i*BlockSize, BlockSize, BlockSize) );
@@ -384,7 +372,7 @@ void VillageScene::ShowDialogue(const std::vector<std::string>& lines) {
     }
     dialogueLabel->Visible = true;
 
-    // Set first line of dialogue
+    //dialog
     if (!dialogueLines.empty()) {
         std::cout << "Setting initial dialogue line: " << dialogueLines[0] << std::endl;
 
@@ -405,10 +393,9 @@ void VillageScene::AdvanceDialogue() {
     if (currentDialogueIndex < (int)dialogueLines.size()) {
         std::cout << "Advancing to line: " << dialogueLines[currentDialogueIndex] << std::endl;
 
-        // Force refresh text
+        //refresh text
         if (dialogueLabel)dialogueLabel->Text = "";
         if (dialogueLabel)dialogueLabel->Text = dialogueLines[currentDialogueIndex];
-        // Optionally force position and visibility again
         if (dialogueLabel)dialogueLabel->Visible = true;
 
         if (rin_normal) rin_normal->Visible = false;
@@ -419,7 +406,7 @@ void VillageScene::AdvanceDialogue() {
         if (toma_worry) toma_worry->Visible = false;
 
         if (currentDialogueIndex == 22) {
-            EarnMoney(700); // or any value you want to reward
+            EarnMoney(700);
             std::cout << "[DEBUG] Awarded 500 money for reaching dialogue 22\n";
             UIMoney->Text = "COINS: " + std::to_string(GameData::money);
             AudioHelper::PlaySample("collect.mp3");
@@ -496,11 +483,10 @@ void VillageScene::Transition() {
     }
     if (!rin) return;
 
-    // grid‐coords:
+
     int gx = static_cast<int>(rin->Position.x) / BlockSize;
     int gy = static_cast<int>(rin->Position.y) / BlockSize;
 
-    // if she's on bottom‐right, switch scenes once
     if (gx == MapWidth - 1 && gy == MapHeight - 1) {
         _didTransition = true;
         footstepsPlaying=false;
